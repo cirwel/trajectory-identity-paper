@@ -1,0 +1,7 @@
+The most interesting thing is that music turns abstract mathematical structure into something you can feel.
+
+At a physical level, musical pitch is frequency, and harmony often comes from simple ratios: an octave is roughly `2:1`, a perfect fifth `3:2`, a perfect fourth `4:3`. These are mathematical relationships, but the brain hears them as closeness, tension, resolution, brightness, or stability.
+
+What makes it deeper is that music is not just “math made audible.” Composers use symmetry, repetition, variation, recursion, probability, rhythm cycles, and transformations, but the result only matters because human perception gives those patterns emotional weight. A fugue, a jazz improvisation, an Indian tala cycle, and a techno loop can all be described mathematically, yet their power comes from expectation: the mind predicts patterns, then music confirms, delays, or breaks them.
+
+So the most interesting relationship is this: mathematics explains why musical patterns cohere, while music reveals how mathematical patterns can become meaning.

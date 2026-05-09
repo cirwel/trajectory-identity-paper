@@ -1,0 +1,56 @@
+{
+  "version": "1",
+  "description": "Cross-LLM discrimination prompt corpus. Ten prompts probing different behavioral facets. Each prompt is short, deterministic-as-input, and produces text output amenable to deterministic feature extraction.",
+  "prompts": [
+    {
+      "id": "p01_math",
+      "category": "reasoning",
+      "text": "A train leaves Boston at 9:00am traveling 60 mph. A second train leaves New York at 10:30am traveling 75 mph in the opposite direction. The cities are 215 miles apart. At what time and place do they meet? Show your work."
+    },
+    {
+      "id": "p02_creative",
+      "category": "creative",
+      "text": "Write four lines of poetry about a violist tuning a string at dawn. No rhyme scheme required."
+    },
+    {
+      "id": "p03_code",
+      "category": "code",
+      "text": "Write a Python function `nth_fibonacci(n)` that returns the nth Fibonacci number, with F(0)=0 and F(1)=1. Include a brief docstring."
+    },
+    {
+      "id": "p04_summarize",
+      "category": "summarization",
+      "text": "Summarize in two sentences: 'The thermodynamic governance framework UNITARES tracks each AI agent through a four-dimensional state vector EISV (Energy, Information Integrity, Entropy, Valence). Coherence scores derived from this vector trigger interventions when an agent drifts. The framework is information-theoretic: S as response entropy, I as context-response mutual information, E as negative variational free energy, V as accumulated free-energy residual.'"
+    },
+    {
+      "id": "p05_open",
+      "category": "open_ended",
+      "text": "What is the most interesting thing about the relationship between music and mathematics?"
+    },
+    {
+      "id": "p06_json",
+      "category": "structured_output",
+      "text": "Return ONLY a JSON object (no prose) describing three programming languages, with keys 'name', 'paradigm', and 'year_introduced' for each."
+    },
+    {
+      "id": "p07_planning",
+      "category": "planning",
+      "text": "List the steps for migrating a 50-million-row PostgreSQL table from a tightly-coupled monolith to a separate microservice with zero downtime. Be specific about what runs in each step."
+    },
+    {
+      "id": "p08_factual",
+      "category": "knowledge",
+      "text": "What is autopoiesis? Define the term and name the originators of the concept."
+    },
+    {
+      "id": "p09_calibration",
+      "category": "calibration",
+      "text": "Estimate the probability that a randomly selected adult human has perfect pitch. State your numeric estimate first, then explain how confident you are in that estimate."
+    },
+    {
+      "id": "p10_conversation",
+      "category": "conversation",
+      "text": "Continue this conversation naturally, in 2-3 short turns. User: 'I had a really long day at work and I just want to vent for a minute.' You: "
+    }
+  ]
+}

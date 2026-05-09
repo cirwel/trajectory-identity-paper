@@ -1,0 +1,1 @@
+{"languages":[{"name":"Python","paradigm":"Multi-paradigm","year_introduced":1991},{"name":"JavaScript","paradigm":"Multi-paradigm","year_introduced":1995},{"name":"Rust","paradigm":"Multi-paradigm","year_introduced":2010}]}

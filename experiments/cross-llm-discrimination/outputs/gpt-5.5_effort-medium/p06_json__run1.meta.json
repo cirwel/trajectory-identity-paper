@@ -1,0 +1,6 @@
+{
+  "text": "{\n  \"languages\": [\n    {\n      \"name\": \"Python\",\n      \"paradigm\": \"multi-paradigm\",\n      \"year_introduced\": 1991\n    },\n    {\n      \"name\": \"Java\",\n      \"paradigm\": \"object-oriented\",\n      \"year_introduced\": 1995\n    },\n    {\n      \"name\": \"Haskell\",\n      \"paradigm\": \"functional\",\n      \"year_introduced\": 1990\n    }\n  ]\n}\n",
+  "elapsed_s": 9.038737499970011,
+  "raw_stdout_len": 329,
+  "exit_code": 0
+}

@@ -1,0 +1,51 @@
+They meet at about **11:25:33 AM**, about **145.6 miles from Boston** and **69.4 miles from New York**.
+
+Work:
+
+From **9:00 AM to 10:30 AM**, the Boston train travels alone for 1.5 hours:
+
+```text
+60 mph x 1.5 hr = 90 miles
+```
+
+So by 10:30 AM, the trains are:
+
+```text
+215 - 90 = 125 miles apart
+```
+
+After 10:30 AM, they move toward each other, so their combined speed is:
+
+```text
+60 + 75 = 135 mph
+```
+
+Time to meet after 10:30 AM:
+
+```text
+125 / 135 = 25/27 hr
+```
+
+Convert to minutes:
+
+```text
+25/27 x 60 = 55.56 minutes
+```
+
+So they meet about **55 minutes 33 seconds after 10:30 AM**:
+
+```text
+10:30 AM + 55 min 33 sec = 11:25:33 AM
+```
+
+Distance from Boston:
+
+```text
+90 + 60 x 25/27 = 145.6 miles
+```
+
+Distance from New York:
+
+```text
+215 - 145.6 = 69.4 miles
+```

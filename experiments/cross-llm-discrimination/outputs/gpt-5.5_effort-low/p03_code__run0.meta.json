@@ -1,0 +1,6 @@
+{
+  "text": "I can\u2019t edit files in this read-only sandbox, but here\u2019s the function:\n\n```python\ndef nth_fibonacci(n):\n    \"\"\"Return the nth Fibonacci number, with F(0)=0 and F(1)=1.\"\"\"\n    if n < 0:\n        raise ValueError(\"n must be non-negative\")\n\n    a, b = 0, 1\n    for _ in range(n):\n        a, b = b, a + b\n    return a\n```\n\nIt runs in `O(n)` time and uses constant space.\n",
+  "elapsed_s": 14.326991415931843,
+  "raw_stdout_len": 366,
+  "exit_code": 0
+}

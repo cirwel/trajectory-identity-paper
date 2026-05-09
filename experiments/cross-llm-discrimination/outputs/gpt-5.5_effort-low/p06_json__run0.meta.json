@@ -1,0 +1,6 @@
+{
+  "text": "{\"languages\":[{\"name\":\"Python\",\"paradigm\":\"multi-paradigm\",\"year_introduced\":1991},{\"name\":\"Haskell\",\"paradigm\":\"functional\",\"year_introduced\":1990},{\"name\":\"Rust\",\"paradigm\":\"multi-paradigm\",\"year_introduced\":2010}]}\n",
+  "elapsed_s": 4.780085459002294,
+  "raw_stdout_len": 218,
+  "exit_code": 0
+}

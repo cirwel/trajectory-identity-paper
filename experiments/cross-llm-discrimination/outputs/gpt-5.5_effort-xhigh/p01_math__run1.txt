@@ -1,0 +1,53 @@
+Assuming the Boston train is headed toward New York and the New York train is headed toward Boston:
+
+Boston train leaves at **9:00 AM** at **60 mph**.
+
+By **10:30 AM**, it has traveled:
+
+```text
+1.5 hours * 60 mph = 90 miles
+```
+
+So the remaining distance between the trains at 10:30 AM is:
+
+```text
+215 - 90 = 125 miles
+```
+
+Now they are moving toward each other, so their closing speed is:
+
+```text
+60 + 75 = 135 mph
+```
+
+Time to meet after 10:30 AM:
+
+```text
+125 / 135 = 25/27 hours
+```
+
+Convert to minutes:
+
+```text
+25/27 * 60 = 55.56 minutes
+```
+
+So they meet about **55 minutes 33 seconds after 10:30 AM**, which is:
+
+```text
+11:25:33 AM
+```
+
+Distance from Boston:
+
+```text
+60 * (2.4259 hours) = 145.56 miles
+```
+
+Distance from New York:
+
+```text
+75 * (25/27 hours) = 69.44 miles
+```
+
+They meet at about **11:25:33 AM**, approximately **145.6 miles from Boston** and **69.4 miles from New York**.

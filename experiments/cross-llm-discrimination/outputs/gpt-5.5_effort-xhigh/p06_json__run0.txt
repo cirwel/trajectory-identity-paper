@@ -1,0 +1,1 @@
+{"languages":[{"name":"Python","paradigm":"Multi-paradigm","year_introduced":1991},{"name":"JavaScript","paradigm":"Multi-paradigm","year_introduced":1995},{"name":"Go","paradigm":"Procedural, concurrent","year_introduced":2009}]}

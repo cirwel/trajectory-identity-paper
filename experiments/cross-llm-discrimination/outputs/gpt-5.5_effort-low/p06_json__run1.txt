@@ -1,0 +1,19 @@
+{
+  "languages": [
+    {
+      "name": "Python",
+      "paradigm": "multi-paradigm",
+      "year_introduced": 1991
+    },
+    {
+      "name": "Java",
+      "paradigm": "object-oriented",
+      "year_introduced": 1995
+    },
+    {
+      "name": "Haskell",
+      "paradigm": "functional",
+      "year_introduced": 1990
+    }
+  ]
+}

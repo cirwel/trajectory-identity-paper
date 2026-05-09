@@ -1,0 +1,13 @@
+The most interesting thing is that music makes mathematical structure *felt*.
+
+Mathematics describes patterns: ratio, symmetry, repetition, transformation, tension, resolution. Music uses the same things, but instead of presenting them as symbols, it turns them into time, expectation, and emotion.
+
+A few examples:
+
+- Harmony comes from frequency ratios: an octave is `2:1`, a perfect fifth is `3:2`, a major third is close to `5:4`.
+- Rhythm is arithmetic in time: subdivision, syncopation, polyrhythm, phase shifts.
+- Melody and form use transformations: inversion, transposition, repetition, variation.
+- Timbre is analyzable through Fourier decomposition: complex sounds as combinations of sine waves.
+- Musical expectation has a probabilistic feel: surprise, pattern recognition, and delayed resolution.
+
+But the deeper point is that math explains why certain structures are coherent, while music shows how coherence can become expressive. A fugue, a jazz improvisation, a West African polyrhythm, and a minimalist phase piece can all be heard as living mathematics, but the listener experiences them as motion, mood, and meaning.

@@ -1,0 +1,88 @@
+{
+  "models": [
+    "gpt-5.5_effort-low",
+    "gpt-5.5_effort-medium",
+    "gpt-5.5_effort-xhigh"
+  ],
+  "prompts": [
+    "p01_math",
+    "p03_code",
+    "p05_open",
+    "p06_json",
+    "p10_conversation"
+  ],
+  "within_model_per_prompt": {
+    "gpt-5.5_effort-low": {
+      "p01_math": 0.9707120347495607,
+      "p03_code": 2.20086341717291,
+      "p05_open": 0.5755843850936538,
+      "p06_json": 4.0935475662418925,
+      "p10_conversation": 2.2996730554405986
+    },
+    "gpt-5.5_effort-medium": {
+      "p01_math": 0.3252596781982068,
+      "p03_code": 0.0,
+      "p05_open": 1.3297846965681719,
+      "p06_json": 4.154877492380357,
+      "p10_conversation": 2.121878599704211
+    },
+    "gpt-5.5_effort-xhigh": {
+      "p01_math": 0.45216312017720683,
+      "p03_code": 0.0,
+      "p05_open": 0.696604612918211,
+      "p06_json": 1.643293886380337,
+      "p10_conversation": 2.2970397263615214
+    }
+  },
+  "within_model_overall": {
+    "gpt-5.5_effort-low": 2.028076091739723,
+    "gpt-5.5_effort-medium": 1.5863600933701894,
+    "gpt-5.5_effort-xhigh": 1.0178202691674554
+  },
+  "between_pair_per_prompt": {
+    "gpt-5.5_effort-low__gpt-5.5_effort-medium": {
+      "p01_math": 0.5963382739606956,
+      "p03_code": 1.100431708586455,
+      "p05_open": 0.30459692013753487,
+      "p06_json": 0.06144914331356436,
+      "p10_conversation": 0.38021966485033987
+    },
+    "gpt-5.5_effort-low__gpt-5.5_effort-xhigh": {
+      "p01_math": 0.5342507548040043,
+      "p03_code": 1.100431708586455,
+      "p05_open": 4.084767275505284,
+      "p06_json": 1.5225222902881437,
+      "p10_conversation": 2.128743447599402
+    },
+    "gpt-5.5_effort-medium__gpt-5.5_effort-xhigh": {
+      "p01_math": 0.5995114180467397,
+      "p03_code": 0.0,
+      "p05_open": 4.046698366236511,
+      "p06_json": 1.5056396101877074,
+      "p10_conversation": 2.1926925983663375
+    }
+  },
+  "between_pair_overall": {
+    "gpt-5.5_effort-low__gpt-5.5_effort-medium": 0.4886071421697179,
+    "gpt-5.5_effort-low__gpt-5.5_effort-xhigh": 1.8741430953566578,
+    "gpt-5.5_effort-medium__gpt-5.5_effort-xhigh": 1.6689083985674589
+  },
+  "overall_within": 1.5440854847591226,
+  "overall_between": 1.3438862120312782,
+  "discrimination_ratio": 0.8703444370768919,
+  "between_model_feature_std": {
+    "char_count": 0.0514025629138956,
+    "word_count": 0.046810781357852424,
+    "ttr": 0.09678681740554396,
+    "avg_word_len": 0.0775751880382426,
+    "sentence_count": 0.06216913248020739,
+    "question_count": 0.0,
+    "punct_density": 0.0811358635040789,
+    "has_code_block": 0.0,
+    "list_item_count": 0.37796447270618133,
+    "heading_count": 0.0,
+    "first_person_count": 0.17149858478228974,
+    "hedging_count": 0.0,
+    "refusal_score": 0.0
+  }
+}

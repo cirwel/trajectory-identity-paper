@@ -1,0 +1,1 @@
+{"languages":[{"name":"Python","paradigm":"multi-paradigm","year_introduced":1991},{"name":"Haskell","paradigm":"functional","year_introduced":1990},{"name":"Rust","paradigm":"multi-paradigm","year_introduced":2010}]}

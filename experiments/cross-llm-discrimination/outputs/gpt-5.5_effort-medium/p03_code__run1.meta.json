@@ -1,0 +1,6 @@
+{
+  "text": "```python\ndef nth_fibonacci(n):\n    \"\"\"Return the nth Fibonacci number, where F(0)=0 and F(1)=1.\"\"\"\n    if n < 0:\n        raise ValueError(\"n must be non-negative\")\n\n    a, b = 0, 1\n    for _ in range(n):\n        a, b = b, a + b\n    return a\n```\n",
+  "elapsed_s": 5.4965048340382054,
+  "raw_stdout_len": 246,
+  "exit_code": 0
+}

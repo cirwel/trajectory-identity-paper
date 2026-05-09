@@ -1,0 +1,6 @@
+{
+  "text": "They meet at about **11:25:33 AM**, about **145.6 miles from Boston** and **69.4 miles from New York**.\n\nWork:\n\nFrom **9:00 AM to 10:30 AM**, the Boston train travels alone for 1.5 hours:\n\n```text\n60 mph x 1.5 hr = 90 miles\n```\n\nSo by 10:30 AM, the trains are:\n\n```text\n215 - 90 = 125 miles apart\n```\n\nAfter 10:30 AM, they move toward each other, so their combined speed is:\n\n```text\n60 + 75 = 135 mph\n```\n\nTime to meet after 10:30 AM:\n\n```text\n125 / 135 = 25/27 hr\n```\n\nConvert to minutes:\n\n```text\n25/27 x 60 = 55.56 minutes\n```\n\nSo they meet about **55 minutes 33 seconds after 10:30 AM**:\n\n```text\n10:30 AM + 55 min 33 sec = 11:25:33 AM\n```\n\nDistance from Boston:\n\n```text\n90 + 60 x 25/27 = 145.6 miles\n```\n\nDistance from New York:\n\n```text\n215 - 145.6 = 69.4 miles\n```\n",
+  "elapsed_s": 13.161827333969995,
+  "raw_stdout_len": 774,
+  "exit_code": 0
+}
