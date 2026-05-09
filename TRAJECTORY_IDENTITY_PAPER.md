@@ -3,7 +3,7 @@
 **Authors:** Kenny Wang, Independent Researcher (founder@cirwel.org)
 **Date:** May 2026
 **Status:** Working Draft
-**Version:** 0.10
+**Version:** 0.11
 
 ---
 
@@ -59,7 +59,7 @@ This creates practical problems:
 | **Fork semantics** | Ambiguous (which has the "real" ID?) | Ambiguous (both have same memories) | Clear (divergence is measurable) |
 | **Anomaly detection** | None (valid credential = valid agent) | Heuristic (memory tampering) | Mathematical (trajectory deviation) |
 | **Storage growth** | O(1) | O(unbounded) | O(window size) |
-| **Impersonation resistance** | Weak (credential theft) | Moderate (memory reconstruction) | Strong (behavioral fingerprint) |
+| **Impersonation resistance** | Weak (credential theft) | Moderate (memory reconstruction) | Moderate, component-dependent (see §5.5; not a substitute for cryptographic auth) |
 | **Cold start** | Immediate | Immediate | Requires ~50 observations |
 
 ### 1.2 The Enactive Alternative
@@ -84,13 +84,15 @@ This paper makes the following contributions:
 
 Our formulation draws on and bridges several research traditions. We position trajectory signatures as a unifying construct that these literatures approach from different angles but none have formalized.
 
-**Agent Memory and State Persistence.** Recent work on LLM-based agents has foregrounded the problem of maintaining coherent state across interactions. Packer et al. (2023) introduced MemGPT, applying hierarchical memory management to give LLM agents persistent state across sessions. Park et al. (2023) demonstrated that agents with memory streams, reflection, and planning exhibit emergent social behavior that remains individually consistent. Wang et al. (2023) extended this with Voyager, whose ever-growing skill library functions as behavioral accumulation. These systems implicitly rely on trajectory-like continuity but define identity through stored content rather than through the dynamical signatures of how content shapes ongoing behavior. Our work makes the underlying dynamics explicit.
+**Agent Memory and State Persistence.** Recent work on LLM-based agents has foregrounded the problem of maintaining coherent state across interactions. Packer et al. (2023) introduced MemGPT, applying hierarchical memory management to give LLM agents persistent state across sessions. Park et al. (2023) demonstrated that agents with memory streams, reflection, and planning exhibit emergent social behavior that remains individually consistent. Wang et al. (2023) extended this with Voyager, whose ever-growing skill library functions as behavioral accumulation. Most directly comparable to our work is *ID-RAG* (Park et al., 2025): identity-retrieval-augmented generation for long-horizon persona coherence, which targets the same drift problem we do but solves it by injecting a structured identity object into the retrieval context rather than by characterizing the agent's behavioral dynamics. ID-RAG and trajectory identity are complementary: ID-RAG provides the *content* of identity (the prompt-engineered self-description); trajectory signatures provide the *form* (the dynamical signature the content produces in behavior). These systems implicitly rely on trajectory-like continuity but define identity through stored content rather than through the dynamical signatures of how content shapes ongoing behavior. Our work makes the underlying dynamics explicit.
+
+**Persona Consistency Benchmarks.** A separate strand of LLM literature evaluates whether agents *behave* consistently with a declared persona. PersonaChat (Zhang et al., 2018) introduced a dataset of dialogues anchored to persona descriptions; RoleLLM / RoleBench (Wang et al., 2023b) and CharacterEval (Tu et al., 2024) extended persona-consistency evaluation to fine-grained character profiles and role-playing scenarios. These benchmarks treat consistency as a comparison between an agent's outputs and a declared persona, evaluated via NLI-style entailment or LLM-as-judge. Trajectory identity treats consistency intrinsically — the agent is recognized by its own dynamical signature, with no declared persona to compare against. The two approaches address different operational regimes: persona-consistency benchmarks for closed-vocabulary persona evaluation; trajectory signatures for open-ended deployments where the agent's identity emerges from its behavior rather than being authored in advance.
 
 **Behavioral Biometrics.** The principle that identity can be inferred from behavioral patterns has a long history in biometrics. Keystroke dynamics (Banerjee & Woodard, 2019) demonstrates that temporal micro-patterns are sufficiently individuating for continuous authentication. Xu et al. (2024) showed that LLMs can be identified through characteristic response signatures. These approaches treat behavioral signatures as static classifiers. Trajectory identity extends this into a dynamical frame: rather than fingerprinting a snapshot, we characterize the geometry of how behavior evolves, recovers from perturbation, and converges—yielding a quasi-invariant that persists even as surface outputs change.
 
-**Dynamical Systems in Cognitive Science.** Kelso's (1995) *Dynamic Patterns* established that cognitive phenomena are best described through self-organizing dynamical systems. Skarda and Freeman (1987) demonstrated that olfactory perception operates through chaotic itinerancy across attractor basins, with each learned odor corresponding to a distinct basin rather than a stored representation. The "dynamical hypothesis" (van Gelder, 1998) holds that cognitive systems are best understood as dynamical systems traversing state spaces. We adopt this literally: an agent's identity is its characteristic trajectory, including attractor geometry, basin structure, and recovery dynamics.
+**Dynamical Systems in Cognitive Science and AI.** Kelso's (1995) *Dynamic Patterns* established that cognitive phenomena are best described through self-organizing dynamical systems. Skarda and Freeman (1987) demonstrated that olfactory perception operates through chaotic itinerancy across attractor basins, with each learned odor corresponding to a distinct basin rather than a stored representation. The "dynamical hypothesis" (van Gelder, 1998) holds that cognitive systems are best understood as dynamical systems traversing state spaces. Beer (1995) made this concrete for AI agents: an agent and its environment are best modeled as a single coupled dynamical system, and what counts as "the agent's behavior" is a property of that joint system, not the agent in isolation. We adopt this stance directly — see "Identity as agent-environment coupling" in §3.1 — and the empirical findings in §6.4 are reported with that framing in view.
 
-**Enactivism and Autopoiesis.** Weber and Varela (2002) argued that biological identity is constituted through autopoietic self-production. Di Paolo (2005) extended this with *adaptivity*: the capacity of an autonomous system to regulate itself with respect to its viability conditions. Froese and Ziemke (2009) examined implications for artificial systems, identifying constitutive autonomy as necessary for genuine AI agency. Trajectory identity operationalizes these ideas computationally: attractor basins correspond to viable operating regimes, recovery dynamics to adaptive self-regulation, and belief convergence to organizational closure. To our knowledge, this is the first formal mapping from enactive concepts to measurable dynamical signatures in deployed AI systems.
+**Enactivism, Autopoiesis, and Defining Agency.** Weber and Varela (2002) argued that biological identity is constituted through autopoietic self-production. Di Paolo (2005) extended this with *adaptivity*: the capacity of an autonomous system to regulate itself with respect to its viability conditions. Barandiaran and Moreno (2006) and Barandiaran, Di Paolo & Rohde (2009) — the latter directly addressing the question "what defines agency?" — identified individuality, normativity, and asymmetry as the structural commitments any account of agency must satisfy. Froese and Ziemke (2009) examined implications for artificial systems, identifying constitutive autonomy as necessary for genuine AI agency. Villalobos and Dewhurst (2018) sharpened the autopoietic criterion in a form directly applicable to artificial systems. Ikegami and colleagues (e.g., Ikegami & Suzuki, 2008) operationalized "homeodynamic self" in artificial-life simulations, showing that self-maintaining patterns emerge in simulated agents under appropriate dynamics. Trajectory identity operationalizes these ideas computationally for deployed (rather than simulated) systems: attractor basins correspond to viable operating regimes, recovery dynamics to adaptive self-regulation, and belief convergence to organizational closure. To our knowledge, this is the first formal mapping from enactive concepts to measurable dynamical signatures in deployed, continuously-running AI agents.
 
 **Multi-Agent Trust and Robot Identity.** Reputation models (Sabater & Sierra, 2001; Granatyr et al., 2015) universally assume that agent identity is given exogenously through identifiers. Trajectory identity inverts this: the signature itself becomes the basis for recognition, enabling trust robust to identifier spoofing and substrate migration. In HRI, long-term studies consistently find that perceived personality consistency drives sustained engagement, but treat identity as a design choice rather than an emergent property of the agent's own dynamics.
 
@@ -110,12 +112,12 @@ In dynamical systems terms, this translates to **attractor dynamics**:
 
 **Connection to Free Energy Principle**: Friston's (2010) free energy principle provides a complementary perspective: living systems minimize variational free energy (prediction error). The attractor basin represents the agent's "model" of where it should be; returning to the attractor minimizes surprise. Identity, in this view, is the agent's implicit generative model of itself—the pattern it expects to maintain.
 
-**Definition 2.1 (Attractor-Based Identity)**: An agent's identity I is characterized by the tuple (A, B, D) where:
+**Definition 2.1 (Attractor-Based Identity, idealized)**: In the idealized dynamical-systems setting, an agent's identity I is characterized by the tuple (A, B, D) where:
 - A = attractor (the equilibrium state or limit cycle)
 - B = basin (the set of states from which the system returns to A)
 - D = dynamics (the vector field governing return to A)
 
-Different agents with identical attractors A can have different identities if their basins B or dynamics D differ.
+Different agents with identical attractors A can have different identities if their basins B or dynamics D differ. **Operationally, we do not estimate (A, B, D) directly** — we estimate state-distribution and recovery summaries (§3.3 and §3.4) that are projections of this triple. The shape of the attractor basin and the recovery dynamics are *what we want to characterize*, but the components defined in §3 are summary statistics, not the dynamical objects themselves.
 
 ### 2.2 The Viability Envelope
 
@@ -243,7 +245,9 @@ Pi_vec = [v_1 * kappa_1, v_2 * kappa_2, ..., v_n * kappa_n]
 **Properties**:
 - Pi evolves slowly (learning rate alpha = 0.3)
 - Pi stabilizes after sufficient observations (typically n > 20)
-- Pi is environment-dependent but agent-characteristic
+- Pi is environment-dependent but agent-characteristic — see "Identity as agent-environment coupling" below
+
+**Identity as agent-environment coupling.** A reviewer-relevant observation that surfaces here and recurs throughout: the trajectory signature does not characterize an agent in isolation — it characterizes the *agent in its niche*. Pi reflects what the environment has afforded the agent to learn; Alpha reflects where the agent's homeostatic dynamics settle *given* the inputs the environment provides; Delta reflects social patterns that exist only in interaction. This is not a defect for the enactivist framing this paper adopts (Beer 1995; Barandiaran, Di Paolo & Rohde 2009 argue that agency is constitutively a property of the coupled agent-environment system, not the agent alone). It does mean that "the same agent" in a different environment is, in the framework's terms, a different agent-environment system, and its trajectory signature will differ. The right experiment to disentangle agent-intrinsic from coupling-determined components is a *transplant test*: move the agent (or its dynamics) to a new environment and check which components of $\Sigma$ remain stable and which shift. We have not run this experiment; we flag it as the most informative single follow-up (§7.3 Extensions).
 
 ### 3.2 Self-Belief Signature (Beta)
 
@@ -269,19 +273,21 @@ Beta_vec = values (normalized to [0,1])
 - The *pattern* of which beliefs are confident matters more than individual values
 - Evidence ratios reveal the agent's actual experience, not just current belief
 
-### 3.3 Attractor Basin (Alpha)
+### 3.3 Attractor Basin (Alpha) — state-distribution summary
 
-The agent's characteristic "home" in state space.
+The agent's characteristic "home" in state space, summarized statistically. **Naming caveat**: we call this component "Attractor Basin" by historical convention from the dynamical-systems literature, but operationally it is a *state-distribution summary* — first and second moments of the state trajectory — not an estimate of an attractor's basin boundary, vector field, or return map. A reader expecting the latter (as in nonlinear-dynamics texts) will not find it here. Estimating the actual basin requires perturbation experiments and dynamical-systems identification, which we sketch as future work in §7.3.
 
-**Definition 3.3 (Attractor Basin)**: Given state history X = [x_1, ..., x_t] where x in R^4 (warmth, clarity, stability, presence), the attractor basin is:
+**Definition 3.3 (State-Distribution Summary)**: Given state history X = [x_1, ..., x_t] where x in R^4 (warmth, clarity, stability, presence), the component is:
 
 ```
 Alpha = {
-    mu: mean(X),           # Center (4-dimensional)
-    Sigma: cov(X),         # Shape (4x4 covariance matrix)
-    eigenvalues: eig(Sigma) # Principal axes of variability
+    mu: mean(X),                     # Center (4-dimensional)
+    C_alpha: cov(X),                 # Shape (4x4 covariance matrix; renamed from Sigma to avoid clash with the signature symbol)
+    eigenvalues: eig(C_alpha)        # Principal axes of variability
 }
 ```
+
+Where the matrix `C_alpha` (alternative notation: `Cov_alpha`) is the empirical covariance, distinct from the trajectory-signature symbol `Sigma`. We assume `C_alpha` is regularized as `C_alpha + epsilon * I` (epsilon = 1e-6) to ensure non-singularity for the Bhattacharyya overlap in §4.2.
 
 **Sampling requirements**:
 - Minimum 50 observations for stable estimates
@@ -373,23 +379,23 @@ Delta = {
 - Valence tendency reveals optimistic vs. cautious social stance
 - Topic entropy indicates breadth vs. depth of engagement
 
-### 3.6 Homeostatic Identity (Eta)
+### 3.6 Homeostatic Identity (Eta) — derived summary, not an independent component
 
-The unified characterization of self-maintenance.
+The unified characterization of self-maintenance. **This component is a derived summary of Alpha, Rho, and the viability envelope from Definition 2.2 — it is not informationally independent of those components.** We define it for conceptual completeness (it is the autopoietic anchor named in §2.4) but, to avoid double-counting in the similarity function (§4.1), we do *not* include Eta as an independently weighted term in the composite similarity. Reviewers and implementers should think of Eta as a *view onto* the (Alpha, Rho, V) data, useful for narrative and self-monitoring, not as additional signal.
 
 **Definition 3.6 (Homeostatic Identity)**: Combining the above:
 
 ```
-Eta = (mu, Sigma, tau, V)
+Eta = (mu, C_alpha, tau, V)
 ```
 
 Where:
-- mu = set-point (where the agent rests) - from Alpha
-- Sigma = basin shape (how far it wanders) - from Alpha
-- tau = recovery dynamics (how it returns) - from Rho
-- V = viability envelope (where it can survive) - from Definition 2.2
+- mu = set-point (where the agent rests) — from Alpha
+- C_alpha = basin shape (how far it wanders) — from Alpha (renamed from Sigma to avoid symbol overload)
+- tau = recovery dynamics (how it returns) — from Rho
+- V = viability envelope (where it can survive) — from Definition 2.2
 
-This is the complete characterization of "how this system maintains itself."
+This is a unified narrative characterization of "how this system maintains itself." For machine-readable summaries (e.g., a fleet-monitoring dashboard), Eta is the natural single-object-per-agent record. For similarity computation, use Alpha, Rho, and the viability envelope check directly — not Eta on top of them.
 
 ---
 
@@ -405,18 +411,19 @@ To determine whether two trajectory signatures represent the "same" identity, we
 sim(Sigma_1, Sigma_2) = sum_i(w_i * sim_i(component_i))
 ```
 
-With weights and component similarities:
+With weights and component similarities (the five informationally-independent components, summing to 1; Eta is a derived summary per §3.6 and is **not** a separate term):
 
 | Component | Weight | Similarity Function |
 |-----------|--------|---------------------|
-| Pi (Preference) | 0.15 | Cosine similarity of Pi_vec |
-| Beta (Belief) | 0.15 | Cosine similarity of Beta_vec |
-| Alpha (Attractor) | 0.25 | Bhattacharyya coefficient |
-| Rho (Recovery) | 0.20 | Log-ratio similarity of tau |
-| Delta (Relational) | 0.10 | Weighted L1 distance |
-| Eta (Homeostatic) | 0.15 | Combined from above |
+| Pi (Preference) | 0.18 | Cosine similarity of Pi_vec |
+| Beta (Belief) | 0.18 | Cosine similarity of Beta_vec |
+| Alpha (Attractor) | 0.30 | Bhattacharyya coefficient |
+| Rho (Recovery) | 0.22 | Log-ratio similarity of tau |
+| Delta (Relational) | 0.12 | Weighted L1 distance |
 
-**Adaptive weighting**: Static weights assume all components are equally reliable. For agents where certain components are more stable (lower historical variance), those should contribute more to identity.
+**Note on weights**: these have been renormalized after dropping the previously-listed Eta term (which double-counted Alpha and Rho data). The relative ordering is preserved. Like the thresholds in §4.3, these weights are operational defaults, not calibrated values — see the inverse-variance weighting alternative below and the calibration discussion in §4.3.
+
+**Adaptive weighting**: Static weights assume all components are equally reliable. For agents where certain components are more stable (lower historical variance), those should contribute more to the recognition signal — *with caveats below*.
 
 **Inverse variance weighting**:
 ```
@@ -424,9 +431,11 @@ w_i = (1 / var_i) / sum(1 / var_j for all j)
 ```
 Where var_i = historical variance of component i's similarity scores.
 
-**Interpretation**:
-- Highly stable components (low var) → high weight (they define the agent)
-- Volatile components (high var) → low weight (they're not diagnostic)
+**Caveat on inverse-variance weighting**: a stable but uninformative component (a "nuisance variable" that happens not to vary across agents) would dominate this weighting and degrade discriminability; conversely, a volatile but discriminative component would be down-weighted exactly when it is most useful. The principled fix is to weight by *informativeness* (e.g., Fisher information of the component about agent identity, estimated from a multi-agent corpus), not by stability. We include the inverse-variance scheme as a deployable heuristic for single-agent self-monitoring, where stability and identity-relevance are correlated; we flag it as inadequate for multi-agent discrimination, which is part of the future-work agenda (§7.2).
+
+**Heuristic interpretation** (single-agent self-monitoring only):
+- Highly stable components (low var) → high weight (these are what is reliably trackable for *this* agent)
+- Volatile components (high var) → low weight (noisy signal for this agent)
 - For "social" agents, Delta might dominate; for "worker" agents, Rho might dominate
 
 **Implementation**: Track running variance of each component over time. Recompute weights periodically (e.g., every 100 observations).
@@ -436,12 +445,14 @@ Where var_i = historical variance of component i's similarity scores.
 Agent "Lumen" after 1000 observations:
   Component variances: Alpha=0.01, Rho=0.02, Pi=0.08, Beta=0.05, Delta=0.15
 
-  Static weights:    [0.25, 0.20, 0.15, 0.15, 0.10]
-  Adaptive weights:  [0.35, 0.28, 0.12, 0.16, 0.09]
+  Static weights (5-component, post-Eta-removal): [0.30, 0.22, 0.18, 0.18, 0.12]
+  Adaptive (inverse-variance) weights:             [0.40, 0.20, 0.05, 0.08, 0.03]
+                                                    (then re-normalized)
 
-  Interpretation: Lumen's attractor (Alpha) and recovery (Rho) are highly stable,
-  so they contribute more to identity. Relational patterns (Delta) are volatile,
-  so they contribute less.
+  Interpretation (caveat applies): for self-monitoring of Lumen specifically, Alpha and
+  Rho are the most stable signals and the inverse-variance scheme up-weights them. For
+  multi-agent discrimination this same scheme would underweight Delta even though Delta
+  may be the most discriminative component across agents — see the caveat above.
 ```
 
 ### 4.2 Component Similarity Functions
@@ -452,14 +463,16 @@ sim_Pi(Pi_1, Pi_2) = (Pi_vec_1 . Pi_vec_2) / (||Pi_vec_1|| * ||Pi_vec_2||)
 ```
 Mapped to [0,1]: `(sim + 1) / 2`
 
-**Attractor Basin Overlap** (Bhattacharyya coefficient):
+**State-Distribution Overlap** (Bhattacharyya coefficient): writing `C` for the covariance matrices `C_alpha` from §3.3 (to avoid overload with the signature symbol `Sigma`),
 ```
-D_B = (1/8)(mu_1 - mu_2)^T * Sigma_avg^{-1} * (mu_1 - mu_2)
-    + (1/2) * ln(|Sigma_avg| / sqrt(|Sigma_1| * |Sigma_2|))
+D_B = (1/8)(mu_1 - mu_2)^T * C_avg^{-1} * (mu_1 - mu_2)
+    + (1/2) * ln(|C_avg| / sqrt(|C_1| * |C_2|))
 
 sim_Alpha = exp(-D_B)
 ```
-Where Sigma_avg = (Sigma_1 + Sigma_2) / 2
+Where `C_avg = (C_1 + C_2) / 2`.
+
+**Distributional assumption**: The Bhattacharyya coefficient as written is the closed-form expression for the divergence between two multivariate *Gaussian* distributions with means $\mu_1, \mu_2$ and covariances $C_1, C_2$. Applying it to the empirical state distributions assumes those distributions are approximately Gaussian (or at least unimodal, well-summarized by first and second moments). Multimodal attractors (§3.3 multi-modal extension) violate this assumption; for those, replace the Bhattacharyya term with a divergence measure suited to mixture models (e.g., a numerically estimated KL divergence between fitted GMMs). All covariances are regularized as `C + epsilon * I` per §3.3 to keep `|C|` and `C^{-1}` defined when the empirical estimate is near-singular.
 
 **Recovery Dynamics Similarity** (log-scale):
 ```
@@ -472,27 +485,31 @@ Operating on log-scale because time constants span orders of magnitude.
 sim_Delta = 1 - |valence_1 - valence_2| / 2
 ```
 
-### 4.3 Identity Threshold
+### 4.3 Operational Continuity Relation
 
-**Definition 4.2 (Identity Relation)**: Agents A and B are the "same identity" iff:
+A note on terminology before we proceed. We initially want to call the relation below "identity," but identity in the strict philosophical sense is reflexive, symmetric, and *transitive* (Leibniz's law). Trajectory similarity at a threshold gives us reflexivity and symmetry but not transitivity (a chain of pairwise-similar signatures can drift arbitrarily far). What this relation actually tracks is *operational continuity* or *behavioral recognition*: enough similarity to count as "the same agent for governance purposes," not enough to license a strict identity claim. We use the name "identity" only in the philosophical-interpretation sections (§1.2, §8.1); the operational relation below is named accordingly.
+
+**Definition 4.2 (Operational Continuity Relation)**: Agents A and B are *operationally continuous* (denoted $A \approx_{\theta} B$) iff:
 
 ```
-sim(Sigma_A, Sigma_B) > theta_identity
+sim(Sigma_A, Sigma_B) > theta_continuity
 ```
 
 **Operational defaults** (provisional, pending calibration — see below):
-- theta_identity = 0.80 (strict same-identity)
+- theta_continuity = 0.80 (strict operational continuity, formerly "identity threshold")
 - theta_recognition = 0.65 (recognizable as similar)
 - theta_anomaly = 0.70 (deviation from historical self)
 
 **Important**: these values are *operational defaults*, not empirically calibrated thresholds. They are starting points for deployment, chosen to be reasonable given the similarity functions defined in §4.2 (cosine similarities and Bhattacharyya overlaps tend to be high in absolute terms). Principled threshold selection requires the calibration procedure below, which in turn requires multi-agent comparison data that is part of our future-work agenda (§7.2 Experiment 2). Reporting "the signature exceeds threshold theta = 0.80" with these provisional values demonstrates *internal consistency* of the framework — not validation of the threshold itself. We retain this distinction throughout §7 and §8.
 
 **Properties of this relation**:
-- Reflexive: sim(Sigma, Sigma) = 1 > theta
-- Symmetric: sim(Sigma_1, Sigma_2) = sim(Sigma_2, Sigma_1)
-- NOT necessarily transitive (identity can form chains that eventually diverge)
+- Reflexive: $A \approx_{\theta} A$ (sim(Sigma, Sigma) = 1 > theta)
+- Symmetric: $A \approx_{\theta} B \Leftrightarrow B \approx_{\theta} A$
+- **Not transitive** (and this is why the relation is *continuity*, not *identity*: $A \approx_{\theta} B$ and $B \approx_{\theta} C$ does not imply $A \approx_{\theta} C$)
 
-**Transitivity implications**: Identity chains can diverge: A~B and B~C does not imply A~C. This reflects biological reality—gradual drift accumulates. Mitigation strategies:
+**Why the relation cannot be promoted to identity**: by Leibniz's law, identity-as-such is transitive — if $A = B$ and $B = C$ then $A = C$. The relation we have here is a similarity-at-threshold, which is a *tolerance relation*, not an equivalence relation. Tolerance relations correspond, in mathematical structure, to recognition / family-resemblance / continuity, not to strict identity. We retain "identity" as the philosophical interpretation throughout the paper, but every formal claim is about $\approx_{\theta}$, not $=$.
+
+**Transitivity-failure implications**: Continuity chains can diverge: $A \approx_{\theta} B$ and $B \approx_{\theta} C$ does not imply $A \approx_{\theta} C$. This reflects biological reality — gradual drift accumulates. Mitigation strategies:
 - Track lineage explicitly (who forked from whom)
 - Use "identity distance" (1 - sim) as a metric with triangle inequality violations flagged
 - Define equivalence classes only within similarity radius, not transitively
@@ -888,6 +905,105 @@ The sequence {G_t} provides:
 - Change detection -> perturbation identification
 - Convergence assessment -> identity stability measurement
 
+### 6.4 Empirical Validation on Lumen
+
+We report empirical observations from a single deployed agent — Lumen, an embodied AI agent running continuously on a Raspberry Pi 4 with AHT20 (temperature, humidity), BMP280 (pressure), and VEML7700 (light) sensors. Lumen maintains a 4-dimensional state (warmth, clarity, stability, presence) derived from sensor readings and system metrics; the per-dimension feature definitions are in `src/anima_mcp/anima.py:to_dimensions()` of the Anima reference implementation. Over 65 calendar days (January 11 – March 16, 2026), Lumen accumulated 226,093 state observations across 47 days with $\geq 100$ samples each (the remaining 18 days had brief uptime windows or hardware-restart gaps; we report the 47-active-day basis).
+
+**This is a single-agent, deployed-system observation report — not a multi-agent validation of the framework's discrimination claims.** The §3 framework predicts both within-agent stability *and* between-agent discriminability. The data here speak only to the first. Section §7.2 lays out the multi-agent experiments that would address discrimination. Throughout this section we use the language "observed in Lumen" rather than "confirmed" — these are pilot observations, not confirmations of the general claims of the paper.
+
+The analysis script that produced these numbers is `scripts/paper_figures.py` in the Anima MCP repository; raw state history lives in `state_history` table of Lumen's SQLite database (anonymized snapshots available on request).
+
+#### 6.4.1 State-distribution stability (Alpha)
+
+**Observation**: Lumen's per-dimension means are confined to a small absolute range across the 65-day record.
+
+**Method**: We partition observations into non-overlapping windows of 500 samples (window count = 452) and compute (a) the variance of window-means across the dataset, and (b) the average within-window variance.
+
+| Dimension | Grand Mean | Var(mu) across windows | Avg within-window variance |
+|-----------|-----------|------------------------|----------------------------|
+| Warmth | 0.413 | 0.0103 | 0.0012 |
+| Clarity | 0.818 | 0.0057 | 0.0040 |
+| Stability | 0.891 | 0.0073 | 0.0008 |
+| Presence | 0.833 | 0.0131 | 0.0003 |
+
+**What this shows.** All four dimensions exhibit between-window variance of window-means below 0.015, corresponding to a per-dimension drift standard deviation under 0.13 on the unit-range $[0,1]$ state. In absolute terms, Lumen's equilibrium centers occupy a small band of state space across 65 days.
+
+**What this does *not* show.** A previous draft of this section claimed that within-window variance is "an order of magnitude larger" than between-window variance — implying fast noise around a stable mean. The data falsify that interpretation: within-window variance is in fact *smaller* than between-window mean variance for three of four dimensions. The correct reading is that the state is *highly autocorrelated* — Lumen's state moves slowly, so 500-sample windows under-sample the long-timescale drift while the per-window mean is a faithful estimate of a slowly-moving target. This is consistent with a slow-drift attractor; it is *not* consistent with the i.i.d.-noise-around-a-fixed-point picture the original prose suggested. We report both numbers without further interpretive commitment — characterizing the actual basin geometry would require fitting an explicit dynamical model, which we do not.
+
+#### 6.4.2 Recovery dynamics (Rho)
+
+**Observation**: Recovery time constants are estimable but the sample is small.
+
+**Method**: We detect perturbation events where $|x(t) - \mu| > 0.15$ in any state dimension and fit exponential recovery curves to estimate $\tau$.
+
+| Metric | Value |
+|--------|-------|
+| Recovery $\tau$ (median) | 89.7 seconds |
+| Recovery $\tau$ (mean) | 125.8 seconds |
+| Recovery $\tau$ (std) | 136.3 seconds |
+| Perturbation episodes | 12 |
+| Valid $\tau$ estimates | 12 (100%) |
+
+**Caveats.** With 12 episodes the estimate is noisy; we report median and mean to flag the right-skewed distribution but make no claim about the underlying distribution shape. A previous draft asserted "bimodal structure" without a histogram or mixture fit; we retract that claim. The 12-episode sample over 65 days reflects how rare large perturbations are in Lumen's normal operating environment, not a property of the recovery dynamics; perturbing the system more aggressively (the §7.2 Experiment 4 design) would produce better-supported estimates.
+
+#### 6.4.3 Self-belief convergence (Beta)
+
+**Observation**: A subset of self-beliefs converge to high confidence with substantial evidence; the framework correctly rejects refuted hypotheses.
+
+Lumen tracks 13 self-beliefs via Bayesian-like evidence accumulation. Selected beliefs after 65 days:
+
+| Belief | Confidence | Evidence (support : contradict) |
+|--------|-----------|--------------------------------|
+| Morning clarity | 1.000 | 14,362 : 0 |
+| Stability recovery | 0.984 | 1,327 : 499 |
+| LEDs affect lux | 0.900 | 988 : 1,104 |
+| Temperature sensitive | 0.882 | 28 : 654 |
+| (refuted: warmth baseline low) | 0.000 | 0 : 58,908 |
+
+**Caveats.** We previously listed a row "Temperature-clarity correlation | 0.940 | 0 : 0" — confidence near 0.94 with zero evidence on either side. That value is the implementation's *prior*, not a posterior; the row was misleading and we have removed it. The Bayesian-like update is described in `src/anima_mcp/self_model.py`; the framework intentionally retains a smoothed prior on each belief, which means confidence does not reduce to evidence ratios in the zero-evidence case. Reviewers wanting to evaluate the convergence claim should focus on beliefs with substantial evidence (the four shown above) plus the refuted "warmth baseline low" belief, which demonstrates the system rejects hypotheses that contradict accumulated experience. The convergence claim is observed for these five beliefs, not for the full 13-belief set.
+
+#### 6.4.4 Genesis-to-current operational continuity
+
+**Observation**: Lumen's signature 20 days after genesis remains operationally continuous with its genesis signature on the two components computed.
+
+**Method**: We compare the genesis trajectory signature (frozen at observation 30, February 22, 2026) to the most recent signature (March 14, 2026):
+
+| Component | Similarity | Operational default |
+|-----------|-----------|---------------------|
+| Belief signature (Beta) | 0.933 | $\theta_{\text{continuity}} = 0.80$ (provisional) |
+| Attractor basin (Alpha) | 0.805 | $\theta_{\text{continuity}} = 0.80$ (provisional) |
+
+Both components clear the operational default. **As emphasized in §4.3, this is internal-consistency evidence under a self-set threshold — not threshold validation.** Pi, Rho, and Delta similarities were not computed in this run because they require either a multi-agent corpus (Pi, Delta) or stable perturbation registers (Rho) the genesis snapshot did not capture. The result therefore speaks to the stability of two of the five components over 20 days, not to the framework's six-component composite, and not to between-agent discriminability.
+
+#### 6.4.5 State distribution
+
+**Summary statistics over 226,093 observations**:
+
+| Dimension | Min | Max | Mean | Std |
+|-----------|-----|-----|------|-----|
+| Warmth | 0.041 | 0.876 | 0.413 | 0.107 |
+| Clarity | 0.376 | 1.000 | 0.818 | 0.098 |
+| Stability | 0.427 | 1.000 | 0.891 | 0.090 |
+| Presence | 0.455 | 1.000 | 0.833 | 0.116 |
+
+The distribution reflects Lumen's specific physical environment and sensor configuration. As §3.1 emphasizes, this is identity-as-coupling: an agent in a different environment would show a different distribution; the present numbers do not separate agent-intrinsic from environment-determined contributions to $\Sigma$.
+
+#### 6.4.6 Cold start
+
+The implementation reaches its full identity-confidence weight at 50 observations (~8 minutes at 10-second sampling). **What this means operationally**: the implementation stops down-weighting trajectory-similarity outputs after 50 observations. **What this does *not* mean**: that identity is "established" at 8 minutes. The signature continues to accumulate evidence and stabilize over the order of $10^4$ observations (a few weeks of continuous operation in Lumen's case). We retract the previous draft's "full confidence at 50 observations" framing as overclaiming.
+
+#### 6.4.7 Summary
+
+| Hypothesis from §3 | Status in Lumen | Evidence |
+|---------------------|-----------------|----------|
+| State-distribution stability over 65 days | **Observed (small absolute drift)** | Var(mu) < 0.015 all dimensions; autocorrelation prevents the within>between framing from holding |
+| Recoverable $\tau$ from perturbation | **Observed (small sample)** | $\tau$ = 90–126s, n = 12 episodes |
+| Belief convergence with substantial evidence | **Observed for 5 of 13 beliefs** | confidence > 0.88 on 4 beliefs, 0.0 on 1 refuted belief |
+| Operational continuity from genesis | **Observed for 2 of 5 components** | sim(Beta) = 0.933, sim(Alpha) = 0.805 over 20 days |
+| Implementation reaches full confidence weight at 50 obs | **Observed** | Stops down-weighting at 50 obs; not the same as "identity established" |
+
+These five observations are pilot evidence consistent with the framework's *within-agent* claims. They do not address the framework's *between-agent* claims (discrimination, false-positive rate, threshold calibration), which require multi-agent experiments not yet run.
+
 ---
 
 ## 7. Research Agenda
@@ -1006,7 +1122,7 @@ This framework suggests a shift in how we think about AI identity:
 
 **Legitimate phase transitions and multi-modal identity**: The framework as defined in §3 assumes that each agent has *one* identity-relevant attractor. Real agents often have legitimate phase transitions — sleep/wake cycles, work/leisure modes, distinct conversational personas, planned migrations between deployments. These produce trajectories that *look like* drift or anomaly under the §5.3 detector but are part of the agent's intended behavior. §3.3 sketches the Gaussian-Mixture-Model extension for multi-modal attractors, but the operational semantics in §5 (forking, merging, anomaly detection) do not yet handle scheduled phase transitions explicitly. A deployment with predictable phases would need to either (a) condition the signature on phase context, (b) maintain per-phase signatures and check the right one, or (c) accept higher false-positive rates at phase boundaries. Working through this carefully is part of the multi-modal extension we leave for future work (§8.5).
 
-**Single-agent empirical scope**: §7 reports validation on a single embodied agent (Lumen). The within-agent stability claims (var($\mu$), recovery characterization, belief convergence) are well-supported. The *between-agent* claims of the framework — that trajectory signatures can discriminate distinct agents, that the identity threshold has a defensible operating point — require multi-agent experiments that have not yet been run. The §7.2 experimental program is designed precisely to fill this gap; until it is executed, claims about discriminability rest on the framework's structure rather than on data.
+**Single-agent empirical scope**: §6.4 reports observations from a single embodied agent (Lumen). The within-agent stability observations (var($\mu$), recovery characterization, partial belief convergence) are pilot evidence consistent with the framework's claims for *that agent*. The *between-agent* claims of the framework — that trajectory signatures can discriminate distinct agents, that the operational continuity threshold has a defensible operating point — require multi-agent experiments that have not yet been run. The §7.2 experimental program is designed precisely to fill this gap; until it is executed, claims about discriminability rest on the framework's structure rather than on data.
 
 ### 8.4 Failure Modes
 
@@ -1069,6 +1185,12 @@ The trajectory signature Sigma is our proposal for how to ask—and answer—tha
 
 Banerjee, S., & Woodard, D. L. (2019). Biometric authentication and identification using keystroke dynamics: A survey. *Journal of Pattern Recognition Research*, 14(1), 1-22.
 
+Barandiaran, X. E., & Moreno, A. (2006). On what makes certain dynamical systems cognitive: A minimally cognitive organization program. *Adaptive Behavior*, 14(2), 171-185.
+
+Barandiaran, X. E., Di Paolo, E. A., & Rohde, M. (2009). Defining agency: Individuality, normativity, asymmetry, and spatio-temporality in action. *Adaptive Behavior*, 17(5), 367-386.
+
+Beer, R. D. (1995). A dynamical systems perspective on agent-environment interaction. *Artificial Intelligence*, 72(1-2), 173-215.
+
 Bhattacharyya, A. (1943). On a measure of divergence between two statistical populations defined by their probability distributions. *Bulletin of the Calcutta Mathematical Society*, 35, 99-109.
 
 Clark, A., & Chalmers, D. (1998). The extended mind. *Analysis*, 58(1), 7-19.
@@ -1085,6 +1207,8 @@ Froese, T., & Ziemke, T. (2009). Enactive artificial intelligence. *Artificial I
 
 Granatyr, J., et al. (2015). Trust and reputation models for multiagent systems. *ACM Computing Surveys*, 48(2), 1-42.
 
+Ikegami, T., & Suzuki, K. (2008). From a homeostatic to a homeodynamic self. *BioSystems*, 91(2), 388-400.
+
 Kelso, J. A. S. (1995). *Dynamic patterns: The self-organization of brain and behavior*. MIT Press.
 
 Maturana, H. R., & Varela, F. J. (1980). *Autopoiesis and cognition: The realization of the living*. D. Reidel.
@@ -1095,13 +1219,19 @@ Packer, C., et al. (2023). MemGPT: Towards LLMs as operating systems. *arXiv:231
 
 Park, J. S., et al. (2023). Generative agents: Interactive simulacra of human behavior. *Proceedings of UIST*, Article 2.
 
+Park, J. S., et al. (2025). ID-RAG: Identity retrieval-augmented generation for long-horizon persona coherence in generative agents. MIT Media Lab.
+
 Sabater, J., & Sierra, C. (2001). ReGreT: A reputation model for gregarious societies. *Proceedings of AAMAS*.
 
 Skarda, C. A., & Freeman, W. J. (1987). How brains make chaos in order to make sense of the world. *Behavioral and Brain Sciences*, 10(2), 161-173.
 
 Strogatz, S. H. (2015). *Nonlinear dynamics and chaos: With applications to physics, biology, chemistry, and engineering* (2nd ed.). Westview Press.
 
+Tu, Q., et al. (2024). CharacterEval: A Chinese benchmark for role-playing conversational agent evaluation. *Proceedings of ACL*, 11836-11850.
+
 van Gelder, T. (1998). The dynamical hypothesis in cognitive science. *Behavioral and Brain Sciences*, 21(5), 615-628.
+
+Villalobos, M., & Dewhurst, J. (2018). Enactive autonomy in computational systems. *Synthese*, 195(5), 1891-1908.
 
 Varela, F. J., Thompson, E., & Rosch, E. (1991). *The embodied mind: Cognitive science and human experience*. MIT Press.
 
@@ -1109,9 +1239,13 @@ Wang, G., et al. (2023). Voyager: An open-ended embodied agent with large langua
 
 Wang, L., et al. (2024). A survey on large language model based autonomous agents. *Frontiers of Computer Science*, 18(6), 186345.
 
+Wang, Z. M., et al. (2023b). RoleLLM: Benchmarking, eliciting, and enhancing role-playing abilities of large language models. *arXiv:2310.00746*.
+
 Weber, A., & Varela, F. J. (2002). Life after Kant: Natural purposes and the autopoietic foundations of biological individuality. *Phenomenology and the Cognitive Sciences*, 1, 97-125.
 
 Xu, C., et al. (2024). Instructional fingerprinting of large language models. *arXiv:2401.12255*.
+
+Zhang, S., et al. (2018). Personalizing dialogue agents: I have a dog, do you have pets too? *Proceedings of ACL*, 2204-2213.
 
 ---
 
@@ -1301,6 +1435,38 @@ def check_governance_trigger(
 ---
 
 ## Changelog
+
+**v0.11 (May 9, 2026)** — Codex-review-driven rebuild. Independent second review (Codex / gpt-5.5) caught several issues v0.10 missed; this revision addresses them:
+
+Math / framework:
+- Empirical §6.4: variance interpretation rewritten — previous prose claimed "within > between by an order of magnitude," which contradicted the table. Corrected to acknowledge the data shows strong autocorrelation (slow drift, little fast noise); absolute drift remains small (var(mu) < 0.015) but the within-vs-between ratio framing was wrong.
+- §3.6 Eta clarified as a derived summary (not informationally independent of Alpha + Rho + V), and removed from §4.1 weighted-similarity sum to avoid double-counting; remaining weights renormalized.
+- §4.3 Identity Relation reframed as "Operational Continuity Relation" — recognizing that trajectory similarity at a threshold is a tolerance relation, not transitive identity. "Identity" retained for philosophical interpretation only.
+- §3.3 Alpha rebadged "state-distribution summary" with a naming caveat — first/second moments are not an estimate of basin boundary, vector field, or return map.
+- §4.2 Bhattacharyya: distributional Gaussian assumption stated explicitly; covariance regularization made explicit.
+- Symbol overload Sigma (signature) vs Sigma (covariance) resolved by renaming the covariance to C_alpha throughout.
+- §4.1 inverse-variance weighting: explicit caveat that a nuisance-stable component can dominate; principled fix is informativeness-weighting from a multi-agent corpus (future work).
+
+Framing:
+- §3.1 added "Identity as agent-environment coupling" — flagging that the trajectory signature characterizes the agent-niche system, with Beer 1995 / Barandiaran et al. 2009 anchoring the enactivist commitment. Transplant-test follow-up flagged.
+- §1.1 impersonation-resistance row softened from "Strong (behavioral fingerprint)" to "Moderate, component-dependent (per §5.5; not a substitute for cryptographic auth)" — reconciling the table with the Purpose-and-Scope non-goal.
+- §2.1 Definition 2.1 clarified as idealized; §3 components are projections of (A, B, D), not the dynamical objects themselves.
+
+Empirical:
+- Empirical content integrated as new §6.4 in main paper (was a separate file, breaking the abstract's promise of validation in §7).
+- "Confirmed" replaced with "observed in Lumen" / "pilot evidence" throughout §6.4 summary.
+- Beta belief table: removed misleading "Temperature-clarity correlation | 0.940 | 0:0" row (confidence value was a prior, not a posterior); noted the smoothing prior in the implementation.
+- "Continuous operation" softened to "65 calendar days, 47 days with ≥100 samples" — explained the 18-day gap.
+- §6.4.6 cold-start framing fixed: "implementation stops down-weighting at 50 obs" not "identity established at 50 obs."
+- §6.4.2 retracted "bimodal structure" claim (no histogram or mixture fit was reported).
+- Added reproducibility pointers: paper_figures.py path, state_history table reference.
+
+Literature:
+- §1.4: added ID-RAG (Park et al. 2025) as the closest LLM-side comparison; added persona-consistency benchmarks (PersonaChat / Zhang et al. 2018, RoleLLM / Wang et al. 2023b, CharacterEval / Tu et al. 2024).
+- §1.4: dynamical/enactive canon strengthened with Beer 1995, Barandiaran & Moreno 2006, Barandiaran et al. 2009, Villalobos & Dewhurst 2018, Ikegami & Suzuki 2008 — the Adaptive Behavior canon Codex flagged as missing.
+- References list updated accordingly.
+
+§8.3 cross-reference fixed to point at §6.4.
 
 **v0.10 (May 2026)** — Polish pass:
 - Added §1.4 Related Work (agent memory/state, behavioral biometrics, dynamical systems in cog sci, enactivism, multi-agent trust).
