@@ -8,8 +8,16 @@ authors:
     affiliation: "CIRWEL Systems"
     orcid: "https://orcid.org/0009-0006-7544-2374"
 date-released: 2026-05-09
-version: "v0.11"
+version: "v0.11.1"
+doi: "10.5281/zenodo.20098168"
 url: "https://github.com/cirwel/trajectory-identity-paper"
+identifiers:
+  - type: doi
+    value: "10.5281/zenodo.20098168"
+    description: "Concept DOI (auto-resolves to latest version)"
+  - type: doi
+    value: "10.5281/zenodo.20098169"
+    description: "Version DOI for v0.11.1"
 license: CC-BY-4.0
 abstract: >
   Current approaches to AI agent identity rely on static identifiers (UUIDs,

@@ -2,10 +2,9 @@
 
 **A Mathematical Framework for Enactive AI Self-Hood**
 
+[![DOI](https://zenodo.org/badge/1233972561.svg)](https://doi.org/10.5281/zenodo.20098168)
 [![License: CC BY 4.0](https://img.shields.io/badge/License-CC_BY_4.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
 [![Status: Draft](https://img.shields.io/badge/status-draft%20v0.11-orange.svg)](./TRAJECTORY_IDENTITY_PAPER.md)
-[![DOI](https://img.shields.io/badge/DOI-pending-lightgrey.svg)](https://zenodo.org/account/settings/github/)
-<!-- After Zenodo mints the DOI for this release, replace the badge above with the auto-generated Zenodo DOI badge. -->
 
 
 
@@ -41,9 +40,9 @@ Three structural moves:
 
 ## Status
 
-Working draft v0.11 (May 9, 2026). Pre-submission. Not yet on Zenodo. See [`HANDOFF.md`](./HANDOFF.md) for current priorities and the path to first DOI. v0.11 is the first draft post-second-reviewer cycle and is the candidate for first Zenodo deposit.
+Working draft v0.11 (May 9, 2026). Pre-peer-review. Archived on Zenodo with concept DOI [10.5281/zenodo.20098168](https://doi.org/10.5281/zenodo.20098168) (auto-resolves to latest version). See [`HANDOFF.md`](./HANDOFF.md) for current priorities and remaining follow-ups (workshop-variant backport, multi-agent discrimination experiment).
 
-**Citation:** see [`CITATION.cff`](./CITATION.cff). Once a Zenodo concept-DOI is minted (via the GitHub-Zenodo integration on first release), this section will carry the DOI badge.
+**Citation:** see [`CITATION.cff`](./CITATION.cff) for full metadata. The Zenodo concept DOI (auto-resolves to the latest archived version) is `10.5281/zenodo.20098168`. The version DOI for this v0.11.1 release is `10.5281/zenodo.20098169`.
 
 ## Related work in the same line
 
