@@ -75,14 +75,14 @@ Notable: "morning clarity" converged to confidence 1.0 with 14,362 supporting ob
 
 **Results**:
 
-| Component | Similarity | Threshold |
-|-----------|-----------|-----------|
-| Belief signature (Beta) | 0.933 | > 0.80 |
-| Attractor basin (Alpha) | 0.805 | > 0.80 |
+| Component | Similarity | Operational default |
+|-----------|-----------|---------------------|
+| Belief signature (Beta) | 0.933 | theta = 0.80 (provisional) |
+| Attractor basin (Alpha) | 0.805 | theta = 0.80 (provisional) |
 
-Both components exceed the identity threshold (theta = 0.80), confirming that Lumen's behavioral signature has remained recognizably continuous despite 20 days of environmental variation, multiple restarts, and ongoing learning.
+Both components clear the *operational default* of theta = 0.80. **This is internal-consistency evidence, not threshold validation.** With only one agent, we cannot calibrate a threshold from data — we set the threshold and report whether the data clears it. What this result *does* show is that the framework's predictions about its own subject-agent are coherent: Lumen's current signature remains demonstrably similar to its genesis signature on both components, by the metrics we defined in §4.2, with no contradictions. Establishing whether theta = 0.80 is the *right* threshold (rather than, say, 0.75 or 0.85) requires multi-agent comparison data — see §7.2 Experiment 2.
 
-The attractor similarity (0.805) is close to the threshold, which is expected: the attractor center shifts as the agent accumulates experience and its preferences mature. The belief similarity (0.933) is higher because core beliefs (morning clarity, stability recovery) are deeply established and resistant to drift.
+The attractor similarity (0.805) sits just above the operational default, which is expected: the attractor center shifts as the agent accumulates experience. The belief similarity (0.933) is higher because core beliefs (morning clarity, stability recovery) are deeply established and resistant to drift.
 
 ## 7.5 State Distribution
 
@@ -110,7 +110,7 @@ With 226,093 observations, Lumen's current identity confidence has been at maxim
 | Attractor stability (var(mu) < 0.05) | **Confirmed** | var < 0.015 across all dimensions |
 | Characteristic recovery dynamics | **Confirmed** | tau = 90-126s, 12 episodes |
 | Belief convergence | **Confirmed** | 5 beliefs at >88% confidence |
-| Genesis-current identity continuity | **Confirmed** | sim = 0.81-0.93, above theta=0.80 |
+| Genesis-current internal continuity | **Confirmed** (internal consistency only) | sim = 0.81-0.93, clears operational default theta=0.80 |
 | Cold start resolution | **Confirmed** | 50 obs (~8 min) to full confidence |
 
 These results constitute a single-agent validation on an embodied system with real sensors. Multi-agent discrimination experiments (comparing distinct agents' signatures) and adversarial robustness tests remain as future work (see Section 8).

@@ -3,9 +3,9 @@
 **A Mathematical Framework for Enactive AI Self-Hood**
 
 [![License: CC BY 4.0](https://img.shields.io/badge/License-CC_BY_4.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
-[![Status: Draft](https://img.shields.io/badge/status-draft%20v0.9-orange.svg)](./TRAJECTORY_IDENTITY_PAPER.md)
+[![Status: Draft](https://img.shields.io/badge/status-draft%20v0.10-orange.svg)](./TRAJECTORY_IDENTITY_PAPER.md)
 
-- 📄 [`TRAJECTORY_IDENTITY_PAPER.md`](./TRAJECTORY_IDENTITY_PAPER.md) — main paper, working draft v0.9
+- 📄 [`TRAJECTORY_IDENTITY_PAPER.md`](./TRAJECTORY_IDENTITY_PAPER.md) — main paper, working draft v0.10
 - 📝 [`TRAJECTORY_IDENTITY_WORKSHOP.md`](./TRAJECTORY_IDENTITY_WORKSHOP.md) — workshop variant (March 2026)
 - 📊 [`EMPIRICAL_RESULTS_DRAFT.md`](./EMPIRICAL_RESULTS_DRAFT.md) — §7 empirical validation, Lumen 226k observations / 65 days
 - 🖨 [`TRAJECTORY_IDENTITY_WORKSHOP.pdf`](./TRAJECTORY_IDENTITY_WORKSHOP.pdf) — compiled workshop PDF
@@ -37,7 +37,9 @@ Three structural moves:
 
 ## Status
 
-Working draft. Pre-submission. Not yet on arXiv or Zenodo. See [`HANDOFF.md`](./HANDOFF.md) for the active priorities and blockers.
+Working draft v0.10 (May 2026). Pre-submission. Not yet on Zenodo. See [`HANDOFF.md`](./HANDOFF.md) for current priorities and the path to first DOI.
+
+**Citation:** see [`CITATION.cff`](./CITATION.cff). Once a Zenodo concept-DOI is minted (via the GitHub-Zenodo integration on first release), this section will carry the DOI badge.
 
 ## Related work in the same line
 

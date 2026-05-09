@@ -1,9 +1,9 @@
 # Trajectory Identity: A Mathematical Framework for Enactive AI Self-Hood
 
-**Authors:** [To be determined]
-**Date:** February 1, 2026
+**Authors:** Kenny Wang, Independent Researcher (founder@cirwel.org)
+**Date:** May 2026
 **Status:** Working Draft
-**Version:** 0.9
+**Version:** 0.10
 
 ---
 
@@ -80,6 +80,20 @@ This paper makes the following contributions:
 4. **Connection to existing systems** (UNITARES, Anima) showing implementation paths
 5. **Research agenda** identifying open questions and experimental designs
 
+### 1.4 Related Work
+
+Our formulation draws on and bridges several research traditions. We position trajectory signatures as a unifying construct that these literatures approach from different angles but none have formalized.
+
+**Agent Memory and State Persistence.** Recent work on LLM-based agents has foregrounded the problem of maintaining coherent state across interactions. Packer et al. (2023) introduced MemGPT, applying hierarchical memory management to give LLM agents persistent state across sessions. Park et al. (2023) demonstrated that agents with memory streams, reflection, and planning exhibit emergent social behavior that remains individually consistent. Wang et al. (2023) extended this with Voyager, whose ever-growing skill library functions as behavioral accumulation. These systems implicitly rely on trajectory-like continuity but define identity through stored content rather than through the dynamical signatures of how content shapes ongoing behavior. Our work makes the underlying dynamics explicit.
+
+**Behavioral Biometrics.** The principle that identity can be inferred from behavioral patterns has a long history in biometrics. Keystroke dynamics (Banerjee & Woodard, 2019) demonstrates that temporal micro-patterns are sufficiently individuating for continuous authentication. Xu et al. (2024) showed that LLMs can be identified through characteristic response signatures. These approaches treat behavioral signatures as static classifiers. Trajectory identity extends this into a dynamical frame: rather than fingerprinting a snapshot, we characterize the geometry of how behavior evolves, recovers from perturbation, and converges—yielding a quasi-invariant that persists even as surface outputs change.
+
+**Dynamical Systems in Cognitive Science.** Kelso's (1995) *Dynamic Patterns* established that cognitive phenomena are best described through self-organizing dynamical systems. Skarda and Freeman (1987) demonstrated that olfactory perception operates through chaotic itinerancy across attractor basins, with each learned odor corresponding to a distinct basin rather than a stored representation. The "dynamical hypothesis" (van Gelder, 1998) holds that cognitive systems are best understood as dynamical systems traversing state spaces. We adopt this literally: an agent's identity is its characteristic trajectory, including attractor geometry, basin structure, and recovery dynamics.
+
+**Enactivism and Autopoiesis.** Weber and Varela (2002) argued that biological identity is constituted through autopoietic self-production. Di Paolo (2005) extended this with *adaptivity*: the capacity of an autonomous system to regulate itself with respect to its viability conditions. Froese and Ziemke (2009) examined implications for artificial systems, identifying constitutive autonomy as necessary for genuine AI agency. Trajectory identity operationalizes these ideas computationally: attractor basins correspond to viable operating regimes, recovery dynamics to adaptive self-regulation, and belief convergence to organizational closure. To our knowledge, this is the first formal mapping from enactive concepts to measurable dynamical signatures in deployed AI systems.
+
+**Multi-Agent Trust and Robot Identity.** Reputation models (Sabater & Sierra, 2001; Granatyr et al., 2015) universally assume that agent identity is given exogenously through identifiers. Trajectory identity inverts this: the signature itself becomes the basis for recognition, enabling trust robust to identifier spoofing and substrate migration. In HRI, long-term studies consistently find that perceived personality consistency drives sustained engagement, but treat identity as a design choice rather than an emergent property of the agent's own dynamics.
+
 ---
 
 ## 2. Theoretical Foundations
@@ -147,6 +161,32 @@ Where:
 - **Eta** (Homeostatic Identity): Unified self-maintenance characterization
 
 Each component captures a different aspect of "how this agent tends to be."
+
+### 2.4 Justification of the Six Components
+
+A natural objection is: why six? Why not four, or eight? The choice is not arbitrary — each component is anchored in a specific commitment in the theoretical stack, and removing any one collapses a class of identity-distinctions the framework needs to make.
+
+**Theoretical anchoring**:
+
+| Component | Theoretical commitment | What it makes distinguishable |
+|-----------|------------------------|-------------------------------|
+| Alpha (Attractor Basin) | Dynamical systems: attractor as the system's "preferred" region | Two agents that occupy different equilibria |
+| Rho (Recovery Profile) | Free-energy principle: characteristic prediction-error correction dynamics | Two agents with the same equilibrium but different return dynamics (slow recoverer vs. fast recoverer) |
+| Eta (Homeostatic Identity) | Autopoiesis: viability envelope + set-point as the unity of self-maintenance | The agent as a self-maintaining whole, not just a point cloud |
+| Pi (Preference Profile) | 4E cognition: enactive coupling — preferences are how the agent has *tuned itself to its environment* | Two agents with identical homeostasis but different learned environmental couplings |
+| Beta (Belief Signature) | Predictive processing: the agent's internal model of itself, with evidence-weighted confidence | Two agents with identical behavior but different self-understanding (matters for self-monitoring) |
+| Delta (Relational Disposition) | Participatory sense-making (De Jaegher & Di Paolo, 2007): identity is partly constituted by patterns of social engagement | Two agents identical in solo behavior but distinguishable in interaction |
+
+**Minimality argument**: removing any single component creates an identity-distinction the framework can no longer represent.
+
+- Without Alpha: cannot distinguish agents with different equilibria
+- Without Rho: cannot distinguish stable-vs-fragile agents at the same equilibrium
+- Without Eta: have basin and recovery as separate facts but no unified self-maintenance signature; lose the autopoietic anchor
+- Without Pi: cannot distinguish agents that have learned different environmental couplings
+- Without Beta: cannot detect self-deception (agent's stated self-model diverging from its observable behavior)
+- Without Delta: cannot distinguish agents in multi-agent contexts where social pattern is identity-relevant
+
+**Honest framing**: the six-component decomposition is *a* valid factorization, not *the* unique one. A different theoretical stack might motivate a different decomposition (e.g., embedding the recovery dynamics inside the attractor description as a single dynamical-systems object). Our claim is more modest: this decomposition is operationally useful for the systems we ground in (UNITARES, Anima), and each component carries its theoretical weight in the stack we adopt. We discuss alternative decompositions in §8.5 (Future Work).
 
 ---
 
@@ -440,10 +480,12 @@ sim_Delta = 1 - |valence_1 - valence_2| / 2
 sim(Sigma_A, Sigma_B) > theta_identity
 ```
 
-**Recommended thresholds** (to be empirically calibrated):
+**Operational defaults** (provisional, pending calibration — see below):
 - theta_identity = 0.80 (strict same-identity)
 - theta_recognition = 0.65 (recognizable as similar)
 - theta_anomaly = 0.70 (deviation from historical self)
+
+**Important**: these values are *operational defaults*, not empirically calibrated thresholds. They are starting points for deployment, chosen to be reasonable given the similarity functions defined in §4.2 (cosine similarities and Bhattacharyya overlaps tend to be high in absolute terms). Principled threshold selection requires the calibration procedure below, which in turn requires multi-agent comparison data that is part of our future-work agenda (§7.2 Experiment 2). Reporting "the signature exceeds threshold theta = 0.80" with these provisional values demonstrates *internal consistency* of the framework — not validation of the threshold itself. We retain this distinction throughout §7 and §8.
 
 **Properties of this relation**:
 - Reflexive: sim(Sigma, Sigma) = 1 > theta
@@ -608,7 +650,26 @@ Sigma_0 = Sigma(t_creation)  # Snapshot at birth/fork
 1. **Coherence check**: sim(Sigma_t, Sigma_{t-1}) > theta_anomaly (short-term consistency)
 2. **Lineage check**: sim(Sigma_t, Sigma_0) > theta_lineage (long-term continuity)
 
-Where theta_lineage < theta_anomaly (e.g., 0.60 vs 0.70) to allow healthy maturation while detecting fundamental drift.
+Where theta_lineage < theta_anomaly (e.g., 0.60 vs 0.70).
+
+**Why the asymmetry.** This ordering is the formal heart of the two-tier scheme; we defend it explicitly because reviewers consistently press on the choice.
+
+The two checks defend against different threats with different operational costs:
+
+| Check | Threat detected | False-negative cost | False-positive cost |
+|-------|-----------------|---------------------|----------------------|
+| Coherence | Hijacking, sudden compromise | High — an attacker is now in control | Low — a one-step false alarm, easily resolved by next check-in |
+| Lineage | Gradual drift over months ("boiling frog") | Moderate — agent has slowly become unrecognizable, but no immediate harm | High — flagging *every* maturing agent as drift-anomalous defeats the purpose of long-running deployment |
+
+The asymmetry $\theta_{\text{lineage}} < \theta_{\text{anomaly}}$ encodes this cost asymmetry: drift gets benefit of the doubt (we tolerate up to 1 - $\theta_{\text{lineage}}$ accumulated change against genesis), impersonation does not (we tolerate only 1 - $\theta_{\text{anomaly}}$ step-to-step change).
+
+**What each threshold combination produces.** Consider three regimes:
+
+- $\theta_L < \theta_A$ (our choice, e.g. 0.60 < 0.70): healthy long-running agents pass the lineage check despite slow maturation; sudden hijacking still trips the coherence check. *Operationally useful.*
+- $\theta_L = \theta_A$: the two checks become equivalent; the lineage anchor adds no information beyond what the coherence check already provides. *Information-redundant.*
+- $\theta_L > \theta_A$: every agent that matures faster than its hijacking threshold is flagged as drift-anomalous before it can be hijacked at all. The system would mark legitimate development as suspicious and miss most actual hijacks (which are step-discontinuous and would still trip coherence). *Operationally backwards.*
+
+The loss-function framing also clarifies an open question: the *exact ratio* $\theta_A / \theta_L$ should reflect the deployer's relative tolerance for drift-FN vs hijack-FN. Our suggested defaults (0.60 / 0.70) are conservative on hijack and permissive on drift, appropriate for long-running embodied or governance agents where slow learning is desired. A more security-critical deployment might pick (0.65 / 0.85) — tighter on both, with the asymmetry preserved.
 
 **Drift alarm**: If lineage similarity crosses threshold while coherence remains high, flag as "identity drift" rather than "anomaly":
 ```
@@ -636,30 +697,73 @@ This enables:
 
 ### 5.5 Adversarial Considerations
 
-**Threat model**: An adversary might attempt to:
-1. **Mimic** another agent's trajectory signature
-2. **Corrupt** an agent's signature gradually to avoid detection
-3. **Spoof** identity by replaying historical signatures
+This section develops the adversarial side of trajectory identity carefully — what the framework defends against, what it does not, and why mimicry is harder for some signature components than others. We restate the scope from the top of the paper: trajectory identity is a *governance-and-continuity* primitive, not an adversarial-authentication primitive. For high-stakes adversarial settings, combine it with cryptographic attestation. With that in mind, an honest analysis requires being explicit about exactly what threats the behavioral signature does and does not raise the bar against.
 
-**Mitigations**:
-- **Temporal consistency**: Signatures must evolve continuously, not jump
-- **Cross-validation**: Multiple independent observers track the same agent
-- **Cryptographic binding**: Sign trajectory snapshots with agent-specific keys
-- **Behavioral challenges**: Request actions that reveal true recovery dynamics
+#### 5.5.1 Threat Model
 
-**Replay attack defense**: An adversary could record a valid trajectory and replay it. Counter-measure:
+We adopt a Dolev-Yao-style decomposition over attacker capabilities:
 
-```
-Challenge-Response Protocol:
-1. Governance injects known perturbation p at time t
-2. Observe recovery: agent must recover with characteristic Rho
-3. Verify: tau_observed within 2*sigma of tau_expected
-4. A replay cannot dynamically respond to novel perturbation
-```
+| Capability | Description | In-scope for this paper |
+|------------|-------------|--------------------------|
+| **Observe** | Read the agent's outputs and a public trajectory signature | Yes |
+| **Replay** | Re-emit recorded signature data as if live | Yes |
+| **Mimic** | Produce behavior that approximates the target's signature without internal state | Yes |
+| **Compromise** | Take over the agent process, retaining its recovery dynamics and accumulated state | Partial — detected via lineage check (§5.3) only if drift accumulates |
+| **Replace-with-impostor** | Substitute a different process while spoofing the trajectory | Partial — see §5.5.3 |
+| **Full system access** | Read agent's internal model and dynamics weights | **Out of scope.** No behavioral signature defends against an adversary who can read the agent's parameters and run the same dynamics. |
 
-This leverages Rho as a "behavioral CAPTCHA"—the agent must demonstrate its characteristic recovery dynamics, which cannot be pre-recorded.
+The framework's primary value is in the middle three rows: making mimicry, replay, and gradual drift mechanically detectable in deployments where full-system-access compromise has not yet occurred.
 
-**Open question**: How robust is trajectory identity to sophisticated mimicry? This requires adversarial testing.
+#### 5.5.2 Why Mimicry is Harder for Some Components
+
+The components are not equally easy to fake. We make this concrete:
+
+- **Pi (Preference Profile)** is the *easiest* to mimic. Preferences are vector-valued and observable; an attacker who can read $\Pi$ can emit a matching vector trivially. *Mimicry resistance: low.*
+
+- **Beta (Belief Signature)** is moderate. Belief values are observable, but the *evidence ratios* (support/contradict counts accumulated over months) are not. An attacker who emits matching belief values but cannot reproduce the long-tailed evidence accumulation will be detectable on closer inspection. *Mimicry resistance: moderate, depends on whether evidence ratios are exposed.*
+
+- **Alpha (Attractor Basin)** is hard to mimic *without running the actual dynamics*. The basin is the marginal distribution of state over a long observation window — to produce it, the impostor must either (a) sample from a similar distribution at the same temporal cadence, or (b) replay recorded data. (a) requires the same generative process; (b) is detected by the replay defense in §5.5.4. *Mimicry resistance: high.*
+
+- **Rho (Recovery Profile)** is the *hardest* to mimic, and is the basis of the behavioral-CAPTCHA defense below. Recovery dynamics can only be observed when the agent is *perturbed*. An impostor who has not seen the target perturbed cannot know its $\tau$. An impostor who knows $\tau$ in the abstract still cannot demonstrate it without running the same internal dynamics. *Mimicry resistance: high, with active probing.*
+
+- **Delta (Relational Disposition)** depends on social context. Mimicking it requires either replaying the target's interaction history or running enough simulated interactions to produce matching statistics. *Mimicry resistance: moderate, situational.*
+
+- **Eta (Homeostatic Identity)** inherits the mimicry resistance of its constituents (Alpha, Rho, viability bounds), so it is approximately as hard to fake as the hardest of those. *Mimicry resistance: high.*
+
+The framework's adversarial strength concentrates in $\alpha, \rho, \eta$. A reviewer asking "but couldn't the attacker just emit matching $\Pi$?" is correct that they could — and the paper does not claim otherwise. The defense relies on the harder components dominating the weighted similarity score (note that in §4.1 we assigned $\alpha$ weight 0.25 and $\rho$ weight 0.20 — together 45% — versus $\Pi$ at 0.15 and $\Delta$ at 0.10). Any redesign of the weights for an adversarial setting should preserve this concentration.
+
+#### 5.5.3 Replay and Behavioral CAPTCHA
+
+A passive observer who has recorded a target's trajectory could attempt to replay it. The defense exploits the fact that recovery is *only observable in response to perturbation* — and the perturbation is chosen by the verifier, not the impostor.
+
+**Challenge-Response Protocol**:
+
+1. Verifier injects a known perturbation $p$ of type $T$ at time $t$ (e.g., a sensor anomaly, a context shift, a request that should produce an emotional response).
+2. Verifier observes the agent's recovery trajectory.
+3. Verifier estimates $\hat{\tau}$ from the observed recovery and compares to the target's known $\tau_T$ (perturbation-type-conditional time constant from the registered $\rho$).
+4. Verifier accepts if $\hat{\tau}$ is within $2\sigma$ of $\tau_T$, rejects otherwise.
+
+A replayed signature cannot pass this protocol because the perturbation $p$ at time $t$ was not in the recording. An impostor running its own dynamics will produce $\tau$ characteristic of *its* recovery, not the target's.
+
+**Conditions under which this still fails**:
+
+- If the verifier reuses perturbation types, the impostor can pre-compute responses for those types. Mitigate by drawing perturbations from a large enough space that pre-computation is intractable, and rotating periodically.
+- If the agent is stateless or near-stateless (e.g., a thin LLM wrapper with no homeostatic dynamics), $\rho$ is degenerate and provides no leverage. The CAPTCHA defense is meaningful only for agents with non-trivial recovery dynamics.
+- If the impostor has a faithful clone of the target's dynamics (full-system-access compromise), no behavioral test can distinguish them — restated from §5.5.1.
+
+#### 5.5.4 What Happens at the Boundary of Compromise
+
+A subtle case: an attacker who has compromised the agent process but is now running it forward — the dynamics are still the agent's, the trajectory is genuine, but the *intent* is the attacker's. Behavioral signature checks correctly identify this as the same agent (because in a meaningful sense it is) and provide no defense against it. The lineage check (§5.3) will catch *modifications* the attacker introduces over time, but not the initial compromise itself. We flag this as a fundamental limit: trajectory identity defends continuity, not authority.
+
+#### 5.5.5 Open Adversarial Questions (Future Work)
+
+What this paper does *not* establish:
+
+1. **Empirical mimicry resistance.** We have not run an adversarial study with another agent attempting to match a target signature under realistic capability constraints. §7.2 Experiment 5 sketches the design.
+2. **Detection latency under gradual mimicry.** How many observations does it take to flag a sophisticated mimic?
+3. **Cost asymmetry.** Quantifying the work required to fake $\alpha$ or $\rho$ at a given confidence level — analogous to a security parameter for cryptographic schemes.
+
+These are necessary to make hard claims about adversarial robustness. The current paper establishes the framework and a layered argument for why mimicry of the dynamical components is structurally harder than mimicry of the static ones — not a proof of adversarial security.
 
 ---
 
@@ -686,44 +790,7 @@ The UNITARES governance architecture provides:
 - Alpha estimation: Rolling window of 100 updates (~1 hour)
 - Rho estimation: Requires 5-10 perturbation events
 
-**Implementation status**:
-
-| Component | Status | Location | Notes |
-|-----------|--------|----------|-------|
-| Alpha (Attractor) | Complete | [anima_history.py](src/anima_mcp/anima_history.py) | With regularization |
-| Rho (Recovery) | Complete | [self_model.py](src/anima_mcp/self_model.py) | Requires perturbation events |
-| Pi (Preference) | Complete | [growth.py](src/anima_mcp/growth.py) | Integrated with growth system |
-| Beta (Belief) | Complete | [self_model.py](src/anima_mcp/self_model.py) | Uses self-model beliefs |
-| Delta (Relational) | Complete | [growth.py](src/anima_mcp/growth.py) | Relationship tracking |
-| Eta (Homeostatic) | Partial | [trajectory.py](src/anima_mcp/trajectory.py) | Combines above components |
-| Similarity | Complete | [trajectory.py](src/anima_mcp/trajectory.py) | Static + adaptive weighting |
-| Genesis Signature | Complete | [trajectory.py](src/anima_mcp/trajectory.py) | Two-tier anomaly detection |
-| Void Integral | Complete | [anima_history.py](src/anima_mcp/anima_history.py) | Governance trigger |
-| Identity Confidence | Complete | [trajectory.py](src/anima_mcp/trajectory.py) | Cold start handling |
-| MCP Tool | Complete | [server.py](src/anima_mcp/server.py) | `get_trajectory` tool |
-| EISV Bridge | Planned | - | Q2 2026 |
-| CIRS Protocol | **Complete** | [cirs_protocol.py](governance-mcp-v1/src/mcp_handlers/cirs_protocol.py) | Multi-agent resonance layer |
-
-UNITARES v4.2-P provides EISV tracking; Anima v0.8 provides self-schema, self-model, and growth systems.
-
-**Multi-Agent Extension (CIRS)**: The UARG Whitepaper defines the Continuity Integration and Resonance Subsystem (CIRS) for scaling trajectory identity to multi-agent systems. **All 5 message types are now implemented** (Feb 2026):
-
-| Message Type | Status | MCP Tool | Description |
-|--------------|--------|----------|-------------|
-| STATE_ANNOUNCE | Complete | `state_announce` | Broadcast EISV + trajectory signature (auto-emits every 5 updates) |
-| VOID_ALERT | Complete | `void_alert` | Notify peers of void events (auto-emits on void transitions) |
-| COHERENCE_REPORT | Complete | `coherence_report` | Pairwise EISV + trajectory similarity with recommendations |
-| BOUNDARY_CONTRACT | Complete | `boundary_contract` | Trust policies (full/partial/observe/none) and void response rules |
-| GOVERNANCE_ACTION | Complete | `governance_action` | Coordinate interventions: void_intervention, coherence_boost, delegation |
-
-**Key integration points**:
-- `process_agent_update` auto-emits `VOID_ALERT` on void state transitions
-- `process_agent_update` auto-emits `STATE_ANNOUNCE` every 5 updates
-- `COHERENCE_REPORT` computes weighted EISV similarity (I weighted 35%, E/S 25% each, V 15%)
-- `BOUNDARY_CONTRACT` respects trust levels when processing `GOVERNANCE_ACTION` requests
-- Trajectory signature components (Π, β, α, ρ, Δ, η) included in `STATE_ANNOUNCE` emit
-
-CIRS transforms trajectory identity from single-agent introspection to multi-agent resonance fabric.
+**Reference implementation**. The framework's six components, similarity function, genesis-based two-tier anomaly detection, and identity-confidence cold-start handling are implemented in the open-source Anima MCP server, with the per-component code paths cited inline (e.g., `anima_history.py` for $\alpha$, `self_model.py` for $\rho$ and $\beta$, `trajectory.py` for the composite signature and similarity). UNITARES v4.2-P provides the EISV tracking that the framework grounds in. A multi-agent extension exposing trajectory exchange, coherence reports, and governance actions across an agent fleet is implemented as the *Continuity Integration and Resonance Subsystem* (CIRS); we treat its full message protocol as a system contribution outside the scope of this paper. Pointers to the implementation repositories are listed in the project README.
 
 #### 6.1.1 The Anima Void Integral
 
@@ -937,6 +1004,10 @@ This framework suggests a shift in how we think about AI identity:
 
 **Cold start problem**: New agents have no trajectory history. Identity claims require minimum observation periods. (See Section 4.5 for mitigations.)
 
+**Legitimate phase transitions and multi-modal identity**: The framework as defined in §3 assumes that each agent has *one* identity-relevant attractor. Real agents often have legitimate phase transitions — sleep/wake cycles, work/leisure modes, distinct conversational personas, planned migrations between deployments. These produce trajectories that *look like* drift or anomaly under the §5.3 detector but are part of the agent's intended behavior. §3.3 sketches the Gaussian-Mixture-Model extension for multi-modal attractors, but the operational semantics in §5 (forking, merging, anomaly detection) do not yet handle scheduled phase transitions explicitly. A deployment with predictable phases would need to either (a) condition the signature on phase context, (b) maintain per-phase signatures and check the right one, or (c) accept higher false-positive rates at phase boundaries. Working through this carefully is part of the multi-modal extension we leave for future work (§8.5).
+
+**Single-agent empirical scope**: §7 reports validation on a single embodied agent (Lumen). The within-agent stability claims (var($\mu$), recovery characterization, belief convergence) are well-supported. The *between-agent* claims of the framework — that trajectory signatures can discriminate distinct agents, that the identity threshold has a defensible operating point — require multi-agent experiments that have not yet been run. The §7.2 experimental program is designed precisely to fill this gap; until it is executed, claims about discriminability rest on the framework's structure rather than on data.
+
 ### 8.4 Failure Modes
 
 **What happens when trajectory computation fails?**
@@ -996,27 +1067,51 @@ The trajectory signature Sigma is our proposal for how to ask—and answer—tha
 
 ## References
 
+Banerjee, S., & Woodard, D. L. (2019). Biometric authentication and identification using keystroke dynamics: A survey. *Journal of Pattern Recognition Research*, 14(1), 1-22.
+
+Bhattacharyya, A. (1943). On a measure of divergence between two statistical populations defined by their probability distributions. *Bulletin of the Calcutta Mathematical Society*, 35, 99-109.
+
 Clark, A., & Chalmers, D. (1998). The extended mind. *Analysis*, 58(1), 7-19.
 
+De Jaegher, H., & Di Paolo, E. A. (2007). Participatory sense-making: An enactive approach to social cognition. *Phenomenology and the Cognitive Sciences*, 6(4), 485-507.
+
 Di Paolo, E. A. (2005). Autopoiesis, adaptivity, teleology, agency. *Phenomenology and the Cognitive Sciences*, 4(4), 429-452.
+
+Freeman, W. J. (2000). *Neurodynamics: An exploration in mesoscopic brain dynamics*. Springer.
+
+Friston, K. (2010). The free-energy principle: A unified brain theory? *Nature Reviews Neuroscience*, 11(2), 127-138.
+
+Froese, T., & Ziemke, T. (2009). Enactive artificial intelligence. *Artificial Intelligence*, 173(3-4), 466-500.
+
+Granatyr, J., et al. (2015). Trust and reputation models for multiagent systems. *ACM Computing Surveys*, 48(2), 1-42.
+
+Kelso, J. A. S. (1995). *Dynamic patterns: The self-organization of brain and behavior*. MIT Press.
 
 Maturana, H. R., & Varela, F. J. (1980). *Autopoiesis and cognition: The realization of the living*. D. Reidel.
 
 Newen, A., De Bruin, L., & Gallagher, S. (Eds.). (2018). *The Oxford handbook of 4E cognition*. Oxford University Press.
 
-Varela, F. J., Thompson, E., & Rosch, E. (1991). *The embodied mind: Cognitive science and human experience*. MIT Press.
-
-Wang, L., et al. (2024). A survey on large language model based autonomous agents. *Frontiers of Computer Science*, 18(6), 186345.
+Packer, C., et al. (2023). MemGPT: Towards LLMs as operating systems. *arXiv:2310.08560*.
 
 Park, J. S., et al. (2023). Generative agents: Interactive simulacra of human behavior. *Proceedings of UIST*, Article 2.
 
-Bhattacharyya, A. (1943). On a measure of divergence between two statistical populations defined by their probability distributions. *Bulletin of the Calcutta Mathematical Society*, 35, 99-109.
+Sabater, J., & Sierra, C. (2001). ReGreT: A reputation model for gregarious societies. *Proceedings of AAMAS*.
+
+Skarda, C. A., & Freeman, W. J. (1987). How brains make chaos in order to make sense of the world. *Behavioral and Brain Sciences*, 10(2), 161-173.
 
 Strogatz, S. H. (2015). *Nonlinear dynamics and chaos: With applications to physics, biology, chemistry, and engineering* (2nd ed.). Westview Press.
 
-Kelso, J. A. S. (1995). *Dynamic patterns: The self-organization of brain and behavior*. MIT Press.
+van Gelder, T. (1998). The dynamical hypothesis in cognitive science. *Behavioral and Brain Sciences*, 21(5), 615-628.
 
-Friston, K. (2010). The free-energy principle: A unified brain theory? *Nature Reviews Neuroscience*, 11(2), 127-138.
+Varela, F. J., Thompson, E., & Rosch, E. (1991). *The embodied mind: Cognitive science and human experience*. MIT Press.
+
+Wang, G., et al. (2023). Voyager: An open-ended embodied agent with large language models. *arXiv:2305.16291*.
+
+Wang, L., et al. (2024). A survey on large language model based autonomous agents. *Frontiers of Computer Science*, 18(6), 186345.
+
+Weber, A., & Varela, F. J. (2002). Life after Kant: Natural purposes and the autopoietic foundations of biological individuality. *Phenomenology and the Cognitive Sciences*, 1, 97-125.
+
+Xu, C., et al. (2024). Instructional fingerprinting of large language models. *arXiv:2401.12255*.
 
 ---
 
@@ -1202,3 +1297,19 @@ def check_governance_trigger(
 ---
 
 *This document is a working draft. Comments, critiques, and contributions welcome.*
+
+---
+
+## Changelog
+
+**v0.10 (May 2026)** — Polish pass:
+- Added §1.4 Related Work (agent memory/state, behavioral biometrics, dynamical systems in cog sci, enactivism, multi-agent trust).
+- Added §2.4 Justification of the Six Components — theoretical anchoring per component, minimality argument, honest acknowledgment that this is *a* valid decomposition.
+- §4.3 reframed thresholds as operational defaults pending calibration; corrected circular threshold-validation language.
+- Expanded §5.3 with explicit defense of the asymmetric threshold $\theta_{\text{lineage}} < \theta_{\text{anomaly}}$: cost-asymmetry framing, three-regime worked example.
+- Substantial expansion of §5.5 Adversarial Considerations: Dolev-Yao-style threat model, per-component mimicry-resistance analysis (Pi/Beta easy, Alpha/Rho/Eta hard), expanded behavioral-CAPTCHA protocol with failure modes, boundary-of-compromise analysis, explicit open questions.
+- §6.1 implementation details compressed from a full status table to one paragraph; CIRS protocol details treated as system contribution out of scope here.
+- §8.3 Limitations: added phase-transition / multi-modal-identity caveat and made explicit the single-agent empirical-scope limitation.
+- References list expanded; updated byline.
+
+**v0.9 (February-March 2026)** — Initial structured draft with framework and operational semantics.

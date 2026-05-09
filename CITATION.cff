@@ -1,0 +1,49 @@
+cff-version: 1.2.0
+title: "Trajectory Identity: A Mathematical Framework for Enactive AI Self-Hood"
+message: "If you use or cite this work, please cite it as below."
+type: article
+authors:
+  - family-names: Wang
+    given-names: Kenny
+    affiliation: "CIRWEL Systems"
+    orcid: "https://orcid.org/0009-0006-7544-2374"
+date-released: 2026-05-09
+version: "v0.10"
+url: "https://github.com/cirwel/trajectory-identity-paper"
+license: CC-BY-4.0
+abstract: >
+  Current approaches to AI agent identity rely on static identifiers (UUIDs,
+  session tokens) or accumulated memory stores. We propose an alternative
+  grounded in enactive cognition and dynamical systems theory: identity as
+  trajectory. Rather than asking "what ID does this agent have?", we ask
+  "what patterns persist in this agent's behavior over time?"
+
+  We present a mathematical framework for computing trajectory signatures
+  from time-series data including homeostatic state, learned preferences,
+  self-beliefs, and recovery dynamics. The trajectory signature Sigma
+  captures the quasi-invariant characteristics that define an agent's
+  identity — not where it is at any moment, but how it tends to behave,
+  where it tends to rest, and how it returns from perturbation.
+
+  The framework addresses (1) identity continuity across sessions without
+  unbounded memory growth, (2) principled semantics for agent forking and
+  merging, (3) anomaly detection as trajectory deviation through an
+  asymmetric two-tier threshold scheme that distinguishes drift from
+  hijacking, and (4) inter-agent recognition based on behavioral signatures
+  rather than credentials.
+
+  We validate the framework on Lumen, an embodied AI agent running
+  continuously on a Raspberry Pi 4, over 65 days and 226,093 state
+  observations. The empirical scope is single-agent (within-agent stability
+  established; between-agent discriminability is part of the experimental
+  agenda).
+keywords:
+  - AI agent identity
+  - trajectory signature
+  - enactive cognition
+  - dynamical systems
+  - autopoiesis
+  - free-energy principle
+  - anomaly detection
+  - behavioral biometrics
+  - embodied AI

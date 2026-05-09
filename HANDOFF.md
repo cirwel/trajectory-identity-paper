@@ -21,76 +21,114 @@ This paper is the **load-bearing standalone**. The bridge paper cross-cites it. 
 These were settled in prior sessions; reopen only with new evidence.
 
 - **Publish standalone.** Not nested under v6's repo or DOI. Independent Zenodo concept DOI when published.
-- **arXiv first**, then Zenodo for the citable archival copy.
+- **Zenodo first**, no arXiv (Kenny doesn't have arXiv credentials and arXiv endorsement is friction for Independent Researcher byline). Zenodo issues a citable DOI on the same day as the GitHub release. arXiv cross-post can come later.
 - **Reference style matches the bridge paper.** When the bridge paper is reachable, align here rather than the other way.
-- **Don't renumber section anchors.** The bridge paper cross-cites specific section numbers from this draft. Renumbering breaks those cites.
+- **Don't renumber section anchors.** The bridge paper cross-cites specific section numbers from this draft. Renumbering breaks those cites. The v0.10 polish pass added §1.4 and §2.4 — neither disrupts the existing 3.x / 4.x / 5.x numbering the bridge paper cites.
 - **CC BY 4.0** matches v6's licensing.
 
 ---
 
-## Three priorities (the polish lift)
+## Status: v0.10 polish pass complete (2026-05-09)
 
-These are the substantive gaps between v0.9-draft and submission-ready. Drive on these in order.
+The three priorities the prior session identified are now addressed in the main paper. Reviewers can still press, but the structural gaps the prior session flagged are closed:
 
-### 1. Defend the asymmetric threshold
+| Priority | Where addressed in v0.10 |
+|----------|---------------------------|
+| Defend $\theta_{\text{lineage}} < \theta_{\text{anomaly}}$ | §5.3 — cost-asymmetry framing, three-regime worked example |
+| Develop behavioral-CAPTCHA section | §5.5 — Dolev-Yao threat model, per-component mimicry-resistance, expanded protocol with failure modes |
+| Justify "why these six components" | §2.4 — theoretical anchoring per component, minimality argument, honest acknowledgment that this is *a* valid decomposition |
 
-The asymmetry $\theta_{\text{lineage}} < \theta_{\text{anomaly}}$ is the formal heart of the two-tier detection scheme but is currently asserted rather than derived. The defense needs:
+Plus four supporting edits the polish pass added:
 
-- A clear statement of the loss function being minimized (drift false-negative is operationally cheaper than impersonation false-negative; the asymmetry encodes that).
-- A worked example showing what happens at each threshold combination ($\theta_L < \theta_A$, $\theta_L = \theta_A$, $\theta_L > \theta_A$) and why the current choice is principled.
-- Connection to the operational semantics in §5 — fork tolerance vs anomaly intolerance fall out of this.
+- §1.4 Related Work (was absent; backported from workshop variant)
+- §4.3 + §7.4 threshold-circularity fix (operational defaults vs validated thresholds)
+- §6.1 trimmed from full implementation status table to one paragraph
+- §8.3 Limitations expanded with phase-transition / multi-modal-identity caveat and explicit single-agent empirical-scope acknowledgment
 
-This is where reviewers will press hardest. Treat it as the section that has to land.
-
-### 2. Develop the behavioral-CAPTCHA section
-
-Currently a sketch in §5.5 (Adversarial Considerations). The full development:
-
-- Explicit threat model — what does the attacker know, what can they observe, what can they emit?
-- Why behavioral mimicry is harder than credential theft *for the specific signature components* — not a hand-wave to "behaviors are hard to fake."
-- Where it fails — sophisticated full-system-access attackers; this paper's scope is governance/continuity, not adversarial authentication. Keep that boundary crisp.
-
-### 3. Address "why these six components"
-
-§3 defines $\Sigma = \{\Pi, \mathrm{B}, \mathrm{A}, \mathrm{P}, \Delta, \mathrm{H}\}$ but the choice of *six* and *these six* is currently presentation-driven. Reviewers will ask: minimal set? Orthogonal? Why not five, why not eight?
-
-The defense path:
-
-- Argue from the theoretical sources: each component maps to a specific commitment in the autopoiesis / free-energy / 4E-cognition stack.
-- Show an ablation argument: removing any one collapses a class of identity-distinctions the framework needs to make.
-- Acknowledge that the set is **a** valid decomposition, not **the** unique one — and explain why this decomposition is operationally useful for the systems the paper grounds in (UNITARES, Anima).
+References list expanded; byline updated; version bumped to v0.10. See the Changelog at the bottom of the paper for the full diff.
 
 ---
 
-## Blockers (not in priority order — independent)
+## Path to Zenodo DOI (B1 still open)
 
-### B1. GitHub repo creation
-Local repo exists at `~/projects/trajectory-identity-paper/` but no remote yet. When ready:
-```bash
-gh repo create cirwel/trajectory-identity-paper --public --source=. --remote=origin --push
-```
-Don't push prematurely — the draft is in flux and a public repo with a half-finished paper costs goodwill.
+Zenodo's standard flow is GitHub-integrated: connect Zenodo to a GitHub repo, create a GitHub release tag, Zenodo auto-archives and mints a DOI. To take the v0.10 draft to a citable Zenodo DOI:
 
-### B2. Draft import from anima-mcp — DONE in this session
-Drafts moved out of `~/projects/anima-mcp/docs/theory/` and into this repo. anima-mcp references updated to point here. Earlier handoff listed this as a blocker; it isn't anymore.
+1. **Create the GitHub repo.** From `~/projects/trajectory-identity-paper/`:
+   ```bash
+   gh repo create cirwel/trajectory-identity-paper --public --source=. --remote=origin --push
+   ```
+   (Or `--private` for a soft launch — Zenodo can still archive private repos.)
 
-### B3. Polish lift
-Priorities 1–3 above. This is the substantive work, not paperwork.
+2. **Connect Zenodo.** At zenodo.org, sign in with GitHub, enable webhook for `cirwel/trajectory-identity-paper`. (Same account that holds the v6 concept DOI.)
+
+3. **Tag a release.**
+   ```bash
+   git tag -a paper-v0.10 -m "First Zenodo-archived draft"
+   git push origin paper-v0.10
+   gh release create paper-v0.10 --title "v0.10: structured polish pass" --notes-file <(awk '/## Changelog/,/v0.9/' TRAJECTORY_IDENTITY_PAPER.md)
+   ```
+
+4. **Zenodo mints concept-DOI + version-DOI** automatically. Add the concept-DOI badge to README, update CITATION.cff with the DOI, push the badge update as a doc-only commit.
+
+5. **Update bridge paper references** when bridge paper becomes reachable.
+
+Alternative path if you don't want a public GitHub yet: direct upload to Zenodo via the web UI (drag PDF + CITATION.cff). Same DOI outcome, no automation. Less convenient for future versions.
 
 ---
 
-## What was done in this session (2026-05-09)
+## Open follow-ups beyond v0.10
 
-1. Audited references in `anima-mcp/` to the four theory files (5 code-comment cross-links, 5 doc cross-links — all soft references, none load-bearing).
-2. Created this repo: `~/projects/trajectory-identity-paper/` (git init on `main`).
-3. Moved the four drafts out of `anima-mcp/docs/theory/`:
-   - `TRAJECTORY_IDENTITY_PAPER.md` (51KB / 1204 lines)
-   - `TRAJECTORY_IDENTITY_WORKSHOP.md` (21KB / 278 lines)
-   - `TRAJECTORY_IDENTITY_WORKSHOP.pdf` (62KB)
-   - `EMPIRICAL_RESULTS_DRAFT.md` (7KB)
-4. Updated 5 code-comment references in anima-mcp to point at this repo by name (not URL — no published location yet).
-5. Updated 3 live doc references in anima-mcp; left 2 archive references alone.
-6. Wrote `README.md` and this `HANDOFF.md`.
+### B2. Workshop submission target identification
+v0.10 is workshop-submittable. Researched venues as of 2026-05-09:
+
+**Recommended primary target — `Adaptive Behavior` (SAGE journal):** Official journal of the International Society for Adaptive Behavior. Bimonthly peer-review. Topics include embodied cognition, AI, artificial life, coordination dynamics, evolutionary robotics — direct fit for the autopoiesis-to-dynamical-systems framing. **Rolling submissions, no deadline pressure.** This is the natural long-form home for this paper and avoids the conference-cycle race entirely. Note SAGE's mandatory AI-use disclosure (state how AI was/wasn't used in writing) at submission. https://journals.sagepub.com/home/adb
+
+**Future conference target — NeurIPS 2026 workshops (December 11-13, Sydney/Paris/Atlanta):** Workshop *proposals* due 2026-06-06. Workshop *paper* CFPs from accepted workshops typically appear August-September 2026. Strategy: post v0.10 to Zenodo now (citable preprint), watch for accepted workshops in agent identity / embodied AI / multi-agent safety topics, submit once CFPs open. https://neurips.cc/Conferences/2026/CallForWorkshops
+
+**Closed for 2026 cycle:**
+- ICML 2026 workshops — paper submission deadline was 2026-04-24, past. (44 accepted workshops, two adjacent: "Compositional Learning: Safety, Interpretability, and Agents"; "Statistical Frameworks for Uncertainty in Agentic Systems".) Worth tracking for ICML 2027.
+- ICLR 2026 workshops — held April 2026, past. (Strong-fit workshops were "Lifelong Agents: Learning, Aligning, Evolving", "MemAgents", "Agents in the Wild".) Worth tracking for ICLR 2027.
+- AAAI 2026 — held February 2026, past. AAAI 2027 calls open ~June-July 2026.
+
+**Secondary journal targets (rolling, no deadline):**
+- Frontiers in Robotics and AI
+- Cognitive Systems Research
+- Artificial Life (MIT Press)
+
+Workshop variant (`TRAJECTORY_IDENTITY_WORKSHOP.md`) is the version to submit to a workshop — shorter and already has Related Work. It does *not* yet incorporate the v0.10 expansions to §5.3, §5.5, §2.4 — backporting those to the workshop variant is a B4 task.
+
+For the Adaptive Behavior journal target, the *long* paper (`TRAJECTORY_IDENTITY_PAPER.md` v0.10) is the right unit. Word count is appropriate for the journal's typical article length.
+
+### B3. The substantive experimental program
+Now that v0.10 honestly flags single-agent scope, the experimental gap is the bottleneck for top-tier conference acceptance. §7.2 sketches five experiments. Experiment 2 (multi-agent discrimination) is the highest-leverage one. Realistic timeline: 2-3 months once a second long-running embodied agent exists.
+
+### B4. Backport v0.10 expansions into workshop variant
+Workshop variant (April 1 draft) is closer to publication-ready in some ways (Related Work present) but doesn't have the v0.10 substantive expansions. Before workshop submission, lift the §2.4 minimality argument, §5.3 asymmetry defense, and at minimum the §5.5.1 threat model + §5.5.2 component-resistance analysis into the workshop draft.
+
+---
+
+## What was done across the two sessions on 2026-05-09
+
+**Session 1 (handoff + repo move):**
+1. Audited references in `anima-mcp/` (5 code-comment, 5 doc — all soft cross-links).
+2. Created `~/projects/trajectory-identity-paper/` (git init on `main`).
+3. Moved four drafts out of `anima-mcp/docs/theory/`.
+4. Updated 8 anima-mcp references (5 code, 3 live doc); left 2 archive references alone.
+5. Wrote initial README.md and HANDOFF.md.
+6. Committed both repos. anima-mcp commit `63233a0`.
+
+**Session 2 (v0.10 polish pass):**
+1. Backported §1.4 Related Work from workshop into main paper.
+2. Added §2.4 Justification of the Six Components.
+3. Fixed §4.3 + §7.4 threshold circularity.
+4. Expanded §5.3 with explicit asymmetric-threshold defense.
+5. Substantially developed §5.5 (Dolev-Yao threat model, per-component analysis, behavioral-CAPTCHA expansion, boundary-of-compromise discussion).
+6. Trimmed §6.1 from full status table to one paragraph.
+7. Added phase-transition + single-agent caveats to §8.3.
+8. Expanded references list (added Banerjee, De Jaegher, Freeman, Froese, Granatyr, Packer, Sabater, Skarda, van Gelder, Wang G., Weber, Xu).
+9. Updated byline, bumped to v0.10, added Changelog.
+10. Created CITATION.cff.
+11. Updated README + this HANDOFF for Zenodo path.
 
 The earlier session's `papers/trajectory-identity/` plan (nested inside unitares, gitignored) was not durable — Kenny's existing convention is one-paper-per-repo at `~/projects/<paper-name>/` (like `unitares-paper-v6/`). This repo follows that pattern.
 
