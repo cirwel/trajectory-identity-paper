@@ -73,43 +73,41 @@ The v0.11 paper is honest about these limits throughout. Codex's likely v0.11 ve
 
 ---
 
-## Open follow-ups beyond v0.11
+## Closed milestones
 
-### B4. Workshop-variant backport (highest-priority remaining task)
-The workshop variant (`TRAJECTORY_IDENTITY_WORKSHOP.md` and the compiled PDF) still reflects the v0.9 state — *no* v0.10 expansions, *no* v0.11 fixes. Codex specifically flagged this: "establish trajectory signatures as a viable basis for AI agent identity" and "Both exceed theta = 0.80, confirming recognizable continuity" are precisely the claims v0.10/v0.11 retracted. Before any workshop submission, lift v0.11 caveats into the workshop variant: at minimum the variance interpretation, the operational-continuity reframe, and the §1.1 impersonation-resistance softening.
+### B1. GitHub repo + Zenodo DOI — **DONE 2026-05-09**
+Repo: <https://github.com/cirwel/trajectory-identity-paper> (public)
+Concept DOI (cite this): [10.5281/zenodo.20098168](https://doi.org/10.5281/zenodo.20098168) — auto-resolves to latest version
+Version DOI (paper-v0.11.1): [10.5281/zenodo.20098169](https://doi.org/10.5281/zenodo.20098169)
+Zenodo metadata verified clean (title, author, license, abstract, keywords picked up from CITATION.cff).
 
-### B5. Multi-agent discrimination experiment (the deferred substantive blocker)
-The framework's between-agent claims are not yet empirically tested. §7.2 Experiment 2 sketches the design. Realistic timeline: 2–3 months once a second long-running embodied agent exists. This is the gating experiment for top-tier conference acceptance.
-
-### B6. Transplant test for identity-as-coupling (sharper, smaller experiment)
-Move Lumen (or an instance) to a different physical environment and re-measure $\Sigma$. Components that shift under transplant are coupling-determined; components that remain stable are agent-intrinsic. Smaller-scope than B5 and high-information-density. §3.1 flags this as the most informative single follow-up.
+### B4. Workshop-variant backport — **DONE 2026-05-09**
+`TRAJECTORY_IDENTITY_WORKSHOP.md` brought current with v0.11 prose: variance interpretation, operational-continuity reframe, Eta double-counting fix, "Confirmed" → "observed in Lumen", continuous/47-active-days clarification, identity-as-coupling subsection, threshold-circularity acknowledgment, expanded references (ID-RAG, persona-consistency benchmarks, Beer, Barandiaran et al., Villalobos & Dewhurst, Ikegami).
+**Note**: `TRAJECTORY_IDENTITY_WORKSHOP.pdf` is now stale relative to the .md. Regenerate before any actual workshop submission (pandoc or LaTeX, depending on the workshop's preferred format).
 
 ---
 
-## Path to Zenodo DOI (B1 still open)
+## Open follow-ups beyond v0.11.1
 
-Zenodo's standard flow is GitHub-integrated: connect Zenodo to a GitHub repo, create a GitHub release tag, Zenodo auto-archives and mints a DOI. To take the v0.10 draft to a citable Zenodo DOI:
+### B5. Multi-agent discrimination experiment (the deferred substantive blocker)
+The framework's between-agent claims are not yet empirically tested. §7.2 Experiment 2 sketches the design. Realistic timeline: 2–3 months once a second long-running embodied agent exists. This is the gating experiment for top-tier conference acceptance and for principled threshold calibration.
 
-1. **Create the GitHub repo.** From `~/projects/trajectory-identity-paper/`:
-   ```bash
-   gh repo create cirwel/trajectory-identity-paper --public --source=. --remote=origin --push
-   ```
-   (Or `--private` for a soft launch — Zenodo can still archive private repos.)
+### B6. Transplant test for identity-as-coupling (sharper, smaller experiment)
+Move Lumen (or an instance) to a different physical environment and re-measure $\Sigma$. Components that shift under transplant are coupling-determined; components that remain stable are agent-intrinsic. Smaller-scope than B5, high-information-density. §3.1 flags this as the most informative single follow-up.
 
-2. **Connect Zenodo.** At zenodo.org, sign in with GitHub, enable webhook for `cirwel/trajectory-identity-paper`. (Same account that holds the v6 concept DOI.)
+### B7. Adaptive Behavior journal submission preparation
+v0.11.1 is in defensible state for journal submission. Pre-submission tasks:
+- Convert markdown to journal's preferred format (LaTeX with SAGE class, or Word per their submission portal)
+- Cover letter framing the contribution (identity-as-trajectory operationalized in a deployed system; companion to UNITARES)
+- Mandatory AI-use disclosure (SAGE policy: state how AI was/wasn't used in writing)
+- Include the Codex review (`REVIEW-CODEX-2026-05-09.md`) reference if useful for transparency
+- Submit at <https://journals.sagepub.com/home/adb>
 
-3. **Tag a release.**
-   ```bash
-   git tag -a paper-v0.10 -m "First Zenodo-archived draft"
-   git push origin paper-v0.10
-   gh release create paper-v0.10 --title "v0.10: structured polish pass" --notes-file <(awk '/## Changelog/,/v0.9/' TRAJECTORY_IDENTITY_PAPER.md)
-   ```
+### B8. Companion bridge paper references update
+When the bridge paper (linking governance to identity) becomes reachable, update its references to cite this concept DOI (`10.5281/zenodo.20098168`).
 
-4. **Zenodo mints concept-DOI + version-DOI** automatically. Add the concept-DOI badge to README, update CITATION.cff with the DOI, push the badge update as a doc-only commit.
-
-5. **Update bridge paper references** when bridge paper becomes reachable.
-
-Alternative path if you don't want a public GitHub yet: direct upload to Zenodo via the web UI (drag PDF + CITATION.cff). Same DOI outcome, no automation. Less convenient for future versions.
+### B9. Workshop PDF regeneration
+The compiled `TRAJECTORY_IDENTITY_WORKSHOP.pdf` is stale. Before any workshop submission: pandoc-convert the current .md to PDF, or convert to LaTeX with the workshop's style file.
 
 ---
 
@@ -148,7 +146,15 @@ For the Adaptive Behavior journal target, the *long* paper (`TRAJECTORY_IDENTITY
 - Summoned Codex (gpt-5.5, xhigh) for adversarial second review (`REVIEW-CODEX-2026-05-09.md`).
 - Codex caught three issues Claude missed (variance inversion, Eta double-counting, §1.1 contradiction) plus several smaller ones.
 - v0.11 fixed all of these — see "What Codex caught" table above.
-- Empirical content integrated as §6.4. EMPIRICAL_RESULTS_DRAFT.md deleted (superseded). Workshop variant remains stale (B4).
+- Empirical content integrated as §6.4. EMPIRICAL_RESULTS_DRAFT.md deleted (superseded).
+
+**Session 4 (publication + workshop backport):**
+- Created public GitHub repo cirwel/trajectory-identity-paper, pushed v0.11, tagged paper-v0.11 release.
+- User enabled Zenodo webhook; tagged paper-v0.11.1 trigger release.
+- Zenodo minted concept DOI 10.5281/zenodo.20098168 (auto-latest) + version DOI 10.5281/zenodo.20098169.
+- Updated README with DOI badge; CITATION.cff with DOI metadata.
+- Backported v0.11 fixes into workshop variant (B4 DONE).
+- Verified Zenodo record metadata is clean (no manual UI edits needed).
 
 ---
 
