@@ -4,6 +4,10 @@
 
 [![License: CC BY 4.0](https://img.shields.io/badge/License-CC_BY_4.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
 [![Status: Draft](https://img.shields.io/badge/status-draft%20v0.11-orange.svg)](./TRAJECTORY_IDENTITY_PAPER.md)
+[![DOI](https://img.shields.io/badge/DOI-pending-lightgrey.svg)](https://zenodo.org/account/settings/github/)
+<!-- After Zenodo mints the DOI for this release, replace the badge above with the auto-generated Zenodo DOI badge. -->
+
+
 
 - 📄 [`TRAJECTORY_IDENTITY_PAPER.md`](./TRAJECTORY_IDENTITY_PAPER.md) — main paper, working draft v0.11 (empirical content now integrated as §6.4)
 - 📝 [`TRAJECTORY_IDENTITY_WORKSHOP.md`](./TRAJECTORY_IDENTITY_WORKSHOP.md) — workshop variant (March 2026; **stale relative to v0.11**, needs backport before workshop submission)
