@@ -3,7 +3,7 @@
 **Authors:** Kenny Wang, Independent Researcher (founder@cirwel.org)
 **Date:** May 2026
 **Status:** Working Draft
-**Version:** 0.11
+**Version:** 0.12
 
 ---
 
@@ -75,7 +75,7 @@ A cell's identity is defined by its autopoietic organization: the network of pro
 This paper makes the following contributions:
 
 1. **Formal definition** of trajectory signature (Sigma) as a composite of six quasi-invariant components
-2. **Mathematical framework** for computing trajectory similarity and detecting identity
+2. **Mathematical framework** for computing trajectory similarity and detecting operational continuity (see §4.3 — *not* identity in the strict philosophical sense)
 3. **Operational semantics** for forking, merging, and anomaly detection
 4. **Connection to existing systems** (UNITARES, Anima) showing implementation paths
 5. **Research agenda** identifying open questions and experimental designs
@@ -104,11 +104,13 @@ Our formulation draws on and bridges several research traditions. We position tr
 
 Autopoiesis (Maturana & Varela, 1980) describes living systems as self-producing networks. The key insight is **operational closure**: the system's processes produce the conditions for those same processes to continue.
 
-In dynamical systems terms, this translates to **attractor dynamics**:
+We translate this into a **dynamical-systems** framing:
 - The system has a preferred region of state space (the attractor)
 - Perturbations move the system away from this region
 - Internal dynamics return the system to the attractor
-- The shape of the attractor basin and the recovery dynamics ARE the identity
+- The shape of the attractor basin and the recovery dynamics characterize the identity-relevant aspects of self-maintenance
+
+**On the autopoiesis-to-attractor translation**: this move is a *modeling commitment*, not a definitional equivalence. Autopoiesis is a network-topological claim about the closure of self-producing processes; attractor dynamics is a state-space claim about preferred regions and return maps. The two need not coincide in general — a system can have stable attractor dynamics without autopoietic closure (e.g., a thermostat), and an autopoietic system's network closure need not reduce to a low-dimensional state-space attractor. We adopt the translation as our operational bridge for the systems we work with (homeostatic embodied agents like Lumen, governed agent fleets like UNITARES) and we are explicit about its limits: the framework characterizes the *state-space shadow* of autopoietic self-maintenance, not the network-topological organization itself. §3.6 makes this explicit when it demotes Eta — the autopoietic-narrative anchor — to a derived view rather than an independent measurement: there is no direct measurement of the autopoietic organization in this framework; what we measure are its state-space consequences distributed across Alpha, Rho, and the viability envelope.
 
 **Connection to Free Energy Principle**: Friston's (2010) free energy principle provides a complementary perspective: living systems minimize variational free energy (prediction error). The attractor basin represents the agent's "model" of where it should be; returning to the attractor minimizes surprise. Identity, in this view, is the agent's implicit generative model of itself—the pattern it expects to maintain.
 
@@ -164,31 +166,24 @@ Where:
 
 Each component captures a different aspect of "how this agent tends to be."
 
-### 2.4 Justification of the Six Components
+### 2.4 Justification of the Component Decomposition
 
-A natural objection is: why six? Why not four, or eight? The choice is not arbitrary — each component is anchored in a specific commitment in the theoretical stack, and removing any one collapses a class of identity-distinctions the framework needs to make.
+A natural objection is: why these components? Why not fewer, or more? Two prior versions of this section answered with a *minimality argument* — claiming that each component preserves an identity-distinction that the framework would otherwise lose. A third independent reviewer pass identified that argument as load-bearingly weaker than it looked: the discriminability claim it relies on requires multi-agent experiments that this paper has not yet run (§7.2 Experiment 2). We have rewritten this section to claim only what we can defend: *expressive sufficiency* under the theoretical stack, not minimality in the formal sense.
 
-**Theoretical anchoring**:
+**Theoretical anchoring**: each component captures a specific commitment in the autopoiesis / free-energy / 4E-cognition stack. The decomposition spans the phenomena §3 sets out to characterize.
 
-| Component | Theoretical commitment | What it makes distinguishable |
-|-----------|------------------------|-------------------------------|
-| Alpha (Attractor Basin) | Dynamical systems: attractor as the system's "preferred" region | Two agents that occupy different equilibria |
-| Rho (Recovery Profile) | Free-energy principle: characteristic prediction-error correction dynamics | Two agents with the same equilibrium but different return dynamics (slow recoverer vs. fast recoverer) |
-| Eta (Homeostatic Identity) | Autopoiesis: viability envelope + set-point as the unity of self-maintenance | The agent as a self-maintaining whole, not just a point cloud |
-| Pi (Preference Profile) | 4E cognition: enactive coupling — preferences are how the agent has *tuned itself to its environment* | Two agents with identical homeostasis but different learned environmental couplings |
-| Beta (Belief Signature) | Predictive processing: the agent's internal model of itself, with evidence-weighted confidence | Two agents with identical behavior but different self-understanding (matters for self-monitoring) |
-| Delta (Relational Disposition) | Participatory sense-making (De Jaegher & Di Paolo, 2007): identity is partly constituted by patterns of social engagement | Two agents identical in solo behavior but distinguishable in interaction |
+| Component | Theoretical commitment | What this commitment lets the framework express |
+|-----------|------------------------|-------------------------------------------------|
+| Alpha (State-distribution summary, §3.3) | Dynamical systems: agent's preferred region of state space | First and second moments of the state trajectory (where the agent rests, how widely) |
+| Rho (Recovery Profile) | Free-energy principle: characteristic prediction-error correction dynamics | Characteristic time constants under perturbation |
+| Pi (Preference Profile) | 4E cognition: enactive coupling — preferences are how the agent has *tuned itself to its environment* | Learned environmental coupling; per §3.1, this component foregrounds the agent-environment system explicitly |
+| Beta (Belief Signature) | Predictive processing: the agent's internal model of itself, with evidence-weighted confidence | Evidence-tracked self-belief patterns |
+| Delta (Relational Disposition) | Participatory sense-making (De Jaegher & Di Paolo, 2007): identity is partly constituted by patterns of social engagement | Social-interaction patterns when applicable |
+| Eta (Homeostatic Identity) | Autopoiesis: viability envelope + set-point as the unity of self-maintenance — *but see §3.6: Eta is a derived view onto $(\alpha, \rho, V)$, not an independent measurement channel* | The autopoietic narrative anchor; informationally a summary of the others, retained for narrative and self-monitoring records |
 
-**Minimality argument**: removing any single component creates an identity-distinction the framework can no longer represent.
+**On minimality (and why we don't claim it)**: a minimality claim would require demonstrating that *any* removal collapses a measurable distinction the framework needs to make. That demonstration is between-agent discriminability — exactly what §6.4, §8.3, and §7.2 currently flag as future work. We therefore stop short of the minimality claim. Instead we make the weaker but defensible claim of *expressive sufficiency*: the listed components, taken together, can represent the phenomena the theoretical stack commits us to (slow-drifting equilibria, characteristic recovery, learned environmental coupling, evidence-tracked self-models, social-pattern variation, autopoietic narrative). Whether all six are *necessary* is a question the §7.2 Experiment 2 (multi-agent discrimination) and Experiment 5 (adversarial mimicry) will answer; until then, ablation is part of the research agenda, not part of the contribution.
 
-- Without Alpha: cannot distinguish agents with different equilibria
-- Without Rho: cannot distinguish stable-vs-fragile agents at the same equilibrium
-- Without Eta: have basin and recovery as separate facts but no unified self-maintenance signature; lose the autopoietic anchor
-- Without Pi: cannot distinguish agents that have learned different environmental couplings
-- Without Beta: cannot detect self-deception (agent's stated self-model diverging from its observable behavior)
-- Without Delta: cannot distinguish agents in multi-agent contexts where social pattern is identity-relevant
-
-**Honest framing**: the six-component decomposition is *a* valid factorization, not *the* unique one. A different theoretical stack might motivate a different decomposition (e.g., embedding the recovery dynamics inside the attractor description as a single dynamical-systems object). Our claim is more modest: this decomposition is operationally useful for the systems we ground in (UNITARES, Anima), and each component carries its theoretical weight in the stack we adopt. We discuss alternative decompositions in §8.5 (Future Work).
+**Honest framing**: the decomposition is *a* valid factorization, not *the* unique one. A different theoretical stack might motivate a different decomposition (e.g., embedding recovery dynamics inside the attractor description as a single dynamical-systems object; collapsing Pi and Delta into a single environmental-coupling vector). Our claim is the modest one: this decomposition is operationally useful for the systems we ground in (UNITARES, Anima), each component carries its theoretical weight, and the cardinality may shift downward in v0.x revisions if Experiment 2 shows component redundancy at the discrimination level. Alternative decompositions are discussed in §8.5 (Future Work).
 
 ---
 
@@ -296,8 +291,8 @@ Where the matrix `C_alpha` (alternative notation: `Cov_alpha`) is the empirical 
 
 **Properties**:
 - mu represents the equilibrium the agent returns to
-- Sigma encodes which dimensions vary together and which are independent
-- Eigenvalues of Sigma reveal the "principal axes" of variability
+- $C_\alpha$ encodes which dimensions vary together and which are independent
+- Eigenvalues of $C_\alpha$ reveal the "principal axes" of variability
 
 **High-dimensional states**: For agents with state vectors x in R^d where d >> 4, covariance computation becomes O(d^3) and numerically unstable.
 
@@ -518,7 +513,7 @@ sim(Sigma_A, Sigma_B) > theta_continuity
 1. Collect baseline: N same-agent comparisons (sim should be high)
 2. Collect discrimination: M different-agent comparisons (sim should be lower)
 3. Plot ROC curve varying theta from 0 to 1
-4. Select theta_identity at desired false-positive rate (recommend FPR < 0.05)
+4. Select theta_continuity at desired false-positive rate (recommend FPR < 0.05)
 5. Validate on held-out test set
 
 **Sensitivity analysis** (preliminary, to be validated):
@@ -597,7 +592,7 @@ Fork(A) -> B where:
 **Post-fork behavior**:
 - Initially: sim(Sigma_A, Sigma_B) ~ 1 (identical)
 - Over time: sim decreases as experiences diverge
-- Eventually: sim < theta_identity (different agents)
+- Eventually: sim < theta_continuity (operationally-distinct agents)
 
 **Fork semantics**:
 - "Exploration fork": Try different approaches in parallel
@@ -747,7 +742,7 @@ The components are not equally easy to fake. We make this concrete:
 
 - **Eta (Homeostatic Identity)** inherits the mimicry resistance of its constituents (Alpha, Rho, viability bounds), so it is approximately as hard to fake as the hardest of those. *Mimicry resistance: high.*
 
-The framework's adversarial strength concentrates in $\alpha, \rho, \eta$. A reviewer asking "but couldn't the attacker just emit matching $\Pi$?" is correct that they could — and the paper does not claim otherwise. The defense relies on the harder components dominating the weighted similarity score (note that in §4.1 we assigned $\alpha$ weight 0.25 and $\rho$ weight 0.20 — together 45% — versus $\Pi$ at 0.15 and $\Delta$ at 0.10). Any redesign of the weights for an adversarial setting should preserve this concentration.
+The framework's adversarial strength concentrates in $\alpha$ and $\rho$ (with $\eta$ as their derived view per §3.6). A reviewer asking "but couldn't the attacker just emit matching $\Pi$?" is correct that they could — and the paper does not claim otherwise. The defense relies on the harder components dominating the weighted similarity score (note that in §4.1 we assigned $\alpha$ weight 0.30 and $\rho$ weight 0.22 — together 52% — versus $\Pi$ at 0.18 and $\Delta$ at 0.12). Any redesign of the weights for an adversarial setting should preserve this concentration.
 
 #### 5.5.3 Replay and Behavioral CAPTCHA
 
@@ -799,7 +794,9 @@ The UNITARES governance architecture provides:
 |--------------------|---------------------|---------|
 | EISV time series | Alpha (Attractor) | Statistical moments |
 | Coherence history | Rho (Recovery) | Perturbation response |
-| Viability bounds | Eta (Homeostatic) | Envelope constraints |
+| Viability bounds | Eta (Homeostatic) [^eta-derived] | Envelope constraints |
+
+[^eta-derived]: Eta is a derived summary (§3.6); the viability envelope flows through Alpha and the threshold check directly for similarity computation. The mapping here points at Eta for narrative/documentation purposes — implementers should track $V$ alongside $\alpha, \rho$ rather than as data inside an "Eta" object.
 | Void integral | Anomaly detection | Deviation metric |
 
 **Sampling parameters**:
@@ -885,7 +882,7 @@ The Anima system provides:
 | self_model.beliefs | Beta | get_belief_signature() |
 | anima_history | Alpha | get_attractor_basin() |
 | self_model.episodes | Rho | get_recovery_profile() |
-| growth.relationships | Delta | get_relational_disposition() |
+| growth.visitors | Delta | get_relational_disposition() |
 
 ### 6.3 Self-Schema and Trajectory
 
@@ -907,7 +904,7 @@ The sequence {G_t} provides:
 
 ### 6.4 Empirical Validation on Lumen
 
-We report empirical observations from a single deployed agent — Lumen, an embodied AI agent running continuously on a Raspberry Pi 4 with AHT20 (temperature, humidity), BMP280 (pressure), and VEML7700 (light) sensors. Lumen maintains a 4-dimensional state (warmth, clarity, stability, presence) derived from sensor readings and system metrics; the per-dimension feature definitions are in `src/anima_mcp/anima.py:to_dimensions()` of the Anima reference implementation. Over 65 calendar days (January 11 – March 16, 2026), Lumen accumulated 226,093 state observations across 47 days with $\geq 100$ samples each (the remaining 18 days had brief uptime windows or hardware-restart gaps; we report the 47-active-day basis).
+We report empirical observations from a single deployed agent — Lumen, an embodied AI agent running continuously on a Raspberry Pi 4 with AHT20 (temperature, humidity), BMP280 (pressure), and VEML7700 (light) sensors. Lumen maintains a 4-dimensional state (warmth, clarity, stability, presence) derived from sensor readings and system metrics; the per-dimension feature definitions are in `src/anima_mcp/anima.py:to_dimensions()` of the Anima reference implementation. Over 65 calendar days (January 11 – March 16, 2026), Lumen accumulated approximately 226,029 state observations (count from the May 9, 2026 backup snapshot at `~/backups/lumen/anima_20260509_0700.db`) across 47 days with $\geq 100$ samples each (the remaining days had brief uptime windows or hardware-restart gaps; we report the 47-active-day basis). Earlier draft versions cited 226,093 observations from a slightly earlier snapshot; the difference of ~64 observations does not affect any §6.4 finding.
 
 **This is a single-agent, deployed-system observation report — not a multi-agent validation of the framework's discrimination claims.** The §3 framework predicts both within-agent stability *and* between-agent discriminability. The data here speak only to the first. Section §7.2 lays out the multi-agent experiments that would address discrimination. Throughout this section we use the language "observed in Lumen" rather than "confirmed" — these are pilot observations, not confirmations of the general claims of the paper.
 
@@ -977,7 +974,7 @@ Both components clear the operational default. **As emphasized in §4.3, this is
 
 #### 6.4.5 State distribution
 
-**Summary statistics over 226,093 observations**:
+**Summary statistics over the ~226,000 observations**:
 
 | Dimension | Min | Max | Mean | Std |
 |-----------|-----|-----|------|-----|
@@ -1026,7 +1023,7 @@ These five observations are pilot evidence consistent with the framework's *with
 - Can we define "identity-preserving" transformations?
 
 **Q4: Threshold Calibration**
-- What theta_identity minimizes false positives and negatives?
+- What theta_continuity minimizes false positives and negatives?
 - Should theta vary by context or agent history?
 - How do we handle borderline cases?
 
@@ -1133,7 +1130,7 @@ This framework suggests a shift in how we think about AI identity:
 | Corrupted history | Checksum mismatch, NaN values | Reload from last valid snapshot |
 | Insufficient data | obs_count < 50 | Report low confidence, use parent/archetype |
 | Missing components | Component returns None | Use partial signature with adjusted weights |
-| Covariance singular | det(Sigma) ≈ 0 | Add regularization: Sigma + epsilon*I |
+| Covariance singular | det($C_\alpha$) ≈ 0 | Add regularization: $C_\alpha + \epsilon I$ |
 | Recovery estimation fails | < 3 perturbation events | Use default tau or disable Rho component |
 
 **Identity crisis detection**: When sim(Sigma_t, Sigma_{t-1}) drops below 0.5 over short intervals (< 1 hour), trigger:
@@ -1268,21 +1265,31 @@ class TrajectorySignature:
     stability_score: float  # How stable is this signature?
 
     def similarity(self, other: 'TrajectorySignature') -> float:
-        """Compute similarity to another signature."""
-        weights = [0.15, 0.15, 0.25, 0.20, 0.10, 0.15]
+        """Compute similarity to another signature.
+
+        Uses the five informationally-independent components per §4.1.
+        Eta is a derived summary (§3.6) and is intentionally NOT in
+        this weighted sum to avoid double-counting Alpha + Rho + V.
+        """
+        # Weights match §4.1 (renormalized after Eta removal):
+        #   Pi=0.18, Beta=0.18, Alpha=0.30, Rho=0.22, Delta=0.12
+        weights = [0.18, 0.18, 0.30, 0.22, 0.12]
         sims = [
             self._cosine_sim(self.preferences.vector, other.preferences.vector),
             self._cosine_sim(self.beliefs.vector, other.beliefs.vector),
             self._bhattacharyya(self.attractor, other.attractor),
             self._log_ratio_sim(self.recovery.tau, other.recovery.tau),
             self._valence_sim(self.relational, other.relational),
-            self._homeostatic_sim(self.homeostatic, other.homeostatic),
         ]
         return sum(w * s for w, s in zip(weights, sims))
 
-    def is_same_identity(self, other: 'TrajectorySignature',
-                         threshold: float = 0.8) -> bool:
-        """Determine if signatures represent same identity."""
+    def is_operationally_continuous(self, other: 'TrajectorySignature',
+                                    threshold: float = 0.8) -> bool:
+        """Determine if signatures represent operationally-continuous agents.
+
+        Per §4.3, this is a tolerance relation (reflexive + symmetric, NOT
+        transitive) — recognition / continuity, not strict identity.
+        """
         return self.similarity(other) > threshold
 
     def detect_anomaly(self, historical: 'TrajectorySignature',
@@ -1423,7 +1430,7 @@ def check_governance_trigger(
 | Alpha | Attractor Basin | Equilibrium + covariance |
 | Rho | Recovery Profile | Time constants tau |
 | Delta | Relational Disposition | Social patterns |
-| Eta | Homeostatic Identity | Unified self-maintenance |
+| Eta | Homeostatic Identity | Unified self-maintenance (derived summary of Alpha + Rho + V; see §3.6 — not an independent term in the §4.1 weighted sum) |
 | tau | Time constant | Recovery speed (seconds) |
 | mu | Center | Attractor equilibrium point |
 | theta | Threshold | Similarity cutoff |
@@ -1435,6 +1442,25 @@ def check_governance_trigger(
 ---
 
 ## Changelog
+
+**v0.12 (May 9, 2026)** — Council-review-driven revision. A third independent review pass (parallel subagent council: dialectic-architect, code-reviewer, live-verifier — preserved as `REVIEW-COUNCIL-2026-05-09.md`) found that the v0.11 polish pass left structural issues unaddressed. v0.12 closes them:
+
+Conceptual rework (the headline finding):
+- §2.4 reframed from *minimality argument* to *expressive sufficiency*. The minimality argument as written required between-agent discriminability that §6.4 / §8.3 / §7.2 explicitly flag as future work — it was therefore circular. v0.12 stops short of the minimality claim and makes only the expressive-sufficiency claim, with ablation and minimality demoted to research agenda alongside the multi-agent discrimination experiment.
+- §2.1 added explicit acknowledgment that the autopoiesis-to-attractor translation is a *modeling commitment*, not a definitional equivalence. Autopoiesis is network-topological; attractor dynamics is state-space. The framework characterizes the state-space shadow of autopoietic self-maintenance, not the network-topological organization itself. This makes §3.6's Eta demotion coherent with the §2.1 framing (rather than implicitly contradicting it).
+- §1.3 Contribution 2: "detecting identity" → "detecting operational continuity (per §4.3 — *not* identity in the strict philosophical sense)" — terminology now consistent with §4.3 throughout.
+
+Mechanical fixes (Codex-flagged residue + new code-reviewer findings):
+- Appendix A `similarity()` method: dropped Eta from the weights/sims lists; renormalized 5 weights to match §4.1; renamed `is_same_identity` → `is_operationally_continuous` for terminology consistency. The reference implementation now matches the prose.
+- §5.5.2 weight citations corrected to renormalized values (Alpha 0.30, Rho 0.22, Pi 0.18, Delta 0.12 — together 52% on the harder components).
+- `theta_identity` → `theta_continuity` in §4.3 (calibration step 4), §5.1 (Forking), §7.1 Q4 — three rename misses from the v0.11 reframe.
+- `Sigma` (covariance) → `C_alpha` in §3.3 properties bullets and §8.4 Failure Modes table — four symbol-overload misses from the v0.11 rename.
+- §6.1 implementation table: `growth.relationships` → `growth.visitors` (the actual module name; verified by live-verifier against `~/projects/anima-mcp/src/anima_mcp/growth/visitors.py:262`).
+- §6.4 observation count: 226,093 → ~226,029 (count from May 9 backup snapshot; documented snapshot path; explicit "the difference of ~64 observations does not affect any §6.4 finding").
+- §6.1 UNITARES table: footnote added clarifying that Eta is a derived summary, viability bounds flow through Alpha/V directly for similarity computation.
+- Appendix C Symbol Reference: Eta entry now notes "(derived summary of Alpha + Rho + V; see §3.6 — not an independent term in the §4.1 weighted sum)".
+
+This version closes all 11 issues (1 blocker + 5 major + 5 minor) the council code-reviewer found, both factual refutations the live-verifier surfaced, and the §2.4 / §2.1 conceptual issues the dialectic-architect flagged.
 
 **v0.11 (May 9, 2026)** — Codex-review-driven rebuild. Independent second review (Codex / gpt-5.5) caught several issues v0.10 missed; this revision addresses them:
 

@@ -4,15 +4,18 @@
 
 [![DOI](https://zenodo.org/badge/1233972561.svg)](https://doi.org/10.5281/zenodo.20098168)
 [![License: CC BY 4.0](https://img.shields.io/badge/License-CC_BY_4.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
-[![Status: Draft](https://img.shields.io/badge/status-draft%20v0.11-orange.svg)](./TRAJECTORY_IDENTITY_PAPER.md)
+[![Status: Draft](https://img.shields.io/badge/status-draft%20v0.12-orange.svg)](./TRAJECTORY_IDENTITY_PAPER.md)
 
 
 
-- 📄 [`TRAJECTORY_IDENTITY_PAPER.md`](./TRAJECTORY_IDENTITY_PAPER.md) — main paper, working draft v0.11 (empirical content now integrated as §6.4)
-- 📝 [`TRAJECTORY_IDENTITY_WORKSHOP.md`](./TRAJECTORY_IDENTITY_WORKSHOP.md) — workshop variant (March 2026; **stale relative to v0.11**, needs backport before workshop submission)
-- 🖨 [`TRAJECTORY_IDENTITY_WORKSHOP.pdf`](./TRAJECTORY_IDENTITY_WORKSHOP.pdf) — compiled workshop PDF (matches stale workshop variant)
+- 📄 [`TRAJECTORY_IDENTITY_PAPER.md`](./TRAJECTORY_IDENTITY_PAPER.md) — main paper, working draft v0.12 (empirical content integrated as §6.4)
+- 📝 [`TRAJECTORY_IDENTITY_WORKSHOP.md`](./TRAJECTORY_IDENTITY_WORKSHOP.md) — workshop variant (current with v0.11 prose; needs v0.12 council-fixes backport before workshop submission)
+- 🖨 [`TRAJECTORY_IDENTITY_WORKSHOP.pdf`](./TRAJECTORY_IDENTITY_WORKSHOP.pdf) — compiled workshop PDF (stale; regenerate before submission)
 - 📋 [`HANDOFF.md`](./HANDOFF.md) — orientation for any session picking this up cold
-- 🔍 [`REVIEW-CODEX-2026-05-09.md`](./REVIEW-CODEX-2026-05-09.md) — independent second-reviewer pass that drove v0.11
+- 🔍 [`REVIEW-CODEX-2026-05-09.md`](./REVIEW-CODEX-2026-05-09.md) — independent second-reviewer pass (Codex) that drove v0.11
+- 🔍 [`REVIEW-COUNCIL-2026-05-09.md`](./REVIEW-COUNCIL-2026-05-09.md) — three-agent parallel council (dialectic-architect, code-reviewer, live-verifier) that drove v0.12
+- 🧪 [`experiments/cross-llm-discrimination/`](./experiments/cross-llm-discrimination/) — cross-LLM discrimination pilot (negative result, informs §7.3)
+- 📊 [`scripts/analysis_v0.11.1.py`](./scripts/analysis_v0.11.1.py) — reproducibility script for §6.4.1 with bootstrap CIs and AR(1) coefficients
 
 ---
 
