@@ -9,6 +9,7 @@
 
 
 - 📄 [`TRAJECTORY_IDENTITY_PAPER.md`](./TRAJECTORY_IDENTITY_PAPER.md) — main paper, working draft v0.12 (empirical content integrated as §6.4)
+- 🖨 [`TRAJECTORY_IDENTITY_PAPER.pdf`](./TRAJECTORY_IDENTITY_PAPER.pdf) — compiled PDF of v0.12 (~30 pages); rebuild via `scripts/build_pdf.sh`
 - 📝 [`TRAJECTORY_IDENTITY_WORKSHOP.md`](./TRAJECTORY_IDENTITY_WORKSHOP.md) — workshop variant (current with v0.11 prose; needs v0.12 council-fixes backport before workshop submission)
 - 🖨 [`TRAJECTORY_IDENTITY_WORKSHOP.pdf`](./TRAJECTORY_IDENTITY_WORKSHOP.pdf) — compiled workshop PDF (stale; regenerate before submission)
 - 📋 [`HANDOFF.md`](./HANDOFF.md) — orientation for any session picking this up cold
