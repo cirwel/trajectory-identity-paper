@@ -14,7 +14,7 @@ Current approaches to AI agent identity rely on static identifiers (UUIDs, sessi
 
 We present a framework for computing **trajectory signatures** from time-series data including homeostatic state, learned preferences, self-beliefs, and recovery dynamics. The trajectory signature characterizes the quasi-invariant aspects of how an agent behaves over time — where it tends to rest, how it returns from perturbation, what it has learned to prefer.
 
-We report pilot observations from Lumen, an embodied AI agent running continuously on a Raspberry Pi 4 with physical sensors. Over 65 calendar days (47 active days) and 226,093 state observations, we observe small-absolute-drift state distributions (per-dimension Var($\mu$) < 0.015 over the full record), recoverable time constants ($\tau$ ≈ 90–126s, n=12 perturbation episodes), partial belief convergence (4 of 13 self-beliefs at confidence > 0.88 with substantial supporting evidence), and operational continuity between a genesis signature and the 20-days-later signature on the two components computed (similarity 0.81–0.93, clearing the operational default $\theta = 0.80$). **The empirical scope is single-agent**: the framework's between-agent discrimination claims are not yet tested and remain the principal future-work item.
+We report pilot observations from Lumen, an embodied AI agent running continuously on a Raspberry Pi 4 with physical sensors. Over 65 calendar days (47 active days) and ~226,029 state observations, we observe small-absolute-drift state distributions (per-dimension Var($\mu$) < 0.015 over the full record), recoverable time constants ($\tau$ ≈ 90–126s, n=12 perturbation episodes), partial belief convergence (4 of 13 self-beliefs at confidence > 0.88 with substantial supporting evidence), and operational continuity between a genesis signature and the 20-days-later signature on the two components computed (similarity 0.81–0.93, clearing the operational default $\theta = 0.80$). **The empirical scope is single-agent**: the framework's between-agent discrimination claims are not yet tested and remain the principal future-work item.
 
 ---
 
@@ -57,7 +57,9 @@ Our formulation draws on and bridges several research traditions. We position tr
 
 ### 3.1 Foundations
 
-In dynamical systems terms, identity corresponds to **attractor dynamics**: the system has a preferred region of state space, perturbations move it away, and internal dynamics return it. We *characterize* this through trajectory summaries; we do not claim that our summaries *are* the basin (a real basin estimate would require explicit dynamical-systems identification, which we sketch as future work).
+We translate autopoiesis into a **dynamical-systems** framing: the system has a preferred region of state space (the attractor), perturbations move it away, internal dynamics return it. We *characterize* this through trajectory summaries; we do not claim that our summaries *are* the basin (a real basin estimate would require explicit dynamical-systems identification, which we sketch as future work).
+
+**On the autopoiesis-to-attractor translation**: this is a *modeling commitment*, not a definitional equivalence. Autopoiesis is a network-topological claim about the closure of self-producing processes; attractor dynamics is a state-space claim about preferred regions and return maps. The framework characterizes the *state-space shadow* of autopoietic self-maintenance, not the network-topological organization itself. The Eta component (introduced below) is best understood as a derived narrative summary of this shadow rather than a direct measurement of the autopoietic organization.
 
 Building on Di Paolo's (2005) concept of adaptivity, we define the **viability envelope** V as the region of state space within which the agent can maintain itself: V = {x : x_min <= x <= x_max for each dimension}. The agent's continued operation consists of remaining within V.
 
@@ -83,6 +85,8 @@ Sigma = (Pi, Beta, Alpha, Rho, Delta; Eta)
 | Eta | Homeostatic Identity (derived view) | Narrative summary $(\mu, C_\alpha, \tau, V)$ — not informationally independent of Alpha + Rho + V; useful for self-monitoring records but not a separate term in the similarity sum |
 
 A naming caveat for Alpha: we retain "attractor basin" by historical convention, but operationally it is a *state-distribution summary* (first and second moments), not an estimate of an attractor's basin boundary, vector field, or return map. To avoid symbol overload between the trajectory-signature symbol $\Sigma$ and the covariance, we write the covariance as $C_\alpha$ (regularized as $C_\alpha + \epsilon I$ to ensure non-singularity).
+
+**On the cardinality of the decomposition**: a stronger paper version had argued that these six components are *minimal* — that removing any one collapses an identity-distinction the framework needs to make. That argument requires between-agent discriminability we have not yet demonstrated (Experiment 2 in §6 Future Work). We therefore make the weaker, defensible claim of *expressive sufficiency*: the listed components, taken together, can represent the phenomena the theoretical stack commits us to. Whether all six are necessary remains a research question; the long-form paper develops the full argument and acknowledges that the cardinality may shift downward if the multi-agent experiment reveals component redundancy at the discrimination level.
 
 **State-Distribution Summary (Alpha)**: Given state history $X = [x_1, \ldots, x_t]$ where $x \in \mathbb{R}^d$, $\alpha = \{\mu: \text{mean}(X), C_\alpha: \text{cov}(X), \text{eigenvalues}: \text{eig}(C_\alpha)\}$. The mean $\mu$ represents the equilibrium; $C_\alpha$ encodes covariation structure.
 
@@ -141,7 +145,7 @@ Agent A recognizes agent B if sim(Sigma_B, Sigma_known) > theta_recognition for 
 
 ## 5. Empirical Validation
 
-We report pilot observations from Lumen, an embodied AI agent running continuously on a Raspberry Pi 4 with AHT20 (temperature, humidity), BMP280 (pressure), and VEML7700 (light) sensors. Lumen maintains a 4-dimensional state (warmth, clarity, stability, presence) derived from sensor readings and system metrics. Over 65 calendar days (January 11 – March 16, 2026), Lumen accumulated 226,093 state observations across 47 days with $\geq 100$ samples each (the remaining 18 days had brief uptime windows or hardware-restart gaps).
+We report pilot observations from Lumen, an embodied AI agent running continuously on a Raspberry Pi 4 with AHT20 (temperature, humidity), BMP280 (pressure), and VEML7700 (light) sensors. Lumen maintains a 4-dimensional state (warmth, clarity, stability, presence) derived from sensor readings and system metrics. Over 65 calendar days (January 11 – March 16, 2026), Lumen accumulated approximately 226,029 state observations (count from May 9, 2026 backup snapshot at `~/backups/lumen/anima_20260509_0700.db`) across 47 days with $\geq 100$ samples each (the remaining days had brief uptime windows or hardware-restart gaps).
 
 **This is a single-agent observation report** — the §3 framework predicts both within-agent stability *and* between-agent discriminability; the data here speak only to the first. Throughout this section we use "observed in Lumen" rather than "confirmed."
 
