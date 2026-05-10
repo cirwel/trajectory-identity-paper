@@ -4,11 +4,11 @@
 
 [![DOI](https://zenodo.org/badge/1233972561.svg)](https://doi.org/10.5281/zenodo.20098168)
 [![License: CC BY 4.0](https://img.shields.io/badge/License-CC_BY_4.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
-[![Status: Draft](https://img.shields.io/badge/status-draft%20v0.12-orange.svg)](./TRAJECTORY_IDENTITY_PAPER.md)
+[![Status: Draft](https://img.shields.io/badge/status-draft%20v0.13-orange.svg)](./TRAJECTORY_IDENTITY_PAPER.md)
 
 
 
-- 📄 [`TRAJECTORY_IDENTITY_PAPER.md`](./TRAJECTORY_IDENTITY_PAPER.md) — main paper, working draft v0.12 (empirical content integrated as §6.4)
+- 📄 [`TRAJECTORY_IDENTITY_PAPER.md`](./TRAJECTORY_IDENTITY_PAPER.md) — main paper, working draft v0.13 (~10,754 body words; trimmed for journal submission)
 - 🖨 [`TRAJECTORY_IDENTITY_PAPER.pdf`](./TRAJECTORY_IDENTITY_PAPER.pdf) — compiled PDF of v0.12 (~30 pages); rebuild via `scripts/build_pdf.sh`
 - 📝 [`TRAJECTORY_IDENTITY_WORKSHOP.md`](./TRAJECTORY_IDENTITY_WORKSHOP.md) — workshop variant (current with v0.11 prose; needs v0.12 council-fixes backport before workshop submission)
 - 🖨 [`TRAJECTORY_IDENTITY_WORKSHOP.pdf`](./TRAJECTORY_IDENTITY_WORKSHOP.pdf) — compiled workshop PDF (stale; regenerate before submission)

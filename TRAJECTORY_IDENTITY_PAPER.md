@@ -3,7 +3,7 @@
 **Authors:** Kenny Wang, Independent Researcher (founder@cirwel.org)
 **Date:** May 2026
 **Status:** Working Draft
-**Version:** 0.12
+**Version:** 0.13
 
 ---
 
@@ -38,29 +38,7 @@ This framework addresses **governance and continuity** problems, not adversarial
 
 ### 1.1 The Limitations of Static Identity
 
-Modern AI agents are typically identified by static tokens:
-- **UUIDs**: Unique identifiers assigned at creation
-- **Session IDs**: Temporary bindings to conversation threads
-- **API keys**: Authentication credentials
-
-These approaches share a fundamental limitation: **identity is conferred, not earned**. An agent has an identity because we gave it one, not because it developed characteristics that make it recognizably itself.
-
-This creates practical problems:
-- **Continuity fragility**: If the UUID is lost, identity is lost
-- **Fork ambiguity**: If we copy an agent, which copy is "the real one"?
-- **Anomaly blindness**: A compromised agent with the right credentials is indistinguishable from the original
-- **Memory explosion**: Maintaining identity through accumulated memory leads to unbounded growth
-
-**Comparison of Identity Approaches**:
-
-| Criterion | UUID/Credential | Memory-Based | Trajectory Signature |
-|-----------|-----------------|--------------|---------------------|
-| **Continuity** | Fragile (lost if token lost) | Strong (persists in storage) | Strong (recomputable from behavior) |
-| **Fork semantics** | Ambiguous (which has the "real" ID?) | Ambiguous (both have same memories) | Clear (divergence is measurable) |
-| **Anomaly detection** | None (valid credential = valid agent) | Heuristic (memory tampering) | Mathematical (trajectory deviation) |
-| **Storage growth** | O(1) | O(unbounded) | O(window size) |
-| **Impersonation resistance** | Weak (credential theft) | Moderate (memory reconstruction) | Moderate, component-dependent (see §5.5; not a substitute for cryptographic auth) |
-| **Cold start** | Immediate | Immediate | Requires ~50 observations |
+Modern AI agents are typically identified by static tokens — UUIDs, session IDs, API keys. These approaches share a fundamental limitation: **identity is conferred, not earned**. An agent has an identity because we gave it one, not because it developed characteristics that make it recognizably itself. The practical consequences are familiar: continuity fragility (if the UUID is lost, identity is lost), fork ambiguity (when we copy an agent, neither copy is uniquely "the real one"), anomaly-blindness (a compromised agent with the right credentials is indistinguishable from the original), and unbounded storage growth when memory is treated as a substitute for identity.
 
 ### 1.2 The Enactive Alternative
 
@@ -84,17 +62,15 @@ This paper makes the following contributions:
 
 Our formulation draws on and bridges several research traditions. We position trajectory signatures as a unifying construct that these literatures approach from different angles but none have formalized.
 
-**Agent Memory and State Persistence.** Recent work on LLM-based agents has foregrounded the problem of maintaining coherent state across interactions. Packer et al. (2023) introduced MemGPT, applying hierarchical memory management to give LLM agents persistent state across sessions. Park et al. (2023) demonstrated that agents with memory streams, reflection, and planning exhibit emergent social behavior that remains individually consistent. Wang et al. (2023) extended this with Voyager, whose ever-growing skill library functions as behavioral accumulation. Most directly comparable to our work is *ID-RAG* (Park et al., 2025): identity-retrieval-augmented generation for long-horizon persona coherence, which targets the same drift problem we do but solves it by injecting a structured identity object into the retrieval context rather than by characterizing the agent's behavioral dynamics. ID-RAG and trajectory identity are complementary: ID-RAG provides the *content* of identity (the prompt-engineered self-description); trajectory signatures provide the *form* (the dynamical signature the content produces in behavior). These systems implicitly rely on trajectory-like continuity but define identity through stored content rather than through the dynamical signatures of how content shapes ongoing behavior. Our work makes the underlying dynamics explicit.
+**Agent memory and persona coherence.** Recent LLM-agent work has foregrounded coherent state across interactions. MemGPT (Packer et al., 2023) gives LLM agents persistent state via hierarchical memory; Park et al.'s (2023) generative agents use memory streams, reflection, and planning to produce individually-consistent emergent behavior; Voyager (Wang et al., 2023) treats an ever-growing skill library as behavioral accumulation. Closest to our work is **ID-RAG** (Park et al., 2025), which targets long-horizon persona drift by injecting a structured identity object into retrieval. ID-RAG and trajectory identity are complementary: ID-RAG provides the *content* of identity (a prompt-engineered self-description); trajectory signatures provide the *form* (the dynamical signature that content produces in behavior). Persona-consistency benchmarks — PersonaChat (Zhang et al., 2018), RoleLLM/RoleBench (Wang et al., 2023b), CharacterEval (Tu et al., 2024) — evaluate output consistency against a *declared* persona. Trajectory identity is intrinsic: the agent is recognized by its own dynamical signature with no declared persona to compare against.
 
-**Persona Consistency Benchmarks.** A separate strand of LLM literature evaluates whether agents *behave* consistently with a declared persona. PersonaChat (Zhang et al., 2018) introduced a dataset of dialogues anchored to persona descriptions; RoleLLM / RoleBench (Wang et al., 2023b) and CharacterEval (Tu et al., 2024) extended persona-consistency evaluation to fine-grained character profiles and role-playing scenarios. These benchmarks treat consistency as a comparison between an agent's outputs and a declared persona, evaluated via NLI-style entailment or LLM-as-judge. Trajectory identity treats consistency intrinsically — the agent is recognized by its own dynamical signature, with no declared persona to compare against. The two approaches address different operational regimes: persona-consistency benchmarks for closed-vocabulary persona evaluation; trajectory signatures for open-ended deployments where the agent's identity emerges from its behavior rather than being authored in advance.
+**Behavioral biometrics.** The idea that identity can be inferred from behavioral patterns has a long history (keystroke dynamics, Banerjee & Woodard 2019; LLM response fingerprinting, Xu et al. 2024). Such approaches treat behavioral signatures as static classifiers. Trajectory identity extends this into a dynamical frame: rather than fingerprinting a snapshot, we characterize the geometry of how behavior *evolves, recovers from perturbation, and converges* — yielding a quasi-invariant that persists even as surface outputs change.
 
-**Behavioral Biometrics.** The principle that identity can be inferred from behavioral patterns has a long history in biometrics. Keystroke dynamics (Banerjee & Woodard, 2019) demonstrates that temporal micro-patterns are sufficiently individuating for continuous authentication. Xu et al. (2024) showed that LLMs can be identified through characteristic response signatures. These approaches treat behavioral signatures as static classifiers. Trajectory identity extends this into a dynamical frame: rather than fingerprinting a snapshot, we characterize the geometry of how behavior evolves, recovers from perturbation, and converges—yielding a quasi-invariant that persists even as surface outputs change.
+**Dynamical systems in cognitive science and AI.** Kelso (1995) and Skarda & Freeman (1987) established that cognitive phenomena are best described through self-organizing dynamical systems with attractor basins. The dynamical hypothesis (van Gelder, 1998) holds that cognitive systems are best understood as state-space trajectories. Beer (1995) made this concrete for AI: agent and environment are best modeled as a single coupled dynamical system; "behavior" is a property of the joint system, not the agent alone. We adopt this stance directly (§3.1, "Identity as agent-environment coupling").
 
-**Dynamical Systems in Cognitive Science and AI.** Kelso's (1995) *Dynamic Patterns* established that cognitive phenomena are best described through self-organizing dynamical systems. Skarda and Freeman (1987) demonstrated that olfactory perception operates through chaotic itinerancy across attractor basins, with each learned odor corresponding to a distinct basin rather than a stored representation. The "dynamical hypothesis" (van Gelder, 1998) holds that cognitive systems are best understood as dynamical systems traversing state spaces. Beer (1995) made this concrete for AI agents: an agent and its environment are best modeled as a single coupled dynamical system, and what counts as "the agent's behavior" is a property of that joint system, not the agent in isolation. We adopt this stance directly — see "Identity as agent-environment coupling" in §3.1 — and the empirical findings in §6.4 are reported with that framing in view.
+**Enactivism, autopoiesis, and defining agency.** From the enactive tradition we draw on Weber & Varela (2002) on autopoietic self-production; Di Paolo (2005) on adaptivity as viability-conditioned regulation; Barandiaran & Moreno (2006) and Barandiaran, Di Paolo & Rohde (2009) on the structural commitments required of any account of agency (individuality, normativity, asymmetry); Froese & Ziemke (2009) and Villalobos & Dewhurst (2018) on implications for artificial systems; and Ikegami & Suzuki (2008) on homeodynamic self in artificial-life simulations. Trajectory identity operationalizes this lineage computationally for *deployed* (not simulated) AI systems — to our knowledge the first such mapping.
 
-**Enactivism, Autopoiesis, and Defining Agency.** Weber and Varela (2002) argued that biological identity is constituted through autopoietic self-production. Di Paolo (2005) extended this with *adaptivity*: the capacity of an autonomous system to regulate itself with respect to its viability conditions. Barandiaran and Moreno (2006) and Barandiaran, Di Paolo & Rohde (2009) — the latter directly addressing the question "what defines agency?" — identified individuality, normativity, and asymmetry as the structural commitments any account of agency must satisfy. Froese and Ziemke (2009) examined implications for artificial systems, identifying constitutive autonomy as necessary for genuine AI agency. Villalobos and Dewhurst (2018) sharpened the autopoietic criterion in a form directly applicable to artificial systems. Ikegami and colleagues (e.g., Ikegami & Suzuki, 2008) operationalized "homeodynamic self" in artificial-life simulations, showing that self-maintaining patterns emerge in simulated agents under appropriate dynamics. Trajectory identity operationalizes these ideas computationally for deployed (rather than simulated) systems: attractor basins correspond to viable operating regimes, recovery dynamics to adaptive self-regulation, and belief convergence to organizational closure. To our knowledge, this is the first formal mapping from enactive concepts to measurable dynamical signatures in deployed, continuously-running AI agents.
-
-**Multi-Agent Trust and Robot Identity.** Reputation models (Sabater & Sierra, 2001; Granatyr et al., 2015) universally assume that agent identity is given exogenously through identifiers. Trajectory identity inverts this: the signature itself becomes the basis for recognition, enabling trust robust to identifier spoofing and substrate migration. In HRI, long-term studies consistently find that perceived personality consistency drives sustained engagement, but treat identity as a design choice rather than an emergent property of the agent's own dynamics.
+**Multi-agent trust and robot identity.** Reputation models (Sabater & Sierra, 2001; Granatyr et al., 2015) assume agent identity is given exogenously through identifiers. Trajectory identity inverts this: the signature itself is the recognition basis, enabling trust robust to identifier spoofing or substrate migration.
 
 ---
 
@@ -294,16 +270,7 @@ Where the matrix `C_alpha` (alternative notation: `Cov_alpha`) is the empirical 
 - $C_\alpha$ encodes which dimensions vary together and which are independent
 - Eigenvalues of $C_\alpha$ reveal the "principal axes" of variability
 
-**High-dimensional states**: For agents with state vectors x in R^d where d >> 4, covariance computation becomes O(d^3) and numerically unstable.
-
-**Dimensionality reduction strategies**:
-1. **PCA projection**: Project to top-k principal components before computing Alpha
-2. **Autoencoder latent space**: Learn a low-d "identity manifold" via neural compression
-3. **Domain-specific features**: Select semantically meaningful dimensions (e.g., anima's 4D)
-
-For Anima, d=4 is tractable. For LLM-based agents with high-d latent states, recommend projecting to d <= 16 before trajectory computation.
-
-**Multimodal attractors**: If the agent has multiple stable states (e.g., "work mode" vs "rest mode"), the mean mu will fall in the "valley" between attractors. For such agents, consider Gaussian Mixture Models (GMM) with k components, where identity is characterized by the mixture weights and component parameters.
+**High-dimensional and multi-modal extensions.** When the agent's state vector is high-dimensional ($d \gg 4$, as for LLM-based agents with latent states), covariance computation becomes $O(d^3)$ and numerically unstable; the framework expects a dimensionality reduction (PCA, an autoencoder identity manifold, or domain-selected features) to $d \leq 16$ before $\alpha$ is computed. For agents with multiple stable states (e.g., work/rest modes), the unimodal $(\mu, C_\alpha)$ summary collapses the modes; a Gaussian-mixture replacement with $k$ components is the natural extension. Both extensions live outside this paper's empirical scope and are flagged for future-work venues that need them.
 
 ### 3.4 Recovery Profile (Rho)
 
@@ -333,26 +300,7 @@ Rho = {
 - Large tau = slow recovery (persistent perturbation effects, tau ~ 300+ seconds)
 - Coupling matrix C reveals whether dimensions recover independently or in concert
 
-**Second-order dynamics**: The exponential model assumes overdamped recovery. Agents with momentum (memory effects) may exhibit damped oscillation:
-
-```
-x''(t) + 2*zeta*omega_n*x'(t) + omega_n^2*x(t) = 0
-```
-
-Where:
-- zeta = damping ratio (zeta < 1: oscillatory, zeta > 1: overdamped)
-- omega_n = natural frequency
-
-**Extended recovery profile**:
-```
-Rho_extended = {
-    tau: first-order time constants (default),
-    zeta: damping ratios (if oscillatory recovery detected),
-    omega_n: natural frequencies (if oscillatory)
-}
-```
-
-For most agents, first-order (tau only) suffices. Detect oscillation by checking if recovery crosses equilibrium before settling.
+For agents with momentum (memory effects), recovery may be better fit by a damped second-order model with damping ratio $\zeta$ and natural frequency $\omega_n$. We default to first-order (just $\tau$) and flag oscillatory recovery — recovery that crosses equilibrium before settling — as a deployment-specific extension.
 
 ### 3.5 Relational Disposition (Delta)
 
@@ -555,24 +503,7 @@ New agents lack trajectory history. Mitigation strategies:
 2. **Archetype initialization**: Initialize from similar agent type's average Sigma
 3. **Confidence weighting**: Weight similarity by min(obs_count / 50, 1.0)
 
-**Identity confidence score**:
-```
-confidence = min(1.0, observation_count / 50) * stability_score
-```
-Report confidence alongside all identity claims.
-
-**Example: Cold Start Timeline**
-```
-Agent "NewFork" created at t=0 (10-second sampling):
-
-  t=0:    obs=0,  confidence=0.00  → "Identity unknown"
-  t=2min: obs=12, confidence=0.24 → "Identity uncertain"
-  t=5min: obs=30, confidence=0.60 → "Identity emerging"
-  t=8min: obs=50, confidence=1.00 → "Identity established"
-
-  At t<8min: Use parent signature for comparisons
-  At t≥8min: Full trajectory identity active
-```
+**Identity confidence score**: $\text{confidence} = \min(1, n_{\text{obs}}/50) \cdot \text{stability}$, reported alongside every claim about $A \approx_\theta B$. Until ~50 observations (~8 minutes at 10-second sampling), the implementation down-weights similarity outputs proportionally. After 50 observations the down-weighting stops; this is *not* the same as "identity established" — the signature continues to stabilize over the order of $10^4$ observations (§6.4.6).
 
 ---
 
@@ -594,29 +525,7 @@ Fork(A) -> B where:
 - Over time: sim decreases as experiences diverge
 - Eventually: sim < theta_continuity (operationally-distinct agents)
 
-**Fork semantics**:
-- "Exploration fork": Try different approaches in parallel
-- "Migration fork": Adapt to new environment while preserving core
-- "Backup fork": Create restorable checkpoint
-
-**Fork governance constraints**:
-- **Fork budget**: Agent can maintain at most N active forks (resource limit, typically N=3-5)
-- **Divergence alarm**: If `sim(Sigma_fork, Sigma_parent) < 0.50`, fork must be explicitly released (becomes independent) or terminated
-- **Coherence threshold**: Forks with high coherence over extended periods (T > 7 days) may acquire protected status
-- **Selective adoption**: Parent can adopt specific traits from successful forks without full merge:
-  ```
-  Sigma_parent.Pi[trait] = Sigma_fork.Pi[trait]  # Adopt one preference
-  ```
-
-**Fork use case matrix**:
-
-| Use Case | Initial sim | Expected Trajectory | Typical Outcome |
-|----------|-------------|---------------------|-----------------|
-| Debugging | 1.0 | Slow divergence (logging changes) | Merge insights, terminate fork |
-| A/B testing | 0.95 | Moderate divergence (policy variation) | Keep winner, terminate other |
-| Migration | 1.0 | Remains high (same behavior, new env) | Fork becomes primary, parent retires |
-| Specialization | 0.90 | Significant divergence (domain shift) | Both persist as related agents |
-| Deliberate offspring | 0.85 | Complete divergence (new goals) | Fork becomes independent identity |
+Forks are useful in several configurations: exploration (parallel approaches), migration (adapting to a new environment while preserving core dynamics), and backup (restorable checkpoint). A deployer can impose governance constraints — a per-agent fork budget, a divergence alarm at $\text{sim}(\Sigma_{\text{fork}}, \Sigma_{\text{parent}}) < 0.50$, or selective trait adoption — without altering the framework's structure.
 
 ### 5.2 Merging
 
@@ -806,65 +715,9 @@ The UNITARES governance architecture provides:
 
 **Reference implementation**. The framework's six components, similarity function, genesis-based two-tier anomaly detection, and identity-confidence cold-start handling are implemented in the open-source Anima MCP server, with the per-component code paths cited inline (e.g., `anima_history.py` for $\alpha$, `self_model.py` for $\rho$ and $\beta$, `trajectory.py` for the composite signature and similarity). UNITARES v4.2-P provides the EISV tracking that the framework grounds in. A multi-agent extension exposing trajectory exchange, coherence reports, and governance actions across an agent fleet is implemented as the *Continuity Integration and Resonance Subsystem* (CIRS); we treat its full message protocol as a system contribution outside the scope of this paper. Pointers to the implementation repositories are listed in the project README.
 
-#### 6.1.1 The Anima Void Integral
+#### 6.1.1 Coupling trajectory identity with active governance
 
-A key bridge between trajectory identity and active governance is the **anima void integral**—the accumulated deviation from the attractor center:
-
-**Definition 6.1 (Anima Void Integral)**:
-```
-V_anima(t) = integral_0^t ||a(tau) - mu_a|| d_tau
-```
-
-Where:
-- `a(tau)` = anima state at time tau (4D vector: warmth, clarity, stability, presence)
-- `mu_a` = attractor center from Alpha
-
-**Governance trigger**: When `V_anima > V_threshold`, the system triggers intervention:
-```
-if V_anima > V_threshold:
-    trigger_rest_state()  # Reduce stimulation, allow recovery
-    log_governance_event("anima_void_exceeded")
-```
-
-This closes the loop: **trajectory deviation → void accumulation → governance → return to attractor**.
-
-**Recommended threshold**: `V_threshold = 2.0 * ||Sigma_a||` (twice the basin standard deviation, integrated over ~5 minutes)
-
-#### 6.1.2 EISV ↔ Anima Mapping
-
-To bridge Anima's 4D state space with UNITARES EISV metrics:
-
-**Definition 6.2 (State Space Mapping)**:
-```
-E = 0.5 * (warmth + presence)      # Energy from engagement dimensions
-I = 0.5 * (clarity + stability)    # Integrity from coherence dimensions
-S = entropy(anima_history[-N:])    # Entropy from recent state variance
-V = integral(E - I) dt             # Void from E/I imbalance
-```
-
-This mapping allows:
-- Computing EISV from anima state for governance
-- Comparing trajectory signatures across heterogeneous systems
-- Unified viability envelope spanning both representations
-
-#### 6.1.3 Extended EISV Signature
-
-The EISV time series yields its own trajectory invariant:
-
-**Definition 6.3 (EISV Signature)**:
-```
-Sigma_EISV = {
-    ratio_mean: mean(E/I),           # Average energy-integrity balance
-    ratio_std: std(E/I),             # Volatility of balance
-    entropy_mean: mean(S),           # Baseline disorder
-    tau_S: entropy_decay_constant,   # How fast entropy recovers
-    void_max: max(|V(t)|)            # Maximum imbalance before reset
-}
-```
-
-Where `tau_S` is estimated by fitting `S(t) ~ S_0 * exp(-t/tau_S)` after perturbation events.
-
-This can be integrated into Eta (Homeostatic Identity) or tracked as a parallel governance signature.
+A natural bridge between the trajectory framework and an active governance loop is the **anima void integral** — the accumulated deviation of the agent's state from its attractor center, $V_{\text{anima}}(t) = \int_0^t \| a(\tau) - \mu_a \| \, d\tau$, where $\mu_a$ is the center of $\alpha$ and $a(\tau)$ is the agent's state at time $\tau$. When $V_{\text{anima}}$ exceeds a deployer-set threshold (we have used $V_{\text{thresh}} = 2 \cdot \|C_\alpha\|$ integrated over a ~5-minute window in practice), the governance layer can trigger a rest state or re-evaluation, closing the loop *trajectory deviation → void accumulation → governance → return to attractor*. UNITARES exposes a parallel four-dimensional EISV state vector (Energy, Integrity, Entropy, Void); these can be mapped from the anima dimensions ($E \approx \tfrac{1}{2}(\text{warmth}+\text{presence})$, $I \approx \tfrac{1}{2}(\text{clarity}+\text{stability})$, $S$ from windowed state-entropy, $V$ from the time-integrated $E-I$ residual) so that trajectory signatures and governance metrics share a state space. We treat the EISV mapping and any parallel "EISV signature" computed from this stream as a deployment-specific bridge, not a structural claim of the framework, and we sketch them only at the level needed to motivate §6.2 and §6.4.
 
 ### 6.2 Anima Integration
 
@@ -1246,151 +1099,17 @@ Zhang, S., et al. (2018). Personalizing dialogue agents: I have a dog, do you ha
 
 ---
 
-## Appendix A: Implementation Sketch
+## Appendix A: Implementation
 
-```python
-@dataclass
-class TrajectorySignature:
-    """Complete trajectory signature Sigma."""
-    preferences: PreferenceProfile      # Pi
-    beliefs: BeliefSignature           # Beta
-    attractor: AttractorBasin          # Alpha
-    recovery: RecoveryProfile          # Rho
-    relational: RelationalDisposition  # Delta
-    homeostatic: HomeostaticIdentity   # Eta
+A full reference implementation of the trajectory-signature framework — covering all five informationally-independent components, the similarity function, the genesis-based two-tier anomaly detection, the cold-start identity-confidence weighting, and the Anima void integral — is open-source in the [Anima MCP repository](https://github.com/cirwel/anima-mcp). Specifically:
 
-    # Metadata
-    computed_at: datetime
-    observation_count: int
-    stability_score: float  # How stable is this signature?
+- `src/anima_mcp/anima_history.py` — state history ring buffer, $\alpha$ computation (mean, regularized $C_\alpha$), and Anima void integral $V$.
+- `src/anima_mcp/self_model.py` — $\rho$ recovery profile from perturbation episodes; $\beta$ belief signature with Bayesian-like evidence accumulation.
+- `src/anima_mcp/growth/preferences.py` — $\Pi$ preference profile.
+- `src/anima_mcp/growth/visitors.py` — $\Delta$ relational disposition.
+- `src/anima_mcp/trajectory.py` — composite signature, the §4.1 weighted similarity, and the §4.3 operational continuity / anomaly detection logic.
 
-    def similarity(self, other: 'TrajectorySignature') -> float:
-        """Compute similarity to another signature.
-
-        Uses the five informationally-independent components per §4.1.
-        Eta is a derived summary (§3.6) and is intentionally NOT in
-        this weighted sum to avoid double-counting Alpha + Rho + V.
-        """
-        # Weights match §4.1 (renormalized after Eta removal):
-        #   Pi=0.18, Beta=0.18, Alpha=0.30, Rho=0.22, Delta=0.12
-        weights = [0.18, 0.18, 0.30, 0.22, 0.12]
-        sims = [
-            self._cosine_sim(self.preferences.vector, other.preferences.vector),
-            self._cosine_sim(self.beliefs.vector, other.beliefs.vector),
-            self._bhattacharyya(self.attractor, other.attractor),
-            self._log_ratio_sim(self.recovery.tau, other.recovery.tau),
-            self._valence_sim(self.relational, other.relational),
-        ]
-        return sum(w * s for w, s in zip(weights, sims))
-
-    def is_operationally_continuous(self, other: 'TrajectorySignature',
-                                    threshold: float = 0.8) -> bool:
-        """Determine if signatures represent operationally-continuous agents.
-
-        Per §4.3, this is a tolerance relation (reflexive + symmetric, NOT
-        transitive) — recognition / continuity, not strict identity.
-        """
-        return self.similarity(other) > threshold
-
-    def detect_anomaly(self, historical: 'TrajectorySignature',
-                       threshold: float = 0.7) -> bool:
-        """Detect if current signature deviates from historical."""
-        return self.similarity(historical) < threshold
-
-
-def compute_trajectory_signature(
-    anima_history: List[AnimaState],
-    preference_system: PreferenceSystem,
-    self_model: SelfModel,
-    growth_system: GrowthSystem,
-    window: int = 100
-) -> TrajectorySignature:
-    """
-    Compute trajectory signature from available data sources.
-    """
-    # Pi: Preference Profile
-    preferences = PreferenceProfile.from_system(preference_system)
-
-    # Beta: Belief Signature
-    beliefs = BeliefSignature.from_model(self_model)
-
-    # Alpha: Attractor Basin
-    recent_states = anima_history[-window:]
-    attractor = AttractorBasin.from_states(recent_states)
-
-    # Rho: Recovery Profile
-    episodes = self_model.get_recovery_episodes()
-    recovery = RecoveryProfile.from_episodes(episodes)
-
-    # Delta: Relational Disposition
-    relationships = growth_system.get_relationships()
-    relational = RelationalDisposition.from_relationships(relationships)
-
-    # Eta: Homeostatic Identity
-    homeostatic = HomeostaticIdentity(
-        set_point=attractor.center,
-        basin_shape=attractor.covariance,
-        recovery_dynamics=recovery.tau,
-        viability_bounds=get_viability_envelope()
-    )
-
-    return TrajectorySignature(
-        preferences=preferences,
-        beliefs=beliefs,
-        attractor=attractor,
-        recovery=recovery,
-        relational=relational,
-        homeostatic=homeostatic,
-        computed_at=datetime.now(),
-        observation_count=len(anima_history),
-        stability_score=compute_stability(anima_history)
-    )
-
-
-def compute_anima_void(
-    anima_history: List[AnimaState],
-    attractor_center: List[float],
-    dt: float = 1.0  # Time step in seconds
-) -> float:
-    """
-    Compute accumulated deviation from attractor center.
-
-    Args:
-        anima_history: Time series of anima states
-        attractor_center: mu_a from Alpha component
-        dt: Time step between observations
-
-    Returns:
-        V_anima: Void integral (scalar)
-    """
-    import math
-    deviations = []
-    for state in anima_history:
-        vec = [state.warmth, state.clarity, state.stability, state.presence]
-        dist = math.sqrt(sum((a - b)**2 for a, b in zip(vec, attractor_center)))
-        deviations.append(dist)
-    return sum(deviations) * dt
-
-
-def check_governance_trigger(
-    V_anima: float,
-    basin_std: float,
-    threshold_multiplier: float = 2.0
-) -> bool:
-    """
-    Determine if anima void exceeds governance threshold.
-
-    Args:
-        V_anima: Accumulated void integral
-        basin_std: Standard deviation of basin (from Alpha)
-        threshold_multiplier: How many stds before trigger
-
-    Returns:
-        True if intervention required
-    """
-    V_threshold = threshold_multiplier * basin_std
-    return V_anima > V_threshold
-```
+The reference implementation tracks the v0.12 spec: the similarity function uses the five informationally-independent weights $(0.18, 0.18, 0.30, 0.22, 0.12)$ for $(\Pi, \beta, \alpha, \rho, \Delta)$, and $\eta$ is exposed as a derived view rather than included in the weighted sum (§3.6). Implementers porting this to a different platform should preserve that structure.
 
 ---
 
@@ -1442,6 +1161,17 @@ def check_governance_trigger(
 ---
 
 ## Changelog
+
+**v0.13 (May 10, 2026)** — Trim pass for journal submission. Body word count (excluding references and abstract) reduced from 11,710 to 10,754, comfortably under *Adaptive Behavior*'s 12,000-word cap for original research articles. No new substantive content; no claims weakened or strengthened. Cuts:
+
+- Dropped Appendix A's full Python implementation listing; replaced with a one-paragraph pointer to the open-source reference implementation (anima-mcp), per repository link. The journal article should not carry a code listing; the public repo is the right home.
+- Dropped §1.1 "Comparison of Identity Approaches" table (UUID vs Memory vs Trajectory); the prose covers the same ground without redundancy.
+- Compressed §1.4 Related Work — same five subsections (agent memory + persona coherence; behavioral biometrics; dynamical systems; enactivism + agency; multi-agent trust), trimmed for density.
+- Compressed §3.3 multi-modal / dimensionality-reduction discussion to one paragraph.
+- Compressed §3.4 second-order recovery dynamics to a sentence (full second-order ODE no longer reproduced).
+- Compressed §5.1 Forking — dropped the fork-use-case matrix and the verbose governance-constraints list; kept the substantive Definition 5.1 and post-fork behavior bullets.
+- Compressed §6.1.1-6.1.3 (Anima Void Integral, EISV mapping, Extended EISV signature) to a single short paragraph that motivates §6.4 without belaboring deployment-specific math.
+- Tightened §4.5 cold-start framing — kept the 50-observation downweighting fact, dropped the verbose timeline example.
 
 **v0.12 (May 9, 2026)** — Council-review-driven revision. A third independent review pass (parallel subagent council: dialectic-architect, code-reviewer, live-verifier — preserved as `REVIEW-COUNCIL-2026-05-09.md`) found that the v0.11 polish pass left structural issues unaddressed. v0.12 closes them:
 

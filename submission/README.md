@@ -23,36 +23,28 @@ Materials for submitting *Trajectory Identity: A Mathematical Framework for Enac
 - **Mandatory AI-use disclosure** at submission.
 - **Three to five suggested reviewers**.
 
-## Decision still required (operator action)
+## Manuscript size — now within journal limits
 
-The current manuscript variants in this repo do **not** match the journal's word-count band:
+`TRAJECTORY_IDENTITY_PAPER.md` (v0.13, the canonical paper) was trimmed for journal submission and now sits at **~10,754 body words** (excluding the 213-word abstract, ~585 words of references, and the repository-only changelog). This fits comfortably within *Adaptive Behavior*'s 6,000–12,000-word band for original research articles. The trim removed only redundant or implementation-specific content (Appendix A's Python listing, the §1.1 redundant comparison table, §6.1.1-6.1.3 deployment-specific math); no claims were weakened or strengthened. See the v0.13 entry in the paper's Changelog for full diff.
 
-- `TRAJECTORY_IDENTITY_PAPER.md` (long form) — 13,704 words. Above the 12,000 cap. Needs ~1,700 words trimmed.
-- `TRAJECTORY_IDENTITY_WORKSHOP.md` (workshop variant) — 4,029 words. Below the 6,000 floor. Needs ~2,000 words expanded.
+The workshop variant (`TRAJECTORY_IDENTITY_WORKSHOP.md`, ~4,000 words) is below the journal's 6,000-word floor and is **not** the right submission unit; it's the conference-workshop unit.
 
-**Three reasonable paths:**
-
-1. **Trim the long form** to ~12,000 words. Preserves the full theoretical apparatus and empirical reporting. Cuts: condense §5 operational semantics, abridge §6.1 implementation pointers, drop Appendix A code listing (point at the public repo instead), trim some of the §1.4 Related Work.
-2. **Expand the workshop variant** to ~7,000-8,000 words. Lift §3.1 identity-as-coupling, §2.4 expressive-sufficiency justification, §4.3 operational-continuity reframe, and the §5.5 adversarial-considerations material from the long form into the workshop frame.
-3. **Hybrid: workshop variant + select long-form sections**. Use the workshop variant as the spine, lift §6.4 (empirical), §3.1 (identity-as-coupling), §5.5 (adversarial) into it. Roughly equivalent to path 2 but more curated.
-
-Path 1 is fastest; path 2/3 produces a tighter manuscript at the cost of more editing.
+**Use the canonical paper (v0.13) as the journal submission manuscript.** Strip the Changelog section before uploading (it's a repo artifact); the rest is journal-ready prose.
 
 ## Pre-submission checklist (operator)
 
-- [ ] Choose manuscript variant (paths 1, 2, or 3 above) and produce a `journal_manuscript.md` (or `.tex`).
-- [ ] Convert to SAGE format (Word or SAGE LaTeX template).
-- [ ] Verify abstract is exactly 250 words or under.
-- [ ] Run a final word-count check against journal limits.
-- [ ] Compile final PDF for submission.
+- [ ] Strip the Changelog section from the canonical `TRAJECTORY_IDENTITY_PAPER.md` to produce the submission manuscript (everything else is journal-ready as-is).
+- [ ] Convert to SAGE format. Easiest path: pandoc to LaTeX with the SAGE Overleaf template, OR pandoc to Word for direct submission.
+- [ ] Verify abstract is ≤ 250 words (currently 213; ✓).
+- [ ] Compile final PDF for submission (use `scripts/build_pdf.sh` or the SAGE LaTeX template's compile chain).
 - [ ] Fill out the SAGE submission portal:
   - [ ] Manuscript file
-  - [ ] Cover letter (`cover_letter.md` content)
-  - [ ] AI-use disclosure (`ai_use_disclosure.md` content; or paste into the portal's AI-disclosure field)
-  - [ ] 3-5 suggested reviewers (cover letter has 5; pick the 3 most-directly-relevant)
+  - [ ] Cover letter (paste from `cover_letter.md`)
+  - [ ] AI-use disclosure (paste from `ai_use_disclosure.md` into the portal's AI-disclosure field, or upload as supplementary)
+  - [ ] 3-5 suggested reviewers (cover letter lists 5: Froese, Di Paolo, Barandiaran, Ikegami, Beer; pick the 3 most-directly-relevant)
   - [ ] Author affiliation: "Independent Researcher, CIRWEL Systems"
   - [ ] ORCID: 0009-0006-7544-2374
-  - [ ] Acknowledgments section if needed
+  - [ ] Acknowledgments section: thank the human and AI reviewers per the Codex and council review files
 - [ ] Submit.
 
 ## What happens after submission
