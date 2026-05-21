@@ -2,7 +2,7 @@
 
 **A Mathematical Framework for Enactive AI Self-Hood**
 
-[![DOI](https://zenodo.org/badge/1233972561.svg)](https://doi.org/10.5281/zenodo.20098168)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20098168.svg)](https://doi.org/10.5281/zenodo.20098168)
 [![License: CC BY 4.0](https://img.shields.io/badge/License-CC_BY_4.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
 [![Status: Draft](https://img.shields.io/badge/status-draft%20v0.13-orange.svg)](./TRAJECTORY_IDENTITY_PAPER.md)
 
