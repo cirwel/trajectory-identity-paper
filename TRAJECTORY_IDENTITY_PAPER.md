@@ -1,9 +1,9 @@
 # Trajectory Identity: A Mathematical Framework for Enactive AI Self-Hood
 
 **Authors:** Kenny Wang, Independent Researcher (founder@cirwel.org)
-**Date:** May 2026
+**Date:** June 2026
 **Status:** Working Draft
-**Version:** 0.13
+**Version:** 0.13.1
 
 ---
 
@@ -1161,6 +1161,8 @@ The reference implementation tracks the v0.12 spec: the similarity function uses
 ---
 
 ## Changelog
+
+**v0.13.1 (June 2, 2026)** — Metadata and cover-surface reconciliation; no body or claim changes. Corrected the observation count to ~226,029 on cover surfaces (a slightly later snapshot than the earlier 226,093; the ~64-observation difference affects no §6.4 finding). Repointed the README's empirical pointer from §7 to §6.4, and softened "validation" to "single-agent observation report" on the README/CITATION surfaces to match the §6.4 body. Re-deposited so the Zenodo record description matches the manuscript; rebuilt the PDF from the v0.13 source (the archived PDF had lagged at v0.12).
 
 **v0.13 (May 10, 2026)** — Trim pass for journal submission. Body word count (excluding references and abstract) reduced from 11,710 to 10,754, comfortably under *Adaptive Behavior*'s 12,000-word cap for original research articles. No new substantive content; no claims weakened or strengthened. Cuts:
 

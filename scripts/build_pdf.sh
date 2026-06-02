@@ -44,9 +44,10 @@ pandoc "${INPUT}" \
   -V urlcolor=blue \
   -V toc \
   -V toc-depth=2 \
+  -V header-includes='\catcode`\→=\active \def→{\ensuremath{\rightarrow}}' \
   --metadata title="${TITLE}" \
   --metadata author="Kenny Wang" \
-  --metadata date="May 2026 — Working Draft ${VERSION} — DOI ${DOI}" \
+  --metadata date="June 2026 — Working Draft ${VERSION} — DOI ${DOI}" \
   -o "${OUTPUT}"
 
 echo "Built ${OUTPUT} ($(du -h "${OUTPUT}" | awk '{print $1}'))"
