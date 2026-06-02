@@ -17,7 +17,7 @@ identifiers:
     description: "Concept DOI (auto-resolves to latest version)"
   - type: doi
     value: "10.5281/zenodo.20098169"
-    description: "Version DOI for v0.11.1"
+    description: "Version DOI for the v0.11.1 deposit (superseded; the concept DOI above resolves to the current version)"
 license: CC-BY-4.0
 abstract: >
   Current approaches to AI agent identity rely on static identifiers (UUIDs,
@@ -40,11 +40,11 @@ abstract: >
   hijacking, and (4) inter-agent recognition based on behavioral signatures
   rather than credentials.
 
-  We validate the framework on Lumen, an embodied AI agent running
-  continuously on a Raspberry Pi 4, over 65 days and 226,093 state
+  We ground the framework on Lumen, an embodied AI agent running
+  continuously on a Raspberry Pi 4, over 65 days and ~226,029 state
   observations. The empirical scope is single-agent (within-agent stability
-  established; between-agent discriminability is part of the experimental
-  agenda).
+  observed; between-agent discriminability is part of the experimental
+  agenda, not yet run).
 keywords:
   - AI agent identity
   - trajectory signature
