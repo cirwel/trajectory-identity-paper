@@ -6,6 +6,8 @@
 [![License: CC BY 4.0](https://img.shields.io/badge/License-CC_BY_4.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
 [![Status: Draft](https://img.shields.io/badge/status-draft%20v0.13-orange.svg)](./TRAJECTORY_IDENTITY_PAPER.md)
 
+> **Plain-language summary.** What makes an AI agent recognizably itself isn't its UUID, its credentials, or its saved memory — it's the way it behaves over time. Recurrent patterns of attention, recovery from interruption, preferences across similar situations. This paper formalizes that intuition: identity as the *dynamical signature* of a running agent, computed from time-series of internal state. The result is an observability-grounded framework for "is this still the same agent?" that doesn't rely on credentials, and detects impersonation differently than ordinary drift. Validated on a long-running embodied AI agent (Lumen) over 65 days and ~226,000 observations.
+
 
 
 - 📄 [`TRAJECTORY_IDENTITY_PAPER.md`](./TRAJECTORY_IDENTITY_PAPER.md) — main paper, working draft v0.13 (~10,754 body words; trimmed for journal submission)
