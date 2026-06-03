@@ -7,8 +7,8 @@ authors:
     given-names: Kenny
     affiliation: "CIRWEL Systems"
     orcid: "https://orcid.org/0009-0006-7544-2374"
-date-released: 2026-06-02
-version: "v0.13.1"
+date-released: 2026-06-03
+version: "v0.14"
 doi: "10.5281/zenodo.20098168"
 url: "https://github.com/cirwel/trajectory-identity-paper"
 identifiers:
@@ -42,9 +42,10 @@ abstract: >
 
   We ground the framework on Lumen, an embodied AI agent running
   continuously on a Raspberry Pi 4, over 65 days and ~226,029 state
-  observations. The empirical scope is single-agent (within-agent stability
-  observed; between-agent discriminability is part of the experimental
-  agenda, not yet run).
+  observations. The empirical scope is primarily single-agent (within-agent
+  stability observed); a first multi-agent pilot (Section 6.5) adds
+  significant between-agent discrimination across four resident agents within
+  one operator's ecosystem — not yet externally validated.
 keywords:
   - AI agent identity
   - trajectory signature

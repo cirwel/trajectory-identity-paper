@@ -4,9 +4,9 @@
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20098168.svg)](https://doi.org/10.5281/zenodo.20098168)
 [![License: CC BY 4.0](https://img.shields.io/badge/License-CC_BY_4.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
-[![Status: Draft](https://img.shields.io/badge/status-draft%20v0.14%20(unreleased)-orange.svg)](./TRAJECTORY_IDENTITY_PAPER.md)
+[![Status: Archived](https://img.shields.io/badge/status-v0.14%20archived-blue.svg)](./TRAJECTORY_IDENTITY_PAPER.md)
 
-> **Plain-language summary.** What makes an AI agent recognizably itself isn't its UUID, its credentials, or its saved memory — it's the way it behaves over time. Recurrent patterns of attention, recovery from interruption, preferences across similar situations. This paper formalizes that intuition: identity as the *dynamical signature* of a running agent, computed from time-series of internal state. The result is an observability-grounded framework for "is this still the same agent?" that doesn't rely on credentials, and detects impersonation differently than ordinary drift. Grounded in 65 days of pilot observations from one long-running embodied AI agent (Lumen, ~226,000 readings) — single-agent evidence for within-agent stability; the multi-agent test that would confirm the cross-agent discrimination claims is still ahead.
+> **Plain-language summary.** What makes an AI agent recognizably itself isn't its UUID, its credentials, or its saved memory — it's the way it behaves over time. Recurrent patterns of attention, recovery from interruption, preferences across similar situations. This paper formalizes that intuition: identity as the *dynamical signature* of a running agent, computed from time-series of internal state. The result is an observability-grounded framework for "is this still the same agent?" that doesn't rely on credentials, and detects impersonation differently than ordinary drift. Grounded in 65 days of pilot observations from one long-running embodied AI agent (Lumen, ~226,000 readings) — single-agent evidence for within-agent stability — plus a first multi-agent pilot (§6.5) that significantly discriminates four agents within one operator's ecosystem; external validation is still ahead.
 
 
 
@@ -42,11 +42,11 @@ Three structural moves:
 
 ## Empirical grounding
 
-§6.4 is a single-agent observation report on **Lumen** — an embodied AI agent on a Raspberry Pi 4, in continuous operation since January 2026 — ~226,029 state observations over 65 calendar days (47 active days with ≥100 samples each). The attractor center $\mu$ shows between-window variance below 0.015 across all four anima dimensions: pilot evidence consistent with *within-agent* quasi-invariance. This is explicitly **not** a multi-agent validation — the framework's discrimination claims require the experiments in §7.2 (Research Agenda), which have not yet been run.
+§6.4 is a single-agent observation report on **Lumen** — an embodied AI agent on a Raspberry Pi 4, in continuous operation since January 2026 — ~226,029 state observations over 65 calendar days (47 active days with ≥100 samples each). The attractor center $\mu$ shows between-window variance below 0.015 across all four anima dimensions: pilot evidence consistent with *within-agent* quasi-invariance. §6.4 is itself single-agent; the framework's discrimination claims are addressed by **§6.5**, a first multi-agent pilot — significant discrimination across four resident agents within one operator's ecosystem (the first direct evidence for the discrimination criterion), with independent-operator/harness validation still in the research agenda (§7.2).
 
 ## Status
 
-Working draft **v0.14** (June 2026), repository state — **unreleased**. The latest *archived* version is **v0.13.1**; cite that. The concept DOI [10.5281/zenodo.20098168](https://doi.org/10.5281/zenodo.20098168) auto-resolves to the latest archived version (currently v0.13.1, predating §6.5). v0.14 adds §6.5, a first multi-agent discrimination pilot. See [`HANDOFF.md`](./HANDOFF.md) for remaining follow-ups (workshop-variant backport; escalating the discrimination study beyond a single operator's fleet).
+Working draft **v0.14** (June 2026), archived on Zenodo. The concept DOI [10.5281/zenodo.20098168](https://doi.org/10.5281/zenodo.20098168) auto-resolves to the latest archived version (now **v0.14**, which adds §6.5, a first multi-agent discrimination pilot). See [`HANDOFF.md`](./HANDOFF.md) for remaining follow-ups (workshop-variant backport; escalating the discrimination study beyond a single operator's fleet).
 
 **Citation:** see [`CITATION.cff`](./CITATION.cff) for full metadata. The Zenodo concept DOI (auto-resolves to the latest archived version) is `10.5281/zenodo.20098168`.
 
