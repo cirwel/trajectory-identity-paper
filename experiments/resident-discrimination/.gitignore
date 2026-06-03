@@ -1,0 +1,9 @@
+# Raw production state rows — never publish (synthetic_states.csv is the releasable stand-in)
+resident_states.csv
+# Raw production scatter (40k individual states) — fig1b_density.png is the aggregate replacement
+fig1_state_space.png
+# Internal review scaffolding — superseded by §6.5 in the manuscript
+DRAFT-subsection.md
+__pycache__/
+*.pyc
+.unitares/

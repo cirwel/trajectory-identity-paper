@@ -3,7 +3,7 @@
 **Authors:** Kenny Wang, Independent Researcher (founder@cirwel.org)
 **Date:** June 2026
 **Status:** Working Draft
-**Version:** 0.13.1
+**Version:** 0.14
 
 ---
 
@@ -144,7 +144,7 @@ Each component captures a different aspect of "how this agent tends to be."
 
 ### 2.4 Justification of the Component Decomposition
 
-A natural objection is: why these components? Why not fewer, or more? Two prior versions of this section answered with a *minimality argument* — claiming that each component preserves an identity-distinction that the framework would otherwise lose. A third independent reviewer pass identified that argument as load-bearingly weaker than it looked: the discriminability claim it relies on requires multi-agent experiments that this paper has not yet run (§7.2 Experiment 2). We have rewritten this section to claim only what we can defend: *expressive sufficiency* under the theoretical stack, not minimality in the formal sense.
+A natural objection is: why these components? Why not fewer, or more? Two prior versions of this section answered with a *minimality argument* — claiming that each component preserves an identity-distinction that the framework would otherwise lose. A third independent reviewer pass identified that argument as load-bearingly weaker than it looked: the discriminability claim it relies on requires multi-agent experiments at a depth this paper does not reach — §6.5 reports a first discrimination pilot, but it uses the full reduced signature and does not test component *necessity* (ablation), which is what a minimality claim would require (§7.2 Experiment 2). We have rewritten this section to claim only what we can defend: *expressive sufficiency* under the theoretical stack, not minimality in the formal sense.
 
 **Theoretical anchoring**: each component captures a specific commitment in the autopoiesis / free-energy / 4E-cognition stack. The decomposition spans the phenomena §3 sets out to characterize.
 
@@ -374,7 +374,7 @@ w_i = (1 / var_i) / sum(1 / var_j for all j)
 ```
 Where var_i = historical variance of component i's similarity scores.
 
-**Caveat on inverse-variance weighting**: a stable but uninformative component (a "nuisance variable" that happens not to vary across agents) would dominate this weighting and degrade discriminability; conversely, a volatile but discriminative component would be down-weighted exactly when it is most useful. The principled fix is to weight by *informativeness* (e.g., Fisher information of the component about agent identity, estimated from a multi-agent corpus), not by stability. We include the inverse-variance scheme as a deployable heuristic for single-agent self-monitoring, where stability and identity-relevance are correlated; we flag it as inadequate for multi-agent discrimination, which is part of the future-work agenda (§7.2).
+**Caveat on inverse-variance weighting**: a stable but uninformative component (a "nuisance variable" that happens not to vary across agents) would dominate this weighting and degrade discriminability; conversely, a volatile but discriminative component would be down-weighted exactly when it is most useful. The principled fix is to weight by *informativeness* (e.g., Fisher information of the component about agent identity, estimated from a multi-agent corpus), not by stability. We include the inverse-variance scheme as a deployable heuristic for single-agent self-monitoring, where stability and identity-relevance are correlated; we flag it as inadequate for multi-agent discrimination, which is part of the future-work agenda (§7.2). *Note (added v0.14):* a first multi-agent pilot (§6.5) did not bear this conjecture out — on that corpus inverse-variance weighting matched equal weighting while the Fisher-information scheme underperformed to near chance. We retain the original reasoning here as a hypothesis and revisit it in §6.5 pending a larger corpus.
 
 **Heuristic interpretation** (single-agent self-monitoring only):
 - Highly stable components (low var) → high weight (these are what is reliably trackable for *this* agent)
@@ -852,7 +852,103 @@ The implementation reaches its full identity-confidence weight at 50 observation
 | Operational continuity from genesis | **Observed for 2 of 5 components** | sim(Beta) = 0.933, sim(Alpha) = 0.805 over 20 days |
 | Implementation reaches full confidence weight at 50 obs | **Observed** | Stops down-weighting at 50 obs; not the same as "identity established" |
 
-These five observations are pilot evidence consistent with the framework's *within-agent* claims. They do not address the framework's *between-agent* claims (discrimination, false-positive rate, threshold calibration), which require multi-agent experiments not yet run.
+These five observations are pilot evidence consistent with the framework's *within-agent* claims. They do not, on their own, address the framework's *between-agent* claims (discrimination, false-positive rate, threshold calibration); §6.5 reports a first multi-agent pilot that begins to.
+
+### 6.5 Multi-agent discrimination: a first pilot
+
+§6.4 established within-agent stability for a single agent. The framework's
+defining claim, however, is *discrimination* (Definition 2.3, criterion 2): that
+distinct agents carry distinguishable signatures. This subsection reports a first
+test on existing fleet telemetry.
+
+**Substrate.** Definition 2.3's signature is computed from a state time-series; it
+is not specific to the anima sensorimotor channel of §6.4 (cf. the operational
+stance in §3, where the components are projections of a state series). We use this
+here: the four agents below share only the UNITARES governance state plus the
+scalar $\phi$, so we compute the signature on the five-dimensional state
+$\mathbf{x} = (E, I, S, V, \phi)$, estimating the subset of $\Sigma$ a raw state
+series supports — $\alpha$ (state-distribution: per-dimension mean and spread),
+$\rho$ (recovery: per-dimension lag-1 autocorrelation), and $\Delta$ (relational:
+inter-dimension correlation), a 25-dimensional reduced signature. The $\Pi$,
+$\beta$, and $\eta$ components are omitted (they require per-agent channels the
+software agents lack). That the construction applies unchanged to non-embodied
+agents is itself evidence for the signature's generality.
+
+**Data.** Four resident agents under continuous governance, real (non-synthetic)
+check-ins over 60 days, $N = 40{,}929$ states, no missing $E/\phi$:
+
+| Agent | Role | Check-ins | Span (days) |
+|---|---|---:|---:|
+| Lumen | embodied (Raspberry Pi) | 21,306 | 56 |
+| Sentinel | continuous fleet monitor | 12,950 | 52 |
+| Watcher | event-driven (edit hook) | 4,281 | 38 |
+| Vigil | periodic janitorial cron | 2,392 | 57 |
+
+Marginally the three software residents overlap on every coordinate (integrity
+0.69–0.71, entropy 0.20–0.22): they are *not* separable from any single
+dimension's distribution. Discrimination, if present, must come from the
+signature's joint and temporal structure.
+
+**Method.** Each agent's series is segmented into non-overlapping windows of 150
+check-ins; we compute the reduced signature per window and standardize features
+globally. Recognition uses the §5 primitive — nearest-reference-signature
+matching, as nearest class centroid in signature space. Train/test is a *temporal*
+split (each agent's earliest 70% of windows train, latest 30% test) to bar
+adjacent-window leakage; significance is a 2000-iteration label-permutation null.
+
+**Result.** The signature discriminates well above chance:
+
+| Metric | Accuracy | Chance | Permutation $p$ |
+|---|---:|---:|---:|
+| Four-way | 71% | 25% | $< 0.0001$ |
+| Three software residents (overlapping marginals) | 60% | 33% | $0.012$ |
+
+| Per-agent recall (equal-weight centroid) | |
+|---|---|
+| Lumen 81% · Watcher 78% · Sentinel 62% | Vigil 20% (5 test windows — under-powered) |
+
+The result survives the harder three-software-resident restriction and is not
+carried by one agent. It is robust to window size (software-subset accuracy
+52–60% for windows of 100–200) and the similarity primitive *outperforms* a
+RandomForest reference (71/60 vs. 63/52) — the discriminative information is
+accessible to similarity matching, not only to a trained classifier. The most
+informative components are the *spreads* of integrity and entropy and the
+autocorrelation of entropy ($\mathrm{std}\,I$, $\mathrm{std}\,S$,
+$\mathrm{ar1}\,S$): agents are distinguished by how their state *moves*, not where
+it rests — consistent with the framework's central premise.
+
+**A correction to §4.1.** §4.1 conjectures that informativeness (Fisher) weighting
+is the principled fix for discrimination and flags inverse-variance weighting as
+inadequate for it. On this corpus the ordering inverts (software-subset accuracy):
+
+| Weighting | Accuracy |
+|---|---:|
+| equal | 60% |
+| inverse-within-variance *(§4.1 calls this inadequate)* | 57% |
+| $\sqrt{F}$ | 38% |
+| Fisher ($F$-statistic) *(§4.1's "principled fix")* | 32% (≈ chance) |
+
+A direct informativeness weighting concentrates on a few high-$F$ features and
+discards complementary signal spread across the rest; equal and inverse-variance
+weighting retain it. We report this as a finding, noting that "Fisher information
+of the component" admits estimators other than the ANOVA $F$-statistic used here
+(the result is robust across $F$ and $\sqrt{F}$); §4.1 should be revisited once a
+larger agent corpus is available.
+
+**Scope and limitations.** This is a *within-ecosystem* pilot. The four agents
+belong to one operator's fleet and are scored by the same governance
+instrumentation that defines the signature, so it cannot rule out
+shared-instrumentation structure — it is suggestive of discriminability, not
+independent validation. The substrate is the governance state, not the anima
+sensorimotor state of §6.4, and the reduced signature omits three of six
+components. Vigil is under-powered. Upgrading this from pilot to validation
+requires agents drawn from independent operators or harnesses, a pre-registered
+protocol, and the full signature where the channels exist (§7.2 Experiment 2).
+We therefore claim only that trajectory signatures carry *significant,
+similarity-accessible* agent-identifying structure across four heterogeneous
+deployed agents — the first direct evidence for the discrimination criterion of
+Definition 2.3, enough to retire the "entirely untested" framing without
+overstating what a single fleet can establish.
 
 ---
 
@@ -887,10 +983,16 @@ These five observations are pilot evidence consistent with the framework's *with
 - Track Sigma over time, measure stability
 - Identify convergence criteria
 
-**Experiment 2: Discrimination Study**
+**Experiment 2: Discrimination Study** *(partially executed — see §6.5)*
 - Create agents with controlled differences
 - Measure sim(Sigma_i, Sigma_j) for all pairs
 - Determine separability
+
+§6.5 reports a first pass on existing fleet telemetry (four heterogeneous agents,
+significant discrimination on the governance substrate). The remaining work is to
+escalate beyond a single operator's ecosystem — independent operators or harnesses
+and a pre-registered protocol — and to extend from the reduced governance-state
+signature to the full anima-state signature where the channels exist.
 
 **Experiment 3: Fork Divergence Study**
 - Fork agents, place in different environments
@@ -972,7 +1074,7 @@ This framework suggests a shift in how we think about AI identity:
 
 **Legitimate phase transitions and multi-modal identity**: The framework as defined in §3 assumes that each agent has *one* identity-relevant attractor. Real agents often have legitimate phase transitions — sleep/wake cycles, work/leisure modes, distinct conversational personas, planned migrations between deployments. These produce trajectories that *look like* drift or anomaly under the §5.3 detector but are part of the agent's intended behavior. §3.3 sketches the Gaussian-Mixture-Model extension for multi-modal attractors, but the operational semantics in §5 (forking, merging, anomaly detection) do not yet handle scheduled phase transitions explicitly. A deployment with predictable phases would need to either (a) condition the signature on phase context, (b) maintain per-phase signatures and check the right one, or (c) accept higher false-positive rates at phase boundaries. Working through this carefully is part of the multi-modal extension we leave for future work (§8.5).
 
-**Single-agent empirical scope**: §6.4 reports observations from a single embodied agent (Lumen). The within-agent stability observations (var($\mu$), recovery characterization, partial belief convergence) are pilot evidence consistent with the framework's claims for *that agent*. The *between-agent* claims of the framework — that trajectory signatures can discriminate distinct agents, that the operational continuity threshold has a defensible operating point — require multi-agent experiments that have not yet been run. The §7.2 experimental program is designed precisely to fill this gap; until it is executed, claims about discriminability rest on the framework's structure rather than on data.
+**Single-agent empirical scope**: §6.4 reports observations from a single embodied agent (Lumen). The within-agent stability observations (var($\mu$), recovery characterization, partial belief convergence) are pilot evidence consistent with the framework's claims for *that agent*. The *between-agent* claims of the framework — that trajectory signatures can discriminate distinct agents, that the operational continuity threshold has a defensible operating point — were previously untested. §6.5 now reports a first multi-agent discrimination pilot: significant discrimination across four heterogeneous agents, but within a single operator's ecosystem and on the governance substrate rather than the anima state. The threshold-calibration claim remains untested. Discriminability therefore rests on a first body of data *as well as* on the framework's structure; full validation — independent operators or harnesses, a pre-registered protocol — remains future work (§7.2).
 
 ### 8.4 Failure Modes
 
@@ -1161,6 +1263,8 @@ The reference implementation tracks the v0.12 spec: the similarity function uses
 ---
 
 ## Changelog
+
+**v0.14 (June 3, 2026)** — Added §6.5, a first multi-agent discrimination pilot (the headline gap §6.4/§7.2/§8.3 had flagged as untested). On four heterogeneous resident agents over 40,929 governance check-ins, the reduced trajectory signature discriminates significantly (four-way 71%, p<0.0001; three overlapping software residents 60%, p=0.012, permutation null), with the similarity primitive outperforming a supervised reference. Reframed the substrate as agnostic (the signature applies to any state time-series, here the governance EISV+φ state, not only the anima sensorimotor state). Updated §8.3 (single-agent scope), §7.2 Experiment 2 (partially executed), and §4.1 (its informativeness-weighting conjecture is *contradicted* by the pilot — Fisher weighting underperformed to chance, inverse-variance matched equal). Honest scope: within one operator's ecosystem; not external validation. No change to §1–§5 theory.
 
 **v0.13.1 (June 2, 2026)** — Metadata and cover-surface reconciliation; no body or claim changes. Corrected the observation count to ~226,029 on cover surfaces (a slightly later snapshot than the earlier 226,093; the ~64-observation difference affects no §6.4 finding). Repointed the README's empirical pointer from §7 to §6.4, and softened "validation" to "single-agent observation report" on the README/CITATION surfaces to match the §6.4 body. Re-deposited so the Zenodo record description matches the manuscript; rebuilt the PDF from the v0.13 source (the archived PDF had lagged at v0.12).
 

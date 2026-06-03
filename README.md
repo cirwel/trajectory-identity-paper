@@ -4,14 +4,14 @@
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20098168.svg)](https://doi.org/10.5281/zenodo.20098168)
 [![License: CC BY 4.0](https://img.shields.io/badge/License-CC_BY_4.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
-[![Status: Draft](https://img.shields.io/badge/status-draft%20v0.13.1-orange.svg)](./TRAJECTORY_IDENTITY_PAPER.md)
+[![Status: Draft](https://img.shields.io/badge/status-draft%20v0.14%20(unreleased)-orange.svg)](./TRAJECTORY_IDENTITY_PAPER.md)
 
 > **Plain-language summary.** What makes an AI agent recognizably itself isn't its UUID, its credentials, or its saved memory — it's the way it behaves over time. Recurrent patterns of attention, recovery from interruption, preferences across similar situations. This paper formalizes that intuition: identity as the *dynamical signature* of a running agent, computed from time-series of internal state. The result is an observability-grounded framework for "is this still the same agent?" that doesn't rely on credentials, and detects impersonation differently than ordinary drift. Grounded in 65 days of pilot observations from one long-running embodied AI agent (Lumen, ~226,000 readings) — single-agent evidence for within-agent stability; the multi-agent test that would confirm the cross-agent discrimination claims is still ahead.
 
 
 
-- 📄 [`TRAJECTORY_IDENTITY_PAPER.md`](./TRAJECTORY_IDENTITY_PAPER.md) — main paper, working draft v0.13.1 (~10,754 body words; trimmed for journal submission)
-- 🖨 [`TRAJECTORY_IDENTITY_PAPER.pdf`](./TRAJECTORY_IDENTITY_PAPER.pdf) — compiled PDF of v0.13.1 (~30 pages); rebuild via `scripts/build_pdf.sh`
+- 📄 [`TRAJECTORY_IDENTITY_PAPER.md`](./TRAJECTORY_IDENTITY_PAPER.md) — main paper, working draft v0.14 (~11,500 body words; adds §6.5 multi-agent discrimination pilot)
+- 🖨 [`TRAJECTORY_IDENTITY_PAPER.pdf`](./TRAJECTORY_IDENTITY_PAPER.pdf) — compiled PDF of v0.14 (~32 pages); rebuild via `scripts/build_pdf.sh`
 - 📝 [`TRAJECTORY_IDENTITY_WORKSHOP.md`](./TRAJECTORY_IDENTITY_WORKSHOP.md) — workshop variant (current with v0.11 prose; needs v0.12 council-fixes backport before workshop submission)
 - 🖨 [`TRAJECTORY_IDENTITY_WORKSHOP.pdf`](./TRAJECTORY_IDENTITY_WORKSHOP.pdf) — compiled workshop PDF (stale; regenerate before submission)
 - 📋 [`HANDOFF.md`](./HANDOFF.md) — orientation for any session picking this up cold
@@ -46,7 +46,7 @@ Three structural moves:
 
 ## Status
 
-Working draft v0.13.1 (June 2026). Pre-peer-review. Archived on Zenodo with concept DOI [10.5281/zenodo.20098168](https://doi.org/10.5281/zenodo.20098168) (auto-resolves to latest version). See [`HANDOFF.md`](./HANDOFF.md) for current priorities and remaining follow-ups (workshop-variant backport, multi-agent discrimination experiment).
+Working draft **v0.14** (June 2026), repository state — **unreleased**. The latest *archived* version is **v0.13.1**; cite that. The concept DOI [10.5281/zenodo.20098168](https://doi.org/10.5281/zenodo.20098168) auto-resolves to the latest archived version (currently v0.13.1, predating §6.5). v0.14 adds §6.5, a first multi-agent discrimination pilot. See [`HANDOFF.md`](./HANDOFF.md) for remaining follow-ups (workshop-variant backport; escalating the discrimination study beyond a single operator's fleet).
 
 **Citation:** see [`CITATION.cff`](./CITATION.cff) for full metadata. The Zenodo concept DOI (auto-resolves to the latest archived version) is `10.5281/zenodo.20098168`.
 
