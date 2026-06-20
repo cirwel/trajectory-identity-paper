@@ -12,11 +12,8 @@
 
 - 📄 [`TRAJECTORY_IDENTITY_PAPER.md`](./TRAJECTORY_IDENTITY_PAPER.md) — main paper, working draft v0.14 (~11,500 body words; adds §6.5 multi-agent discrimination pilot)
 - 🖨 [`TRAJECTORY_IDENTITY_PAPER.pdf`](./TRAJECTORY_IDENTITY_PAPER.pdf) — compiled PDF of v0.14 (~32 pages); rebuild via `scripts/build_pdf.sh`
-- 📝 [`TRAJECTORY_IDENTITY_WORKSHOP.md`](./TRAJECTORY_IDENTITY_WORKSHOP.md) — workshop variant (current with v0.11 prose; needs v0.12 council-fixes backport before workshop submission)
+- 📝 [`TRAJECTORY_IDENTITY_WORKSHOP.md`](./TRAJECTORY_IDENTITY_WORKSHOP.md) — workshop variant (needs backport to current v0.14 prose before workshop submission)
 - 🖨 [`TRAJECTORY_IDENTITY_WORKSHOP.pdf`](./TRAJECTORY_IDENTITY_WORKSHOP.pdf) — compiled workshop PDF (stale; regenerate before submission)
-- 📋 [`HANDOFF.md`](./HANDOFF.md) — orientation for any session picking this up cold
-- 🔍 [`REVIEW-CODEX-2026-05-09.md`](./REVIEW-CODEX-2026-05-09.md) — independent second-reviewer pass (Codex) that drove v0.11
-- 🔍 [`REVIEW-COUNCIL-2026-05-09.md`](./REVIEW-COUNCIL-2026-05-09.md) — three-agent parallel council (dialectic-architect, code-reviewer, live-verifier) that drove v0.12
 - 🧪 [`experiments/cross-llm-discrimination/`](./experiments/cross-llm-discrimination/) — cross-LLM discrimination pilot (negative result, informs §7.3)
 - 📊 [`scripts/analysis_v0.11.1.py`](./scripts/analysis_v0.11.1.py) — reproducibility script for §6.4.1 with bootstrap CIs and AR(1) coefficients
 
@@ -46,13 +43,13 @@ Three structural moves:
 
 ## Status
 
-Working draft **v0.14** (June 2026), archived on Zenodo. The concept DOI [10.5281/zenodo.20098168](https://doi.org/10.5281/zenodo.20098168) auto-resolves to the latest archived version (now **v0.14**, which adds §6.5, a first multi-agent discrimination pilot). See [`HANDOFF.md`](./HANDOFF.md) for remaining follow-ups (workshop-variant backport; escalating the discrimination study beyond a single operator's fleet).
+Working draft **v0.14** (June 2026), archived on Zenodo. The concept DOI [10.5281/zenodo.20098168](https://doi.org/10.5281/zenodo.20098168) auto-resolves to the latest archived version (now **v0.14**, which adds §6.5, a first multi-agent discrimination pilot). Remaining follow-ups: workshop-variant backport; escalating the discrimination study beyond a single operator's fleet.
 
 **Citation:** see [`CITATION.cff`](./CITATION.cff) for full metadata. The Zenodo concept DOI (auto-resolves to the latest archived version) is `10.5281/zenodo.20098168`.
 
 ## Related work in the same line
 
-- [**UNITARES v6**](https://github.com/CIRWEL/unitares-paper-v6) ([DOI: 10.5281/zenodo.19647159](https://doi.org/10.5281/zenodo.19647159)) — *Information-Theoretic Governance of Heterogeneous Agent Fleets*. Provides the EISV state vector and class-conditional calibration this paper builds on.
+- [**UNITARES v6**](https://github.com/cirwel/unitares-paper-v6) ([DOI: 10.5281/zenodo.19647159](https://doi.org/10.5281/zenodo.19647159)) — *Information-Theoretic Governance of Heterogeneous Agent Fleets*. Provides the EISV state vector and class-conditional calibration this paper builds on.
 - **Bridge paper** (forthcoming) — late-draft companion piece linking governance (UNITARES) to identity (this paper).
 
 ## License
