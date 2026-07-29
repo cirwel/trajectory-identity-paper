@@ -1,0 +1,35 @@
+{
+  "title": "Trajectory Identity: A Mathematical Framework for Enactive AI Self-Hood",
+  "description": "<p><strong>Version 0.15 correction (2026-07-28).</strong> The multi-agent discrimination pilot reported in &sect;6.5 is marked <em>confounded</em> in this version. Evidence that arrived after the v0.14 deposit &mdash; a client migration under which one agent's production trajectory score against its own genesis signature collapsed to 0.123 and stayed flat, and a cross-agent audit finding between-agent similarity (0.63) exceeding within-agent-across-era similarity (0.12) &mdash; indicates this family of signature is dominated by era and regime rather than by individual. The &sect;6.5 figures stand as computed and are not retracted: that analysis uses a different, reduced instrument which omits two of the components later found defective. What transfers is a confound. The four agents compared in &sect;6.5 differ systematically in harness and duty cycle, and the pilot's most informative features are cadence descriptors, so separation by <em>role</em> is a live alternative explanation for the reported accuracies, and the within-era temporal split cannot exclude it. The discrimination criterion of Definition 2.3 therefore returns to open, pending a within-agent/across-harness test and a between-agent/same-harness test. No security implication: the governance write gate is credential-based and never depended on this score. Full note at the end of &sect;6.5.</p>Current approaches to AI agent identity rely on static identifiers (UUIDs, session tokens) or accumulated memory stores. We propose an alternative grounded in enactive cognition and dynamical systems theory: identity as trajectory. Rather than asking \"what ID does this agent have?\", we ask \"what patterns persist in this agent's behavior over time?\"\nWe present a mathematical framework for computing trajectory signatures from time-series data including homeostatic state, learned preferences, self-beliefs, and recovery dynamics. The trajectory signature Sigma captures the quasi-invariant characteristics that define an agent's identity — not where it is at any moment, but how it tends to behave, where it tends to rest, and how it returns from perturbation.\nThe framework addresses (1) identity continuity across sessions without unbounded memory growth, (2) principled semantics for agent forking and merging, (3) anomaly detection as trajectory deviation through an asymmetric two-tier threshold scheme that distinguishes drift from hijacking, and (4) inter-agent recognition based on behavioral signatures rather than credentials.\nWe ground the framework on Lumen, an embodied AI agent running continuously on a Raspberry Pi 4, over 65 days and ~226,029 state observations. The empirical scope is primarily single-agent (within-agent stability observed); a first multi-agent pilot (Section 6.5) adds significant between-agent discrimination across four resident agents within one operator's ecosystem — not yet externally validated.",
+  "creators": [
+    {
+      "name": "Wang, Kenny",
+      "affiliation": "CIRWEL Systems",
+      "orcid": "0009-0006-7544-2374"
+    }
+  ],
+  "upload_type": "publication",
+  "publication_type": "preprint",
+  "access_right": "open",
+  "license": "CC-BY-4.0",
+  "keywords": [
+    "AI agent identity",
+    "trajectory signature",
+    "enactive cognition",
+    "dynamical systems",
+    "autopoiesis",
+    "free-energy principle",
+    "anomaly detection",
+    "behavioral biometrics",
+    "embodied AI"
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "https://github.com/cirwel/trajectory-identity-paper/tree/paper-v0.15",
+      "relation": "isSupplementTo",
+      "resource_type": "software",
+      "scheme": "url"
+    }
+  ],
+  "notes": "v0.15 marks the §6.5 multi-agent discrimination pilot as confounded by role and harness following post-publication evidence; not a retraction. See the limitation note at the end of §6.5."
+}
