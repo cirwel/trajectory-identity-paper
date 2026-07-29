@@ -14,3 +14,4 @@
 
 # Worktrees
 .worktrees/
+.zenodo-watchdog*
