@@ -952,6 +952,55 @@ deployed agents — the first direct evidence for the discrimination criterion o
 Definition 2.3, enough to retire the "entirely untested" framing without
 overstating what a single fleet can establish.
 
+> **Post-publication limitation (added v0.15, 2026-07-28). The §6.5 result above
+> should be read as confounded until a further experiment separates agent identity
+> from agent role.**
+>
+> After v0.14 was archived, an unrelated production incident produced evidence that
+> bears on this section. On 2026-07-09 a resident agent (Lumen) was migrated from a
+> Python client to an Elixir one. Its production `lineage_similarity` score against
+> its own stored genesis signature immediately fell to 0.123 and stayed flat there
+> across 1,700+ check-ins — the same agent, same hardware, same task, reading as a
+> stranger to itself after a client change. A cross-agent audit (2026-07-24/25) then
+> found the ordering inverted for an identity measure: **between-agent similarity
+> 0.63, within-agent-across-era 0.12**, with roughly 90% of stranger pairs clearing
+> the 0.6 threshold. Component decomposition showed two of the production
+> components pinned near ceiling between strangers ($\beta$ 0.998, $\rho$ 0.995), one
+> input dead at 0% availability ($\Pi$), and $\alpha$ acting as sole discriminator —
+> and also as the component that collapses across eras.
+>
+> **This does not directly refute §6.5.** The audited quantity is the production
+> composite; §6.5 uses a different instrument — a 25-dimensional reduced signature
+> over $(E, I, S, V, \phi)$ with nearest-centroid matching and a permutation null,
+> and it *omits* $\beta$ and $\Pi$, two of the components found defective. The §6.5
+> numbers stand as computed.
+>
+> **What transfers is a confound.** The audit's central finding is that this family
+> of signature is dominated by era and regime rather than by individual. §6.5's most
+> informative features are $\mathrm{std}\,I$, $\mathrm{std}\,S$, and
+> $\mathrm{ar1}\,S$ — descriptors of how state moves, which is also how *cadence*
+> differs. The four agents in §6.5 differ systematically in harness and duty cycle:
+> embodied Raspberry Pi, continuous fleet monitor, event-driven edit hook, and
+> periodic cron. **Role-and-harness separation is therefore a live alternative
+> explanation for the 71% / 60% accuracies, and the design cannot exclude it:** the
+> temporal train/test split bars adjacent-window leakage but lies entirely within a
+> single era, and the three-software-resident restriction rules out one agent
+> carrying the result without ruling out three distinguishable cadences.
+>
+> **What would settle it**, both §7.2-class experiments: (i) a *within-agent,
+> across-harness* test — one agent deliberately migrated between clients should
+> remain self-matching, which the 2026-07-09 migration shows the production metric
+> fails; and (ii) a *between-agent, same-harness* test — distinct agents on identical
+> harnesses and duty cycles should still separate.
+>
+> Accordingly the claim above is downgraded: §6.5 evidences agent-identifying
+> structure that is **not yet separated from role and harness**, rather than direct
+> evidence for the discrimination criterion. The criterion returns to open. The
+> underlying production metric is treated as non-discriminating telemetry pending
+> rework under fresh pre-registration; it is not, and never was, load-bearing for any
+> access-control decision — the write gate is credential-based (prefix-echo binding),
+> never this score.
+
 ---
 
 ## 7. Research Agenda
