@@ -48,8 +48,11 @@ if (( now > $(cat "$DEADLINE_FILE") )); then
 fi
 
 # Health gate: only touch write endpoints when the read API is genuinely healthy.
+# curl -w always emits a code (000 on connect failure/timeout), so no `|| echo`
+# fallback — that just concatenates a second 000 and makes the log read "000000".
 code=$(curl -sS -o /dev/null -w "%{http_code}" --max-time 25 \
-  "https://zenodo.org/api/records/20098168" 2>/dev/null || echo 000)
+  "https://zenodo.org/api/records/20098168" 2>/dev/null)
+code="${code:-000}"
 if [[ "$code" != "200" ]]; then
   log "zenodo not healthy (http=$code) — waiting"
   exit 0
