@@ -15,3 +15,6 @@
 # Worktrees
 .worktrees/
 .zenodo-watchdog*
+
+# governance session scratch
+.unitares/

@@ -9,8 +9,8 @@ This file is the cold-start orientation for any session (Claude Code, Codex, hum
 | Paper | Status | Where |
 |-------|--------|-------|
 | **UNITARES v6** — *Information-Theoretic Governance of Heterogeneous Agent Fleets* | Published, [DOI: 10.5281/zenodo.19647159](https://doi.org/10.5281/zenodo.19647159), latest tag `paper-v6.9.1` | `~/projects/unitares-paper-v6/` · [github.com/CIRWEL/unitares-paper-v6](https://github.com/CIRWEL/unitares-paper-v6) |
-| **Trajectory Identity** (this repo) — *A Mathematical Framework for Enactive AI Self-Hood* | Working draft v0.9, pre-submission | `~/projects/trajectory-identity-paper/` |
-| **Bridge paper** — links governance to identity | Late draft (not in this session's reach) | TBD — when located, its references list will need updating once this paper has a DOI |
+| **Trajectory Identity** (this repo) — *A Mathematical Framework for Enactive AI Self-Hood* | **Published**, [DOI: 10.5281/zenodo.20098168](https://doi.org/10.5281/zenodo.20098168) (concept), latest tag `paper-v0.15` (2026-07-28). v0.15 marks §6.5 **confounded** — discrimination criterion back to open. | `~/projects/trajectory-identity-paper/` |
+| **Bridge paper** — links governance to identity | Late draft, **not on this filesystem** (see the closing note) | TBD — when located, update its references to cite the concept DOI above |
 
 This paper is the **load-bearing standalone**. The bridge paper cross-cites it. v6 doesn't depend on it but provides the EISV state vector and class-conditional calibration it builds on.
 
