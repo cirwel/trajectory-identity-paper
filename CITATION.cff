@@ -7,8 +7,8 @@ authors:
     given-names: Kenny
     affiliation: "CIRWEL Systems"
     orcid: "https://orcid.org/0009-0006-7544-2374"
-date-released: 2026-06-03
-version: "v0.15"
+date-released: 2026-08-14
+version: "v0.15.1"
 doi: "10.5281/zenodo.20098168"
 url: "https://github.com/cirwel/trajectory-identity-paper"
 identifiers:
