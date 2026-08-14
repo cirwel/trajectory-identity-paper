@@ -1,0 +1,43 @@
+# Reader-surface guard — the public tree carries the paper and its
+# reproducibility material, not the process that produced it.
+#
+# Two checks, same class as the unitares repo-scope guard:
+#   1. filename classes that are always internal (handoffs, AI-review records,
+#      cover letters, endorsement strategy, working notes)
+#   2. content markers of the AI-review process in tracked files
+#
+# Exemptions: _internal/ (gitignored anyway — belt and braces), .github/,
+# AI-use disclosures (their PURPOSE is describing AI involvement), and the
+# paper sources themselves (reviewed prose, not stray process files).
+#
+# Pathspec note: excludes use the long form ':(exclude)...' — the short
+# form ':!...' fails on leading underscores ("Unimplemented pathspec
+# magic"), and a failed git grep piped through '|| true' would pass this
+# guard vacuously.
+name: reader-surface-guard
+on: [push, pull_request]
+jobs:
+  guard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: no internal process artifacts on the reader surface
+        run: |
+          set -eu
+          bad=0
+          hits=$(git ls-files | grep -iE '(^|/)(HANDOFF[^/]*\.md|NOTES\.md|REVIEW-[A-Z][^/]*\.md|[^/]*cover[-_]?letter[^/]*|[^/]*endors[^/]*|[^/]*-scope\.md)$' | grep -vE '^(_internal|\.github)/' || true)
+          if [ -n "$hits" ]; then
+            echo "::error::internal-process files tracked on the reader surface:"
+            echo "$hits"
+            bad=1
+          fi
+          chits=$(git grep -lIE 'live-verifier|council pass|council fold|three-lane council' -- \
+            ':(exclude)_internal' ':(exclude).github' ':(exclude)*disclosure*' \
+            ':(exclude)TRAJECTORY_IDENTITY_PAPER.md' ':(exclude)TRAJECTORY_IDENTITY_WORKSHOP.md' \
+            ':(exclude)*.bib' || true)
+          if [ -n "$chits" ]; then
+            echo "::error::AI-review process markers in tracked files (move to _internal/ or reword):"
+            echo "$chits"
+            bad=1
+          fi
+          exit $bad
