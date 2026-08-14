@@ -1264,10 +1264,12 @@ An open-source implementation of the trajectory-signature data path — componen
 
 > **Correction (v0.16, 2026-08-14) — the linked code does not implement §4.1.** Through v0.15 this appendix stated that the reference implementation "tracks the v0.12 spec," using the five informationally-independent weights $(0.18, 0.18, 0.30, 0.22, 0.12)$ for $(\Pi, \beta, \alpha, \rho, \Delta)$ with $\eta$ exposed as a derived view rather than included in the weighted sum. **That statement was incorrect, and had been since it was written.** The `similarity()` method in `src/anima_mcp/trajectory.py` implements the pre-v0.11 six-component sum:
 >
-> | | $\Pi$ | $\beta$ | $\alpha$ | $\rho$ | $\Delta$ | $\eta$ |
+> | Weights | $\Pi$ | $\beta$ | $\alpha$ | $\rho$ | $\Delta$ | $\eta$ |
 > |---|---|---|---|---|---|---|
-> | §4.1 specification | 0.18 | 0.18 | 0.30 | 0.22 | 0.12 | *derived view; not a term* |
-> | As implemented | 0.15 | 0.15 | 0.25 | 0.20 | 0.10 | **0.15 (inside the sum)** |
+> | §4.1 specification | 0.18 | 0.18 | 0.30 | 0.22 | 0.12 | — |
+> | As implemented | 0.15 | 0.15 | 0.25 | 0.20 | 0.10 | 0.15 |
+>
+> An em dash marks $\eta$'s absence from the specified sum, where §3.6 places it as a derived view; the implementation carries it as a full sixth term.
 >
 > The $\eta$ double-counting that §3.6 identifies is therefore present in the code, and in a sharper form than §3.6 assumes: `compute_trajectory_signature()` *constructs* $\eta$ by aliasing the other components, assigning `set_point` from `attractor["center"]`, `basin_shape` from `attractor["covariance"]`, and `recovery_tau` from `recovery["tau_estimate"]`. The $\eta$ term is thus a re-weighting of $\alpha$ and $\rho$ rather than an independent measurement channel — precisely the reason §3.6 demoted it.
 >
