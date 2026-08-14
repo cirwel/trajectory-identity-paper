@@ -1,9 +1,9 @@
 # Trajectory Identity: A Mathematical Framework for Enactive AI Self-Hood
 
 **Authors:** Kenny Wang, Independent Researcher (founder@cirwel.org)
-**Date:** June 2026
+**Date:** August 2026
 **Status:** Working Draft
-**Version:** 0.14
+**Version:** 0.16
 
 ---
 
@@ -1254,15 +1254,28 @@ Zhang, S., et al. (2018). Personalizing dialogue agents: I have a dog, do you ha
 
 ## Appendix A: Implementation
 
-A full reference implementation of the trajectory-signature framework — covering all five informationally-independent components, the similarity function, the genesis-based two-tier anomaly detection, the cold-start identity-confidence weighting, and the Anima void integral — is open-source in the [Anima MCP repository](https://github.com/cirwel/anima-mcp). Specifically:
+An open-source implementation of the trajectory-signature data path — component extraction, the similarity function, genesis persistence and the two-tier anomaly-detection structure, the cold-start identity-confidence weighting, and the Anima void integral — is available in the [Anima MCP repository](https://github.com/cirwel/anima-mcp). Specifically:
 
 - `src/anima_mcp/anima_history.py` — state history ring buffer, $\alpha$ computation (mean, regularized $C_\alpha$), and Anima void integral $V$.
 - `src/anima_mcp/self_model.py` — $\rho$ recovery profile from perturbation episodes; $\beta$ belief signature with Bayesian-like evidence accumulation.
 - `src/anima_mcp/growth/preferences.py` — $\Pi$ preference profile.
 - `src/anima_mcp/growth/visitors.py` — $\Delta$ relational disposition.
-- `src/anima_mcp/trajectory.py` — composite signature, the §4.1 weighted similarity, and the §4.3 operational continuity / anomaly detection logic.
+- `src/anima_mcp/trajectory.py` — composite signature, the weighted similarity function (**see the correction below: its weights are not those of §4.1**), and the two-tier continuity / anomaly-detection logic of §4.3.
 
-The reference implementation tracks the v0.12 spec: the similarity function uses the five informationally-independent weights $(0.18, 0.18, 0.30, 0.22, 0.12)$ for $(\Pi, \beta, \alpha, \rho, \Delta)$, and $\eta$ is exposed as a derived view rather than included in the weighted sum (§3.6). Implementers porting this to a different platform should preserve that structure.
+> **Correction (v0.16, 2026-08-14) — the linked code does not implement §4.1.** Through v0.15 this appendix stated that the reference implementation "tracks the v0.12 spec," using the five informationally-independent weights $(0.18, 0.18, 0.30, 0.22, 0.12)$ for $(\Pi, \beta, \alpha, \rho, \Delta)$ with $\eta$ exposed as a derived view rather than included in the weighted sum. **That statement was incorrect, and had been since it was written.** The `similarity()` method in `src/anima_mcp/trajectory.py` implements the pre-v0.11 six-component sum:
+>
+> | | $\Pi$ | $\beta$ | $\alpha$ | $\rho$ | $\Delta$ | $\eta$ |
+> |---|---|---|---|---|---|---|
+> | §4.1 specification | 0.18 | 0.18 | 0.30 | 0.22 | 0.12 | *derived view; not a term* |
+> | As implemented | 0.15 | 0.15 | 0.25 | 0.20 | 0.10 | **0.15 (inside the sum)** |
+>
+> The $\eta$ double-counting that §3.6 identifies is therefore present in the code, and in a sharper form than §3.6 assumes: `compute_trajectory_signature()` *constructs* $\eta$ by aliasing the other components, assigning `set_point` from `attractor["center"]`, `basin_shape` from `attractor["covariance"]`, and `recovery_tau` from `recovery["tau_estimate"]`. The $\eta$ term is thus a re-weighting of $\alpha$ and $\rho$ rather than an independent measurement channel — precisely the reason §3.6 demoted it.
+>
+> **How the error arose.** The v0.12 revision corrected a Python listing that was at the time embedded in this appendix, and recorded that "the reference implementation now matches the prose." That was true of the listing. v0.13 then dropped the listing for journal word count and replaced it with the repository pointer above, carrying the "tracks the v0.12 spec" sentence across to a repository that had never been changed. The cited code was last revised for this purpose on 2026-04-03 (`ef05b77`, "Implement full six-component trajectory signature from paper") — five weeks before v0.11 demoted $\eta$.
+>
+> **Scope.** This is a defect in the appendix, not in the framework. §3.6 and §4.1 are unchanged and the five-weight specification remains the paper's claim. No empirical result depends on the linked code: §6.4 and §6.5 are computed by the standalone analysis code in `scripts/` and `experiments/resident-discrimination/`, neither of which imports `anima_mcp`. Two terminology items travelled the same route and are also uncorrected in the repository: it retains `is_same_identity()` (and a `compare_signatures()` key of the same name) where §4.3 reframes the relation as *operational continuity*, and the `similarity()` docstring still glosses $\mathrm{sim}(\Sigma_1, \Sigma_2) > \theta$ as "same identity."
+
+**Implementers should follow §3.6 and §4.1 rather than the current reference code**: use the five informationally-independent weights $(0.18, 0.18, 0.30, 0.22, 0.12)$ for $(\Pi, \beta, \alpha, \rho, \Delta)$ and expose $\eta$ as a derived view. Until the repository is brought into line, treat it as an illustration of the data plumbing — component extraction, genesis persistence, the shape of two-tier detection — and not as a normative implementation of the similarity function.
 
 ---
 
@@ -1314,6 +1327,14 @@ The reference implementation tracks the v0.12 spec: the similarity function uses
 ---
 
 ## Changelog
+
+**v0.16 (August 14, 2026)** — Correction and metadata reconciliation; no change to the framework or to any empirical result.
+
+- **Appendix A corrected.** Through v0.15 the appendix asserted that the linked reference implementation (`anima-mcp`) tracked the v0.12 spec — five informationally-independent weights with $\eta$ held out of the weighted sum. It does not, and never did: `similarity()` implements the pre-v0.11 six-component sum with $\eta$ inside it at weight 0.15, over weights $(0.15, 0.15, 0.25, 0.20, 0.10)$. The appendix now states the implemented weights, records how the false claim propagated (v0.12 corrected an embedded listing; v0.13 replaced that listing with a repository pointer and carried the "tracks the v0.12 spec" sentence across to code that had never changed), and directs implementers to §3.6/§4.1 rather than to the repository. Also noted: the repository retains `is_same_identity()` where §4.3 reframes the relation as operational continuity.
+- **Scope of that correction.** §3.6 and §4.1 are unchanged; the five-weight specification remains the paper's claim. §6.4 and §6.5 do not depend on the linked code — both are computed by standalone analysis code that does not import `anima_mcp`.
+- **Metadata reconciliation.** The v0.15 correction was applied to §6.5 but never propagated to the manuscript's own front matter or changelog: the header still read "Version: 0.14 / June 2026" and the changelog had no v0.15 entry. Both are now corrected, and the v0.15 entry below is backfilled from the §6.5 note and the release record.
+
+**v0.15 (July 28, 2026)** — Post-publication correction to §6.5; entry backfilled in v0.16. Marks the v0.14 multi-agent discrimination pilot **confounded** and returns the discrimination criterion of Definition 2.3 to *open*. After v0.14 was archived, a production incident supplied bearing evidence: on 2026-07-09 a resident agent (Lumen) was migrated from a Python client to an Elixir one, and its `lineage_similarity` against its own stored genesis fell immediately to 0.123 and stayed flat there across 1,700+ check-ins — the same agent, same hardware, same task, reading as a stranger to itself after a client change. A cross-agent audit followed. The implication for §6.5 is that the signature family is dominated by era and regime, and that the four residents differ systematically in harness and duty cycle, so separation by *role* remains a live alternative to separation by *individual*. The §6.5 figures stand as computed and are **not** retracted; what they support is narrowed. §7.2 names the two experiments that would settle it: within-agent/across-harness, and between-agent/same-harness. No security implication — the governance write gate is credential-based and never depended on this score.
 
 **v0.14 (June 3, 2026)** — Added §6.5, a first multi-agent discrimination pilot (the headline gap §6.4/§7.2/§8.3 had flagged as untested). On four heterogeneous resident agents over 40,929 governance check-ins, the reduced trajectory signature discriminates significantly (four-way 71%, p<0.0001; three overlapping software residents 60%, p=0.012, permutation null), with the similarity primitive outperforming a supervised reference. Reframed the substrate as agnostic (the signature applies to any state time-series, here the governance EISV+φ state, not only the anima sensorimotor state). Updated §8.3 (single-agent scope), §7.2 Experiment 2 (partially executed), and §4.1 (its informativeness-weighting conjecture is *contradicted* by the pilot — Fisher weighting underperformed to chance, inverse-variance matched equal). Honest scope: within one operator's ecosystem; not external validation. Also added a §5.4 scoping note ("the observation channel") distinguishing the *process-traces* on which §6.5's discrimination rests from the static *product-traces* an agent encounters in a shared workspace — bounding Definition 5.4 to deployments where the trajectory is observable, and flagging authorship-attribution-from-static-artifacts as future work; otherwise no change to §1–§5 theory.
 

@@ -4,16 +4,17 @@
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20098168.svg)](https://doi.org/10.5281/zenodo.20098168)
 [![License: CC BY 4.0](https://img.shields.io/badge/License-CC_BY_4.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
-[![Status: Archived](https://img.shields.io/badge/status-v0.15%20archived-blue.svg)](./TRAJECTORY_IDENTITY_PAPER.md)
+[![Status: Archived](https://img.shields.io/badge/status-v0.16%20archived-blue.svg)](./TRAJECTORY_IDENTITY_PAPER.md)
 [![Correction](https://img.shields.io/badge/v0.15-%C2%A76.5%20confounded-important.svg)](./TRAJECTORY_IDENTITY_PAPER.md#65-multi-agent-discrimination-a-first-pilot)
+[![Correction](https://img.shields.io/badge/v0.16-Appendix%20A%20corrected-important.svg)](./TRAJECTORY_IDENTITY_PAPER.md#appendix-a-implementation)
 
 > **Plain-language summary.** What makes an AI agent recognizably itself isn't its UUID, its credentials, or its saved memory — it's the way it behaves over time. Recurrent patterns of attention, recovery from interruption, preferences across similar situations. This paper formalizes that intuition: identity as the *dynamical signature* of a running agent, computed from time-series of internal state. The result is an observability-grounded framework for "is this still the same agent?" that doesn't rely on credentials, and detects impersonation differently than ordinary drift. Grounded in 65 days of pilot observations from one long-running embodied AI agent (Lumen, ~226,000 readings) — single-agent evidence for within-agent stability — plus a first multi-agent pilot (§6.5) that separates four agents within one operator's ecosystem above chance. **As of v0.15 that pilot is marked confounded**: later evidence indicates the signature is dominated by era and regime, and the four agents differ by role and harness, so the result does not yet establish that *individuals* — rather than *roles* — are what is being told apart. External validation is still ahead.
 
 
 
-- 📄 [`TRAJECTORY_IDENTITY_PAPER.md`](./TRAJECTORY_IDENTITY_PAPER.md) — main paper, working draft v0.15 (~11,500 body words; §6.5 multi-agent discrimination pilot, carrying a v0.15 post-publication limitation note)
-- 🖨 [`TRAJECTORY_IDENTITY_PAPER.pdf`](./TRAJECTORY_IDENTITY_PAPER.pdf) — compiled PDF of v0.15 (~32 pages); rebuild via `scripts/build_pdf.sh`
-- 📝 [`TRAJECTORY_IDENTITY_WORKSHOP.md`](./TRAJECTORY_IDENTITY_WORKSHOP.md) — workshop variant (needs backport to current v0.15 prose before workshop submission)
+- 📄 [`TRAJECTORY_IDENTITY_PAPER.md`](./TRAJECTORY_IDENTITY_PAPER.md) — main paper, working draft v0.16 (~11,500 body words; §6.5 multi-agent discrimination pilot, carrying a v0.15 post-publication limitation note and a v0.16 Appendix A correction)
+- 🖨 [`TRAJECTORY_IDENTITY_PAPER.pdf`](./TRAJECTORY_IDENTITY_PAPER.pdf) — compiled PDF of v0.16 (~32 pages); rebuild via `scripts/build_pdf.sh`
+- 📝 [`TRAJECTORY_IDENTITY_WORKSHOP.md`](./TRAJECTORY_IDENTITY_WORKSHOP.md) — workshop variant (needs backport to current v0.16 prose before workshop submission)
 - 🖨 [`TRAJECTORY_IDENTITY_WORKSHOP.pdf`](./TRAJECTORY_IDENTITY_WORKSHOP.pdf) — compiled workshop PDF (stale; regenerate before submission)
 - 🧪 [`experiments/cross-llm-discrimination/`](./experiments/cross-llm-discrimination/) — cross-LLM discrimination pilot (negative result, informs §7.3)
 - 📊 [`scripts/analysis_v0.11.1.py`](./scripts/analysis_v0.11.1.py) — reproducibility script for §6.4.1 with bootstrap CIs and AR(1) coefficients
@@ -44,9 +45,11 @@ Three structural moves:
 
 ## Status
 
-Working draft **v0.15** (tagged `paper-v0.15`, 2026-07-28), archived on Zenodo. The concept DOI [10.5281/zenodo.20098168](https://doi.org/10.5281/zenodo.20098168) auto-resolves to the latest archived version. v0.14 added §6.5, the first multi-agent discrimination pilot; **v0.15 is a correction that marks that pilot confounded** (era/regime dominance plus a role-vs-individual confound), returning the discrimination criterion to open. No security implication — the governance write gate is credential-based and never depended on this score.
+Working draft **v0.16** (2026-08-14), archived on Zenodo. The concept DOI [10.5281/zenodo.20098168](https://doi.org/10.5281/zenodo.20098168) auto-resolves to the latest archived version. v0.14 added §6.5, the first multi-agent discrimination pilot; **v0.15 is a correction that marks that pilot confounded** (era/regime dominance plus a role-vs-individual confound), returning the discrimination criterion to open. No security implication — the governance write gate is credential-based and never depended on this score.
 
-Remaining follow-ups: the two experiments that would settle the confound (within-agent/across-harness, between-agent/same-harness); workshop-variant backport; escalating the discrimination study beyond a single operator's fleet.
+**v0.16 corrects Appendix A.** Through v0.15 the appendix stated that the linked reference implementation (`anima-mcp`) used the five informationally-independent weights with $\eta$ held out of the weighted sum. It does not: `similarity()` implements the pre-v0.11 six-component sum with $\eta$ inside it at weight 0.15. The claim entered in v0.13, when a corrected code listing was replaced by a repository pointer and the sentence describing the listing was carried across to code that had never changed. §3.6 and §4.1 are unaffected and no empirical result depends on the linked code — §6.4 and §6.5 are computed by standalone analysis code that does not import `anima_mcp`. Implementers should follow §3.6/§4.1, not the repository.
+
+Remaining follow-ups: the two experiments that would settle the confound (within-agent/across-harness, between-agent/same-harness); bringing `anima-mcp` into line with §4.1; workshop-variant backport; escalating the discrimination study beyond a single operator's fleet.
 
 **Citation:** see [`CITATION.cff`](./CITATION.cff) for full metadata. The Zenodo concept DOI (auto-resolves to the latest archived version) is `10.5281/zenodo.20098168`.
 
