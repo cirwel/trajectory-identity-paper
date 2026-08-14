@@ -1,0 +1,91 @@
+name: Paper tag guard
+
+# A paper-v* TAG signals intent to publish, but only a RELEASE actually
+# publishes: the Zenodo deposit fires on the release event (integration
+# webhook or zenodo-publish workflow), never on the tag push. In July 2026
+# a paper-v* tag sat unreleased for 2.5 weeks while the public record
+# silently kept serving the superseded version.
+#
+# This guard does NOT create releases — a Zenodo DOI is permanent, so the
+# publish act stays with the author. It makes the gap loud instead:
+#   on tag push:  fail if CITATION.cff version mismatches the tag;
+#                 warn if date-released is stale;
+#                 fail if no published release exists within 10 minutes.
+#   on release:   fail if the Zenodo deposit has not landed within 8 minutes.
+
+on:
+  push:
+    tags: ["paper-v*"]
+  release:
+    types: [published]
+
+env:
+  # Concept DOI for this paper. Leave empty before the first release; the
+  # first deposit mints it — then set it here and add it to ORCID.
+  CONCEPT_DOI: "10.5281/zenodo.20098168"
+
+jobs:
+  tag-guard:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: CITATION.cff version must match the tag
+        run: |
+          tag="${GITHUB_REF_NAME}"
+          cff=$(sed -n 's/^version:[[:space:]]*"\{0,1\}\([^"]*\)"\{0,1\}[[:space:]]*$/\1/p' CITATION.cff | head -n1)
+          if [ "paper-${cff}" != "$tag" ] && [ "$cff" != "$tag" ]; then
+            echo "::error::CITATION.cff version '${cff}' does not match tag '${tag}' — a deposit from this tag would carry wrong metadata. Fix CITATION.cff and re-tag."
+            exit 1
+          fi
+
+      - name: CITATION.cff date-released should be today
+        run: |
+          cff_date=$(sed -n 's/^date-released:[[:space:]]*"\{0,1\}\([^"]*\)"\{0,1\}[[:space:]]*$/\1/p' CITATION.cff | head -n1)
+          today=$(date -u +%F)
+          if [ "$cff_date" != "$today" ]; then
+            echo "::warning::CITATION.cff date-released is '${cff_date}' but today is ${today} — Zenodo will show '${cff_date}' as the publication date."
+          fi
+
+      - name: A published release must exist for this tag
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tag="${GITHUB_REF_NAME}"
+          for i in $(seq 1 20); do
+            draft=$(gh release view "$tag" -R "$GITHUB_REPOSITORY" --json isDraft -q .isDraft 2>/dev/null || echo missing)
+            if [ "$draft" = "false" ]; then
+              echo "Release exists — the publish path is armed."
+              exit 0
+            fi
+            sleep 30
+          done
+          echo "::error::Tag '${tag}' has no published release after 10 minutes. A bare tag deposits NOTHING to Zenodo. Run: gh release create ${tag} --verify-tag --title \"...\" --notes \"...\""
+          exit 1
+
+  deposit-verify:
+    if: github.event_name == 'release' && startsWith(github.event.release.tag_name, 'paper-v')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Zenodo must show this version under the concept DOI
+        run: |
+          if [ -z "$CONCEPT_DOI" ]; then
+            echo "::notice::CONCEPT_DOI is not set (first release?). Verify the Zenodo deposit manually, then set CONCEPT_DOI in .github/workflows/paper-tag-guard.yml and add the new concept DOI to ORCID."
+            exit 0
+          fi
+          tag="${{ github.event.release.tag_name }}"
+          encoded=$(printf '%s' "$CONCEPT_DOI" | sed 's|/|%2F|g')
+          for i in $(seq 1 16); do
+            v=$(curl -sf "https://zenodo.org/api/records?q=conceptdoi:%22${encoded}%22&size=1&sort=mostrecent" \
+              | python3 -c "import json,sys; h=json.load(sys.stdin)['hits']['hits']; print(h[0]['metadata'].get('version','') if h else '')" \
+              || true)
+            if [ "$v" = "$tag" ]; then
+              echo "Zenodo deposit landed: version ${v}"
+              exit 0
+            fi
+            echo "Zenodo latest version: '${v:-none}' (waiting for ${tag})"
+            sleep 30
+          done
+          echo "::error::No Zenodo deposit for ${tag} under ${CONCEPT_DOI} after 8 minutes — the integration webhook or publish workflow may have failed. Check it before assuming the paper is public."
+          exit 1
