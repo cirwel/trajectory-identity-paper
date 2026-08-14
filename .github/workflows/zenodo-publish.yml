@@ -1,0 +1,62 @@
+name: Publish to Zenodo
+
+# Triggers when a GitHub Release is published. Deposits the PDF ONLY as a new
+# version under the existing concept DOI — the record is the paper, never a
+# repository snapshot. The Zenodo-GitHub integration webhook for this repo was
+# removed 2026-08-14 (it archived the full tree, which leaked internal working
+# documents into published versions); this workflow replaces it.
+#
+# Requires repo secret ZENODO_TOKEN (scopes deposit:write + deposit:actions).
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: write   # append the minted DOI to the release notes
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout at release tag
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.release.tag_name }}
+          fetch-depth: 1
+
+      - name: Verify required files
+        run: |
+          test -f TRAJECTORY_IDENTITY_PAPER.pdf || { echo "::error::TRAJECTORY_IDENTITY_PAPER.pdf not found at tag"; exit 1; }
+          test -f .zenodo.json || { echo "::error::.zenodo.json not found"; exit 1; }
+          test -f scripts/publish-to-zenodo.sh || { echo "::error::scripts/publish-to-zenodo.sh missing"; exit 1; }
+
+      - name: Publish to Zenodo (PDF only)
+        env:
+          ZENODO_TOKEN: ${{ secrets.ZENODO_TOKEN }}
+          ZENODO_CONCEPT_RECID: "20098168"
+        run: |
+          set -eo pipefail
+          chmod +x scripts/publish-to-zenodo.sh
+          ./scripts/publish-to-zenodo.sh \
+            "${{ github.event.release.tag_name }}" \
+            "TRAJECTORY_IDENTITY_PAPER.pdf" \
+            | tee zenodo-publish.log
+
+      - name: Append Zenodo DOI to release notes
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          doi_url="$(grep -oE 'https://doi.org/10\.5281/zenodo\.[0-9]+' zenodo-publish.log | head -n1 || true)"
+          if [[ -z "$doi_url" ]]; then
+            echo "::warning::could not extract DOI from publish output; skipping release-notes update"
+            exit 0
+          fi
+          tag="${{ github.event.release.tag_name }}"
+          current_body="$(gh release view "$tag" --json body --jq .body)"
+          if printf '%s' "$current_body" | grep -q "$doi_url"; then
+            echo "release notes already mention $doi_url"
+            exit 0
+          fi
+          appended="$(printf '%s\n\n---\nZenodo: %s\n' "$current_body" "$doi_url")"
+          gh release edit "$tag" --notes "$appended"
