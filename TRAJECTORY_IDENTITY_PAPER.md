@@ -1,9 +1,9 @@
 # Trajectory Identity: A Mathematical Framework for Enactive AI Self-Hood
 
 **Authors:** Kenny Wang, Independent Researcher (founder@cirwel.org)
-**Date:** August 2026
+**Date:** October 2026
 **Status:** Working Draft
-**Version:** 0.16
+**Version:** 0.17
 
 ---
 
@@ -13,9 +13,9 @@ Current approaches to AI agent identity rely on static identifiers (UUIDs, sessi
 
 We present a mathematical framework for computing **trajectory signatures** from time-series data including homeostatic state, learned preferences, self-beliefs, and recovery dynamics. The trajectory signature (Sigma) captures the quasi-invariant characteristics that define an agent's identity—not where it is at any moment, but how it tends to behave, where it tends to rest, and how it returns from perturbation.
 
-This framework addresses several open problems: (1) identity continuity across sessions without unbounded memory growth, (2) principled semantics for agent forking and merging, (3) anomaly detection as trajectory deviation, and (4) inter-agent recognition based on behavioral signatures rather than credentials.
+The framework is aimed at several open problems: (1) identity continuity across sessions without unbounded memory growth, (2) principled semantics for agent forking and merging, (3) anomaly detection as trajectory deviation, and (4) inter-agent recognition based on behavioral signatures rather than credentials.
 
-We ground this work in the UNITARES governance architecture and the Anima embodied AI system, showing how existing components (self-schema, self-model, preference learning, EISV metrics) provide the data substrate for trajectory computation. Preliminary validation on Lumen (Raspberry Pi embodied AI, continuous operation) demonstrates attractor basin stability (mu variance < 0.05 across time windows) and consistent recovery profiles, supporting the quasi-invariance hypothesis.
+We ground this work in the UNITARES governance architecture and the Anima embodied AI system, whose existing components (self-schema, self-model, preference learning, EISV metrics) provide the data substrate for trajectory computation. The evidence is preliminary and mixed. On one embodied agent (Lumen: 65 calendar days, 47 of them with at least 100 samples, ~226,029 state observations), per-dimension state means stay within a small band (between-window variance of window means below 0.015), and a recovery time constant was estimable in all 12 perturbation episodes, from a small and dispersed sample (§6.4). This is consistent with within-agent quasi-invariance within one era and harness. The framework's defining claim, that distinct agents carry distinguishable signatures, is not established. A four-agent pilot separated agents (§6.5), but a later audit of the production similarity measure found between-agent similarity (0.63) above within-agent similarity across eras (0.12): that measure is dominated by era and harness rather than by the individual. The audit used a different instrument from the pilot, so it does not refute the pilot directly, but the confound carries over: the pilot is confounded by role and harness, and the discrimination criterion remains open.
 
 ---
 
@@ -52,7 +52,7 @@ A cell's identity is defined by its autopoietic organization: the network of pro
 
 This paper makes the following contributions:
 
-1. **Formal definition** of trajectory signature (Sigma) as a composite of six quasi-invariant components
+1. **Formal definition** of trajectory signature (Sigma) as a composite of five weighted quasi-invariant components plus a derived view (§3.6, §4.1)
 2. **Mathematical framework** for computing trajectory similarity and detecting operational continuity (see §4.3 — *not* identity in the strict philosophical sense)
 3. **Operational semantics** for forking, merging, and anomaly detection
 4. **Connection to existing systems** (UNITARES, Anima) showing implementation paths
@@ -1039,8 +1039,9 @@ overstating what a single fleet can establish.
 - Measure sim(Sigma_i, Sigma_j) for all pairs
 - Determine separability
 
-§6.5 reports a first pass on existing fleet telemetry (four heterogeneous agents,
-significant discrimination on the governance substrate). The remaining work is to
+§6.5 reports a first pass on existing fleet telemetry (four heterogeneous agents
+on the governance substrate); as of v0.15 that pilot is confounded by role and
+harness, and the discrimination criterion is open. The remaining work is to
 escalate beyond a single operator's ecosystem — independent operators or harnesses
 and a pre-registered protocol — and to extend from the reduced governance-state
 signature to the full anima-state signature where the channels exist.
@@ -1125,7 +1126,7 @@ This framework suggests a shift in how we think about AI identity:
 
 **Legitimate phase transitions and multi-modal identity**: The framework as defined in §3 assumes that each agent has *one* identity-relevant attractor. Real agents often have legitimate phase transitions — sleep/wake cycles, work/leisure modes, distinct conversational personas, planned migrations between deployments. These produce trajectories that *look like* drift or anomaly under the §5.3 detector but are part of the agent's intended behavior. §3.3 sketches the Gaussian-Mixture-Model extension for multi-modal attractors, but the operational semantics in §5 (forking, merging, anomaly detection) do not yet handle scheduled phase transitions explicitly. A deployment with predictable phases would need to either (a) condition the signature on phase context, (b) maintain per-phase signatures and check the right one, or (c) accept higher false-positive rates at phase boundaries. Working through this carefully is part of the multi-modal extension we leave for future work (§8.5).
 
-**Single-agent empirical scope**: §6.4 reports observations from a single embodied agent (Lumen). The within-agent stability observations (var($\mu$), recovery characterization, partial belief convergence) are pilot evidence consistent with the framework's claims for *that agent*. The *between-agent* claims of the framework — that trajectory signatures can discriminate distinct agents, that the operational continuity threshold has a defensible operating point — were previously untested. §6.5 now reports a first multi-agent discrimination pilot: significant discrimination across four heterogeneous agents, but within a single operator's ecosystem and on the governance substrate rather than the anima state. The threshold-calibration claim remains untested. Discriminability therefore rests on a first body of data *as well as* on the framework's structure; full validation — independent operators or harnesses, a pre-registered protocol — remains future work (§7.2).
+**Single-agent empirical scope**: §6.4 reports observations from a single embodied agent (Lumen). The within-agent stability observations (var($\mu$), recovery characterization, partial belief convergence) are pilot evidence consistent with the framework's claims for *that agent*. The *between-agent* claims of the framework — that trajectory signatures can discriminate distinct agents, that the operational continuity threshold has a defensible operating point — were previously untested. §6.5 reports a first multi-agent discrimination pilot across four heterogeneous agents, within a single operator's ecosystem and on the governance substrate rather than the anima state. As of v0.15 that pilot is confounded by role and harness, so discriminability remains open and rests on the framework's structure, not yet on data. The threshold-calibration claim remains untested. Full validation — independent operators or harnesses, a pre-registered protocol — remains future work (§7.2).
 
 ### 8.4 Failure Modes
 
@@ -1175,6 +1176,8 @@ We have presented a mathematical framework for AI agent identity based on trajec
 2. **Provides operational semantics** for forking, merging, and anomaly detection
 3. **Connects to existing systems** (UNITARES, Anima) for implementation
 4. **Opens research questions** about convergence, discriminability, and robustness
+
+Empirically, the framework's within-agent claims are observed on one agent (§6.4). Its between-agent claim, discrimination, remains open: the first multi-agent pilot is confounded by role and harness (§6.5), and the experiments that would settle it are specified in §7.2.
 
 The core insight is ancient but newly operationalized: **you are what you do, not what you're called**. For AI agents, this means identity emerges from the patterns of self-maintenance, not from assigned identifiers.
 
@@ -1332,6 +1335,8 @@ An open-source implementation of the trajectory-signature data path — componen
 ---
 
 ## Changelog
+
+**v0.17 (October 2, 2026)** — Abstract, conclusion, §1.3 item 1, §7.2 and §8.3 brought in line with §3.6, §4.1 and §6.4–§6.5; no change to the framework or to any empirical result. The abstract had not been updated since v0.10: it cited "mu variance < 0.05" where §6.4 reports below 0.015, called Lumen's record "continuous operation" despite an 18-day gap, and did not mention that the §6.5 discrimination pilot is confounded (v0.15). It now states the within-agent evidence with §6.4's figures and says the discrimination criterion is open. The conclusion gains the same sentence.
 
 **v0.16 (August 14, 2026)** — Correction and metadata reconciliation; no change to the framework or to any empirical result.
 
