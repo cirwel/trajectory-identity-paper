@@ -33,23 +33,29 @@ abstract: >
   identity — not where it is at any moment, but how it tends to behave,
   where it tends to rest, and how it returns from perturbation.
 
-  The framework addresses (1) identity continuity across sessions without
-  unbounded memory growth, (2) principled semantics for agent forking and
-  merging, (3) anomaly detection as trajectory deviation through an
-  asymmetric two-tier threshold scheme that distinguishes drift from
-  hijacking, and (4) inter-agent recognition based on behavioral signatures
-  rather than credentials.
+  The framework is aimed at (1) identity continuity across sessions
+  without unbounded memory growth, (2) principled semantics for agent
+  forking and merging, (3) anomaly detection as trajectory deviation,
+  through an asymmetric two-tier threshold scheme intended to distinguish
+  drift from hijacking, and (4) inter-agent recognition based on
+  behavioral signatures rather than credentials.
 
-  We ground the framework on Lumen, an embodied AI agent on a Raspberry Pi
-  4, over 65 calendar days (47 with at least 100 samples) and ~226,029
-  state observations: per-dimension state means stay within a small band
-  and recovery is consistent across 12 episodes, which supports within-
-  agent quasi-invariance. The framework's defining claim, that distinct
-  agents carry distinguishable signatures, is not established. A four-
-  agent pilot (Section 6.5) separated agents, but a later audit found
-  between-agent similarity (0.63) above the similarity of each agent to
-  itself across eras (0.12); the pilot is confounded by role
-  and harness, and the discrimination criterion remains open.
+  We ground the framework in the UNITARES governance architecture and the
+  Anima embodied AI system. The evidence is preliminary and mixed. On one
+  embodied agent (Lumen: 65 calendar days, 47 of them with at least 100
+  samples, ~226,029 state observations), per-dimension state means stay
+  within a small band (between-window variance of window means below
+  0.015), and a recovery time constant was estimable in all 12
+  perturbation episodes, from a small and dispersed sample (Section 6.4).
+  This is consistent with within-agent quasi-invariance within one era and
+  harness. The framework's defining claim, that distinct agents carry
+  distinguishable signatures, is not established. A four-agent pilot
+  separated agents (Section 6.5), but a later audit of the production
+  similarity measure found between-agent similarity (0.63) above
+  within-agent similarity across eras (0.12): that measure is dominated by
+  era and harness rather than by the individual. The pilot is therefore
+  confounded by role and harness, and the discrimination criterion remains
+  open.
 keywords:
   - AI agent identity
   - trajectory signature
