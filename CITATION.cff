@@ -7,8 +7,8 @@ authors:
     given-names: Kenny
     affiliation: "CIRWEL Systems"
     orcid: "https://orcid.org/0009-0006-7544-2374"
-date-released: 2026-08-14
-version: "v0.16"
+date-released: 2026-10-02
+version: "v0.17"
 doi: "10.5281/zenodo.20098168"
 url: "https://github.com/cirwel/trajectory-identity-paper"
 identifiers:
@@ -40,12 +40,16 @@ abstract: >
   hijacking, and (4) inter-agent recognition based on behavioral signatures
   rather than credentials.
 
-  We ground the framework on Lumen, an embodied AI agent running
-  continuously on a Raspberry Pi 4, over 65 days and ~226,029 state
-  observations. The empirical scope is primarily single-agent (within-agent
-  stability observed); a first multi-agent pilot (Section 6.5) adds
-  significant between-agent discrimination across four resident agents within
-  one operator's ecosystem — not yet externally validated.
+  We ground the framework on Lumen, an embodied AI agent on a Raspberry Pi
+  4, over 65 calendar days (47 with at least 100 samples) and ~226,029
+  state observations: per-dimension state means stay within a small band
+  and recovery is consistent across 12 episodes, which supports within-
+  agent quasi-invariance. The framework's defining claim, that distinct
+  agents carry distinguishable signatures, is not established. A four-
+  agent pilot (Section 6.5) separated agents, but a later audit found
+  between-agent similarity (0.63) above the similarity of each agent to
+  itself across eras (0.12); the pilot is confounded by role
+  and harness, and the discrimination criterion remains open.
 keywords:
   - AI agent identity
   - trajectory signature
