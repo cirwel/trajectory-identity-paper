@@ -53,9 +53,10 @@ abstract: >
   separated agents (Section 6.5), but a later audit of the production
   similarity measure found between-agent similarity (0.63) above
   within-agent similarity across eras (0.12): that measure is dominated by
-  era and harness rather than by the individual. The pilot is therefore
-  confounded by role and harness, and the discrimination criterion remains
-  open.
+  era and harness rather than by the individual. The audit used a
+  different instrument from the pilot, so it does not refute the pilot
+  directly, but the confound carries over: the pilot is confounded by role
+  and harness, and the discrimination criterion remains open.
 keywords:
   - AI agent identity
   - trajectory signature
