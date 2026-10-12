@@ -29,7 +29,9 @@
 
 Modern AI agents are identified by static tokens: UUIDs, session IDs, API keys. These confer identity from outside; an agent has an identity because we gave it one, not because it developed characteristics that make it recognizably itself. This produces well-known failure modes: lost-token continuity collapse, ambiguous fork semantics, anomaly-blindness to compromised-but-credentialed agents, and unbounded memory growth as the substitute solution.
 
-The paper proposes an alternative grounded in enactive cognition and dynamical systems theory: a **trajectory signature** $\Sigma = (\Pi, \beta, \alpha, \rho, \Delta, \eta)$ computed from time-series of agent state. The signature contains five scored components — preference profile, self-belief signature, attractor basin, recovery profile, and relational disposition — plus a derived homeostatic summary, Eta. Eta is not an additional weighted term in similarity (§3.6–§4.1).
+The paper proposes an alternative grounded in enactive cognition and dynamical systems theory: a **trajectory signature** $\Sigma = (\Pi, \beta, \alpha, \rho, \Delta, \eta)$ computed from time-series of agent state. In the paper’s model, the signature contains five scored components — preference profile, self-belief signature, attractor basin, recovery profile, and relational disposition — plus a derived homeostatic summary, Eta. Eta is not an additional weighted term in the paper’s similarity function (§3.6–§4.1).
+
+**Implementation boundary.** The Appendix A correction below applies to `anima-mcp`. The separate [UNITARES implementation at the October 11 source snapshot](https://github.com/cirwel/unitares/blob/5c871945f3596770722d4e144c193729527fd7de/src/trajectory_identity.py#L308-L374) still includes homeostatic similarity (Eta) with a nominal weight of 0.15 when both signatures provide it. Missing components are skipped and the available weights are renormalized. That implementation therefore differs from the paper’s five-component weighted similarity; the Anima correction did not change it.
 
 Three proposed structural moves:
 
