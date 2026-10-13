@@ -3,7 +3,9 @@
 **Date:** 2026-05-09
 **Scope:** quick analysis on Lumen DB (`~/backups/lumen/anima_20260509_0700.db`) addressing several concerns Codex flagged in REVIEW-CODEX-2026-05-09.md.
 **Script:** `scripts/analysis_v0.11.1.py`. Raw output: `scripts/analysis_v0.11.1_results.json`.
-**Status:** results inform a future v0.12 revision. v0.11.1 is the citable Zenodo release; do not retroactively edit the paper-as-archived.
+**Status:** historical May 9 analysis memo; its version guidance and proposed follow-ups are not current release status. See the repository README for the working draft and latest archive.
+
+> **Recovery correction (2026-10-13).** Section 4's interpretation of zero recovery estimates is invalid. In `recovery_tau_histogram()`, `states[peak:end]` contains only samples whose maximum deviation exceeds 0.15; `end` is the first sample returning below that threshold and is excluded. Searching that slice for deviation below 0.05 cannot succeed. Zero is therefore a routine defect, not evidence of detector sensitivity or absence of recovery. The JSON is retained as historical output, not a valid recovery result. The separate provenance observation remains: the paper figure script reads the live-system recovery summary rather than recomputing it from raw history. No numerical result is changed by this correction.
 
 ---
 

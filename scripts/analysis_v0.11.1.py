@@ -12,6 +12,11 @@ Addresses Codex's empirical-section concerns by computing:
   - Comparison: original 65-day window (used in v0.11 paper) vs
     extended dataset (current backup, ~120 days)
 
+Recovery warning (2026-10-13): recovery_tau_histogram is retained for historical
+reproducibility only. Its peak:end slice excludes the return below 0.15 while
+searching for a return below 0.05, so its zero-estimate result is invalid as
+empirical evidence. See the correction in analysis_v0.11.1_results.md.
+
 Usage:
   python3 scripts/analysis_v0.11.1.py [path-to-anima.db]
 
