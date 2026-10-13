@@ -8,7 +8,7 @@
 [![Correction](https://img.shields.io/badge/v0.15-%C2%A76.5%20confounded-important.svg)](./TRAJECTORY_IDENTITY_PAPER.md#65-multi-agent-discrimination-a-first-pilot)
 [![Correction](https://img.shields.io/badge/v0.16-Appendix%20A%20corrected-important.svg)](./TRAJECTORY_IDENTITY_PAPER.md#appendix-a-implementation)
 
-> **Plain-language summary.** What makes an AI agent recognizably itself isn't its UUID, its credentials, or its saved memory — it's the way it behaves over time. Recurrent patterns of attention, recovery from interruption, preferences across similar situations. This paper formalizes that intuition: identity as the *dynamical signature* of a running agent, computed from time-series of internal state. The result is an observability-grounded framework for "is this still the same agent?" that doesn't rely on credentials, and detects impersonation differently than ordinary drift. Grounded in 65 days of pilot observations from one long-running embodied AI agent (Lumen, ~226,000 readings) — single-agent evidence for within-agent stability — plus a first multi-agent pilot (§6.5) that separates four agents within one operator's ecosystem above chance. **As of v0.15 that pilot is marked confounded**: later evidence indicates the signature is dominated by era and regime, and the four agents differ by role and harness, so the result does not yet establish that *individuals* — rather than *roles* — are what is being told apart. External validation is still ahead.
+> **Plain-language summary.** This paper proposes that recurring patterns of attention, recovery from interruption, and preferences can help characterize an AI agent over time. It formalizes that idea as a *dynamical signature*, computed from time-series of internal state, for behavioral continuity and anomaly checks. The current evidence does not establish individual recognition across harness changes or validated impersonation detection; operational authorization remains separate and credential-based. Grounded in 65 days of pilot observations from one long-running embodied AI agent (Lumen, ~226,000 readings) — single-agent evidence for within-agent stability — plus a first multi-agent pilot (§6.5) that separates four agents within one operator's ecosystem above chance. **As of v0.15 that pilot is marked confounded**: later evidence indicates the signature is dominated by era and regime, and the four agents differ by role and harness, so the result does not yet establish that *individuals* — rather than *roles* — are what is being told apart. External validation is still ahead.
 
 
 
@@ -21,7 +21,7 @@
 
 ---
 
-**In one line:** Identity as the dynamical invariant of an agent's behavior — attractor basin, recovery profile, preference profile — rather than a UUID, a credential, or accumulated memory.
+**In one line:** A proposed account of behavioral continuity through an agent's attractor basin, recovery profile, and preference profile, with individual discrimination still unresolved.
 
 ---
 
@@ -29,15 +29,17 @@
 
 Modern AI agents are identified by static tokens: UUIDs, session IDs, API keys. These confer identity from outside; an agent has an identity because we gave it one, not because it developed characteristics that make it recognizably itself. This produces well-known failure modes: lost-token continuity collapse, ambiguous fork semantics, anomaly-blindness to compromised-but-credentialed agents, and unbounded memory growth as the substitute solution.
 
-The paper proposes an alternative grounded in enactive cognition and dynamical systems theory: a **trajectory signature** $\Sigma = \{\Pi, \mathrm{B}, \mathrm{A}, \mathrm{P}, \Delta, \mathrm{H}\}$ composed of six quasi-invariant components — preference profile, self-belief signature, attractor basin, recovery profile, relational disposition, and homeostatic identity — computed from time-series of agent state.
+The paper proposes an alternative grounded in enactive cognition and dynamical systems theory: a **trajectory signature** $\Sigma = (\Pi, \beta, \alpha, \rho, \Delta, \eta)$ computed from time-series of agent state. In the paper’s model, the signature contains five scored components — preference profile, self-belief signature, attractor basin, recovery profile, and relational disposition — plus a derived homeostatic summary, Eta. Eta is not an additional weighted term in the paper’s similarity function (§3.6–§4.1).
 
-Three structural moves:
+**Implementation boundary.** The Appendix A correction below applies to `anima-mcp`. The separate [UNITARES implementation at the October 11 source snapshot](https://github.com/cirwel/unitares/blob/5c871945f3596770722d4e144c193729527fd7de/src/trajectory_identity.py#L308-L374) still includes homeostatic similarity (Eta) with a nominal weight of 0.15 when both signatures provide it. Missing components are skipped and the available weights are renormalized. That implementation therefore differs from the paper’s five-component weighted similarity; the Anima correction did not change it.
 
-1. **Identity as process, not property.** Following autopoiesis (Varela, Thompson, Rosch) and the free-energy principle (Friston), the identity of a system *is* the pattern of self-maintenance, not any particular configuration.
+Three proposed structural moves:
 
-2. **Two-tier anomaly detection.** Coherence violations and lineage violations are detected against asymmetric thresholds, with $\theta_{\text{lineage}} < \theta_{\text{anomaly}}$ — drift gets benefit of the doubt, impersonation does not.
+1. **Identity as process, not property.** Drawing on autopoiesis (Varela, Thompson, Rosch) and the free-energy principle (Friston), the framework models identity through patterns of self-maintenance. This is a modeling commitment, as discussed in §2.1.
 
-3. **Operational semantics for fork, merge, and recognition.** Trajectory similarity replaces credential equality as the primitive for "is this the same agent?", with bounded storage (O(window size), not O(unbounded memory)).
+2. **Two-tier anomaly detection.** Short-term deviation and long-term departure from a genesis signature are checked against asymmetric thresholds, with $\theta_{\text{lineage}} < \theta_{\text{anomaly}}$. The thresholds are provisional operational defaults; the scheme is not validated impersonation detection.
+
+3. **Operational semantics for fork, merge, and recognition.** Trajectory similarity provides a proposed operational continuity relation (§4.3), with bounded storage (O(window size), not O(unbounded memory)). It does not establish strict identity or replace the credential-based authorization gate.
 
 ## Empirical grounding
 
