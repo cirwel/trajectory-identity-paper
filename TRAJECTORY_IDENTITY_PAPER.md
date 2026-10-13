@@ -2,10 +2,10 @@
 
 **Authors:** Kenny Wang, Independent Researcher (founder@cirwel.org)
 **Date:** October 13, 2026
-**Status:** Working Draft - unreleased corrections
-**Version:** 0.18-dev
+**Status:** Preprint
+**Version:** 0.18
 
-> **Archive boundary.** This repository draft includes corrections after the archived v0.17 release (October 2, 2026). The concept DOI and `CITATION.cff` identify the archived paper; this draft has not been deposited.
+> **Version note.** Version 0.18 incorporates the recovery-provenance and reference corrections described in the changelog. Previously archived versions remain available through the [concept DOI](https://doi.org/10.5281/zenodo.20098168).
 
 ---
 
@@ -1335,13 +1335,13 @@ An open-source implementation of the trajectory-signature data path — componen
 
 ---
 
-*This document is a working draft. Comments, critiques, and contributions welcome.*
+*This preprint is open to comments, critiques, and contributions.*
 
 ---
 
 ## Changelog
 
-**v0.18-dev (October 13, 2026; unreleased)** - Corrects recovery provenance: the 12-episode table is a stored live-system summary, not an independent raw-history fit; the offline routine's zero output is invalid as evidence because its search excludes recovery samples. Corrects ID-RAG authorship, the Banerjee-Woodard reference, and Xu et al.'s author list and implanted-fingerprint scope. Refreshes the workshop variant to include the confounded resident pilot, implementation boundary, and these corrections. No reported numerical results changed; no new experiments or archive release.
+**v0.18 (October 13, 2026)** - Corrects recovery provenance: the 12-episode table is a stored live-system summary, not an independent raw-history fit; the offline routine's zero output is invalid as evidence because its search excludes recovery samples. Corrects ID-RAG authorship, the Banerjee-Woodard reference, and Xu et al.'s author list and implanted-fingerprint scope. Refreshes the workshop variant to include the confounded resident pilot, implementation boundary, and these corrections. No reported numerical results changed; no new experiments.
 
 **v0.17 (October 2, 2026)** — Abstract, conclusion, §1.3 item 1, §7.2 and §8.3 brought in line with §3.6, §4.1 and §6.4–§6.5; no change to the framework or to any empirical result. The abstract had not been updated since v0.10: it cited "mu variance < 0.05" where §6.4 reports below 0.015, called Lumen's record "continuous operation" despite an 18-day gap, and did not mention that the §6.5 discrimination pilot is confounded (v0.15). It now states the within-agent evidence with §6.4's figures and says the discrimination criterion is open. The conclusion gains the same sentence.
 

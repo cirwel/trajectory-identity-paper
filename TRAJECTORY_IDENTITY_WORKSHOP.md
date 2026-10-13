@@ -3,9 +3,9 @@
 **Authors:** Kenny Wang, Independent Researcher (founder@cirwel.org)
 **Date:** October 13, 2026
 **Status:** Workshop working draft - not submitted or separately archived
-**Version:** 0.18-dev
+**Version:** 0.18
 
-> **Companion to** the [long-form paper](./TRAJECTORY_IDENTITY_PAPER.md), whose latest archived release is v0.17 ([DOI: 10.5281/zenodo.20098168](https://doi.org/10.5281/zenodo.20098168)). This shorter draft incorporates its evidence boundaries and the unreleased corrections described below. It is not a venue-formatted submission or a separate DOI deposit.
+> **Companion to** version 0.18 of the [long-form paper](./TRAJECTORY_IDENTITY_PAPER.md) ([concept DOI: 10.5281/zenodo.20098168](https://doi.org/10.5281/zenodo.20098168)). This shorter reading draft shares its evidence boundaries and corrections. The DOI identifies the main paper; this variant is not a venue-formatted submission or a separate DOI deposit.
 
 ---
 

@@ -7,17 +7,14 @@ authors:
     given-names: Kenny
     affiliation: "CIRWEL Systems"
     orcid: "https://orcid.org/0009-0006-7544-2374"
-date-released: 2026-10-02
-version: "v0.17"
+date-released: 2026-10-13
+version: "v0.18"
 doi: "10.5281/zenodo.20098168"
 url: "https://github.com/cirwel/trajectory-identity-paper"
 identifiers:
   - type: doi
     value: "10.5281/zenodo.20098168"
     description: "Concept DOI (auto-resolves to latest version)"
-  - type: doi
-    value: "10.5281/zenodo.20098169"
-    description: "Version DOI for the v0.11.1 deposit (superseded; the concept DOI above resolves to the current version)"
 license: CC-BY-4.0
 abstract: >
   Current approaches to AI agent identity rely on static identifiers (UUIDs,
@@ -28,33 +25,34 @@ abstract: >
 
   We present a mathematical framework for computing trajectory signatures
   from time-series data including homeostatic state, learned preferences,
-  self-beliefs, and recovery dynamics. The trajectory signature Sigma
+  self-beliefs, and recovery dynamics. The trajectory signature (Sigma)
   captures the quasi-invariant characteristics that define an agent's
-  identity — not where it is at any moment, but how it tends to behave,
-  where it tends to rest, and how it returns from perturbation.
+  identity—not where it is at any moment, but how it tends to behave, where
+  it tends to rest, and how it returns from perturbation.
 
-  The framework is aimed at (1) identity continuity across sessions
-  without unbounded memory growth, (2) principled semantics for agent
-  forking and merging, (3) anomaly detection as trajectory deviation,
-  through an asymmetric two-tier threshold scheme intended to distinguish
-  drift from hijacking, and (4) inter-agent recognition based on
-  behavioral signatures rather than credentials.
+  The framework is aimed at several open problems: (1) identity continuity
+  across sessions without unbounded memory growth, (2) principled semantics
+  for agent forking and merging, (3) anomaly detection as trajectory
+  deviation, and (4) inter-agent recognition based on behavioral signatures
+  rather than credentials.
 
-  We ground the framework in the UNITARES governance architecture and the
-  Anima embodied AI system. The evidence is preliminary and mixed. On one
+  We ground this work in the UNITARES governance architecture and the Anima
+  embodied AI system, whose existing components (self-schema, self-model,
+  preference learning, EISV metrics) provide the data substrate for
+  trajectory computation. The evidence is preliminary and mixed. On one
   embodied agent (Lumen: 65 calendar days, 47 of them with at least 100
   samples, ~226,029 state observations), per-dimension state means stay
-  within a small band (between-window variance of window means below
-  0.015), and a recovery time constant was estimable in all 12
-  perturbation episodes, from a small and dispersed sample (Section 6.4).
-  This is consistent with within-agent quasi-invariance within one era and
-  harness. The framework's defining claim, that distinct agents carry
-  distinguishable signatures, is not established. A four-agent pilot
-  separated agents (Section 6.5), but a later audit of the production
-  similarity measure found between-agent similarity (0.63) above
-  within-agent similarity across eras (0.12): that measure is dominated by
-  era and harness rather than by the individual. The audit used a
-  different instrument from the pilot, so it does not refute the pilot
+  within a small band (between-window variance of window means below 0.015),
+  and the stored recovery profile reports time constants for 12 episodes,
+  from a small and dispersed sample that has not been independently
+  reconstructed from raw history (§6.4). This is consistent with
+  within-agent quasi-invariance within one era and harness. The framework's
+  defining claim, that distinct agents carry distinguishable signatures, is
+  not established. A four-agent pilot separated agents (§6.5), but a later
+  audit of the production similarity measure found between-agent similarity
+  (0.63) above within-agent similarity across eras (0.12): that measure is
+  dominated by era and harness rather than by the individual. The audit used
+  a different instrument from the pilot, so it does not refute the pilot
   directly, but the confound carries over: the pilot is confounded by role
   and harness, and the discrimination criterion remains open.
 keywords:

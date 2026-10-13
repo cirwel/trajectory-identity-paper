@@ -13,11 +13,13 @@ cd "$(dirname "$0")/.."
 VARIANT="${1:-long}"
 case "${VARIANT}" in
   long)
+    EDITION_LABEL="Preprint"
     INPUT=TRAJECTORY_IDENTITY_PAPER.md
     OUTPUT=TRAJECTORY_IDENTITY_PAPER.pdf
     TITLE="Trajectory Identity: A Mathematical Framework for Enactive AI Self-Hood"
     ;;
   workshop)
+    EDITION_LABEL="Workshop Draft"
     INPUT=TRAJECTORY_IDENTITY_WORKSHOP.md
     OUTPUT=TRAJECTORY_IDENTITY_WORKSHOP.pdf
     TITLE="Trajectory Identity: A Dynamical Framework for AI Agent Self-Hood (workshop variant)"
@@ -28,7 +30,7 @@ case "${VARIANT}" in
     ;;
 esac
 
-# CITATION.cff describes the archived release. Working drafts can be newer.
+# Read each manuscript version directly; the workshop remains a separate reading draft.
 VERSION=$(sed -n 's/^\*\*Version:\*\*[[:space:]]*//p' "${INPUT}" | head -n1)
 if [ -z "${VERSION}" ]; then
   echo "ERROR: no '**Version:**' line found in ${INPUT}; refusing to stamp an archive version." >&2
@@ -63,7 +65,7 @@ pandoc "${INPUT}" \
   -V header-includes='\catcode`\→=\active \def→{\ensuremath{\rightarrow}}' \
   --metadata title="${TITLE}" \
   --metadata author="Kenny Wang" \
-  --metadata date="${DATE} - Working Draft ${VERSION} - Archive DOI ${DOI}" \
+  --metadata date="${DATE} - ${EDITION_LABEL} ${VERSION} - Concept DOI ${DOI}" \
   -o "${OUTPUT}"
 
 echo "Built ${OUTPUT} ($(du -h "${OUTPUT}" | awk '{print $1}'))"
