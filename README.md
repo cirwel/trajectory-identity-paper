@@ -4,7 +4,7 @@
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20098168.svg)](https://doi.org/10.5281/zenodo.20098168)
 [![License: CC BY 4.0](https://img.shields.io/badge/License-CC_BY_4.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
-[![Status: Preprint](https://img.shields.io/badge/status-v0.18%20preprint-blue.svg)](./TRAJECTORY_IDENTITY_PAPER.md)
+[![Status: Archived](https://img.shields.io/badge/status-v0.18%20archived-blue.svg)](./TRAJECTORY_IDENTITY_PAPER.md)
 [![Correction](https://img.shields.io/badge/v0.15-%C2%A76.5%20confounded-important.svg)](./TRAJECTORY_IDENTITY_PAPER.md#65-multi-agent-discrimination-a-first-pilot)
 [![Correction](https://img.shields.io/badge/v0.16-Appendix%20A%20corrected-important.svg)](./TRAJECTORY_IDENTITY_PAPER.md#appendix-a-implementation)
 
@@ -47,7 +47,7 @@ Three proposed structural moves:
 
 ## Status
 
-**Current version: v0.18 (2026-10-13).** The main paper and workshop reading draft identify the recovery table as a live-system snapshot summary, correct three reference records and the scope of instructional fingerprinting, and carry the role/harness confound consistently. Reported numerical results are unchanged. The workshop is a reading draft; no venue formatting or submission is implied.
+**Current archived version: [v0.18](https://doi.org/10.5281/zenodo.23337710) (2026-10-13).** The main paper and workshop reading draft identify the recovery table as a live-system snapshot summary, correct three reference records and the scope of instructional fingerprinting, and carry the role/harness confound consistently. Reported numerical results are unchanged. The workshop is a reading draft; no venue formatting or submission is implied.
 
 **Version history.** v0.17 (2026-10-02) brought the abstract and conclusion in line with §6.4–§6.5: the abstract had kept a v0.10 figure ("mu variance < 0.05"; §6.4 reports below 0.015), called the record "continuous" despite an 18-day gap, and did not say the discrimination pilot is confounded. No framework or empirical change. The concept DOI [10.5281/zenodo.20098168](https://doi.org/10.5281/zenodo.20098168) auto-resolves to the latest archived version. v0.14 added §6.5, the first multi-agent discrimination pilot; **v0.15 is a correction that marks that pilot confounded** (era/regime dominance plus a role-vs-individual confound), returning the discrimination criterion to open. No security implication — the governance write gate is credential-based and never depended on this score.
 
@@ -55,13 +55,13 @@ Three proposed structural moves:
 
 Remaining follow-ups: the two experiments that would settle the confound (within-agent/across-harness, between-agent/same-harness); independent recovery reproduction from a frozen detector and exported episodes; venue-specific workshop preparation; escalating the discrimination study beyond a single operator's fleet.
 
-**Citation:** see [`CITATION.cff`](./CITATION.cff) for v0.18 metadata and the [release history](https://github.com/cirwel/trajectory-identity-paper/releases) for version-specific archive links. The concept DOI `10.5281/zenodo.20098168` resolves to the most recently deposited version; repository preparation alone does not create a deposit.
+**Citation:** cite v0.18 using the version DOI [10.5281/zenodo.23337710](https://doi.org/10.5281/zenodo.23337710); see [`CITATION.cff`](./CITATION.cff) for metadata. The concept DOI [10.5281/zenodo.20098168](https://doi.org/10.5281/zenodo.20098168) resolves to the latest archived version, and the [release history](https://github.com/cirwel/trajectory-identity-paper/releases) retains earlier versions.
 
 ## Related work in the same line
 
 - [**UNITARES v6**](https://github.com/cirwel/unitares-paper-v6) ([DOI: 10.5281/zenodo.19647159](https://doi.org/10.5281/zenodo.19647159)) — *Information-Theoretic Governance of Heterogeneous Agent Fleets*. Provides the EISV state vector and class-conditional calibration this paper builds on.
-- **Bridge paper** (forthcoming) — late-draft companion piece linking governance (UNITARES) to identity (this paper).
+- [**Accountability Without a Trusted Center**](https://doi.org/10.5281/zenodo.21930161) — the companion bridge paper (concept DOI: 10.5281/zenodo.21930161).
 
 ## License
 
-Released under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) when published.
+Released under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
