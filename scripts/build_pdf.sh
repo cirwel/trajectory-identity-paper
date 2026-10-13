@@ -28,7 +28,12 @@ case "${VARIANT}" in
     ;;
 esac
 
-VERSION=$(awk -F'"' '/^version:/ {print $2; exit}' CITATION.cff)
+# CITATION.cff describes the archived release. Working drafts can be newer.
+VERSION=$(sed -n 's/^\*\*Version:\*\*[[:space:]]*//p' "${INPUT}" | head -n1)
+if [ -z "${VERSION}" ]; then
+  echo "ERROR: no '**Version:**' line found in ${INPUT}; refusing to stamp an archive version." >&2
+  exit 1
+fi
 DOI=$(awk -F'"' '/^doi:/ {print $2; exit}' CITATION.cff)
 
 # Read the cover date from the manuscript's own front matter rather than
@@ -58,7 +63,7 @@ pandoc "${INPUT}" \
   -V header-includes='\catcode`\→=\active \def→{\ensuremath{\rightarrow}}' \
   --metadata title="${TITLE}" \
   --metadata author="Kenny Wang" \
-  --metadata date="${DATE} — Working Draft ${VERSION} — DOI ${DOI}" \
+  --metadata date="${DATE} - Working Draft ${VERSION} - Archive DOI ${DOI}" \
   -o "${OUTPUT}"
 
 echo "Built ${OUTPUT} ($(du -h "${OUTPUT}" | awk '{print $1}'))"

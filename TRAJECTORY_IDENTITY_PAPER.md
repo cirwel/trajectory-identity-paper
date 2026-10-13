@@ -1,9 +1,11 @@
 # Trajectory Identity: A Mathematical Framework for Enactive AI Self-Hood
 
 **Authors:** Kenny Wang, Independent Researcher (founder@cirwel.org)
-**Date:** October 2026
-**Status:** Working Draft
-**Version:** 0.17
+**Date:** October 13, 2026
+**Status:** Working Draft - unreleased corrections
+**Version:** 0.18-dev
+
+> **Archive boundary.** This repository draft includes corrections after the archived v0.17 release (October 2, 2026). The concept DOI and `CITATION.cff` identify the archived paper; this draft has not been deposited.
 
 ---
 
@@ -15,7 +17,7 @@ We present a mathematical framework for computing **trajectory signatures** from
 
 The framework is aimed at several open problems: (1) identity continuity across sessions without unbounded memory growth, (2) principled semantics for agent forking and merging, (3) anomaly detection as trajectory deviation, and (4) inter-agent recognition based on behavioral signatures rather than credentials.
 
-We ground this work in the UNITARES governance architecture and the Anima embodied AI system, whose existing components (self-schema, self-model, preference learning, EISV metrics) provide the data substrate for trajectory computation. The evidence is preliminary and mixed. On one embodied agent (Lumen: 65 calendar days, 47 of them with at least 100 samples, ~226,029 state observations), per-dimension state means stay within a small band (between-window variance of window means below 0.015), and a recovery time constant was estimable in all 12 perturbation episodes, from a small and dispersed sample (§6.4). This is consistent with within-agent quasi-invariance within one era and harness. The framework's defining claim, that distinct agents carry distinguishable signatures, is not established. A four-agent pilot separated agents (§6.5), but a later audit of the production similarity measure found between-agent similarity (0.63) above within-agent similarity across eras (0.12): that measure is dominated by era and harness rather than by the individual. The audit used a different instrument from the pilot, so it does not refute the pilot directly, but the confound carries over: the pilot is confounded by role and harness, and the discrimination criterion remains open.
+We ground this work in the UNITARES governance architecture and the Anima embodied AI system, whose existing components (self-schema, self-model, preference learning, EISV metrics) provide the data substrate for trajectory computation. The evidence is preliminary and mixed. On one embodied agent (Lumen: 65 calendar days, 47 of them with at least 100 samples, ~226,029 state observations), per-dimension state means stay within a small band (between-window variance of window means below 0.015), and the stored recovery profile reports time constants for 12 episodes, from a small and dispersed sample that has not been independently reconstructed from raw history (§6.4). This is consistent with within-agent quasi-invariance within one era and harness. The framework's defining claim, that distinct agents carry distinguishable signatures, is not established. A four-agent pilot separated agents (§6.5), but a later audit of the production similarity measure found between-agent similarity (0.63) above within-agent similarity across eras (0.12): that measure is dominated by era and harness rather than by the individual. The audit used a different instrument from the pilot, so it does not refute the pilot directly, but the confound carries over: the pilot is confounded by role and harness, and the discrimination criterion remains open.
 
 ---
 
@@ -62,9 +64,9 @@ This paper makes the following contributions:
 
 Our formulation draws on and bridges several research traditions. We position trajectory signatures as a unifying construct that these literatures approach from different angles but none have formalized.
 
-**Agent memory and persona coherence.** Recent LLM-agent work has foregrounded coherent state across interactions. MemGPT (Packer et al., 2023) gives LLM agents persistent state via hierarchical memory; Park et al.'s (2023) generative agents use memory streams, reflection, and planning to produce individually-consistent emergent behavior; Voyager (Wang et al., 2023) treats an ever-growing skill library as behavioral accumulation. Closest to our work is **ID-RAG** (Park et al., 2025), which targets long-horizon persona drift by injecting a structured identity object into retrieval. ID-RAG and trajectory identity are complementary: ID-RAG provides the *content* of identity (a prompt-engineered self-description); trajectory signatures provide the *form* (the dynamical signature that content produces in behavior). Persona-consistency benchmarks — PersonaChat (Zhang et al., 2018), RoleLLM/RoleBench (Wang et al., 2023b), CharacterEval (Tu et al., 2024) — evaluate output consistency against a *declared* persona. Trajectory identity is intrinsic: the agent is recognized by its own dynamical signature with no declared persona to compare against.
+**Agent memory and persona coherence.** Recent LLM-agent work has foregrounded coherent state across interactions. MemGPT (Packer et al., 2023) gives LLM agents persistent state via hierarchical memory; Park et al.'s (2023) generative agents use memory streams, reflection, and planning to produce individually-consistent emergent behavior; Voyager (Wang et al., 2023) treats an ever-growing skill library as behavioral accumulation. Closest to our work is **ID-RAG** (Platnick et al., 2025), which targets long-horizon persona drift by injecting a structured identity object into retrieval. ID-RAG and trajectory identity are complementary: ID-RAG provides structured identity content (a dynamic knowledge graph of beliefs, traits, and values); trajectory signatures propose a way to characterize the *form* of behavior over time. Persona-consistency benchmarks — PersonaChat (Zhang et al., 2018), RoleLLM/RoleBench (Wang et al., 2023b), CharacterEval (Tu et al., 2024) — evaluate output consistency against a *declared* persona. Trajectory identity proposes recognition from an observed dynamical signature without a declared persona to compare against; individual discriminability remains unestablished.
 
-**Behavioral biometrics.** The idea that identity can be inferred from behavioral patterns has a long history (keystroke dynamics, Banerjee & Woodard 2019; LLM response fingerprinting, Xu et al. 2024). Such approaches treat behavioral signatures as static classifiers. Trajectory identity extends this into a dynamical frame: rather than fingerprinting a snapshot, we characterize the geometry of how behavior *evolves, recovers from perturbation, and converges* — yielding a quasi-invariant that persists even as surface outputs change.
+**Behavioral biometrics.** Keystroke dynamics uses typing patterns as a behavioral biometric (Banerjee & Woodard, 2012). Xu et al. (2024) study a different mechanism: model ownership verification through a private instruction-response fingerprint deliberately implanted by lightweight instruction tuning. That is not evidence that an unmodified agent has an individually distinctive trajectory. Our proposal concerns naturally observed state and recovery patterns; whether those patterns distinguish individuals across changes of role and harness remains open (§6.5).
 
 **Dynamical systems in cognitive science and AI.** Kelso (1995) and Skarda & Freeman (1987) established that cognitive phenomena are best described through self-organizing dynamical systems with attractor basins. The dynamical hypothesis (van Gelder, 1998) holds that cognitive systems are best understood as state-space trajectories. Beer (1995) made this concrete for AI: agent and environment are best modeled as a single coupled dynamical system; "behavior" is a property of the joint system, not the agent alone. We adopt this stance directly (§3.1, "Identity as agent-environment coupling").
 
@@ -253,7 +255,8 @@ The agent's characteristic "home" in state space, summarized statistically. **Na
 ```
 Alpha = {
     mu: mean(X),                     # Center (4-dimensional)
-    C_alpha: cov(X),                 # Shape (4x4 covariance matrix; renamed from Sigma to avoid clash with the signature symbol)
+    # Shape: 4x4 covariance matrix. C_alpha avoids a clash with Sigma.
+    C_alpha: cov(X),
     eigenvalues: eig(C_alpha)        # Principal axes of variability
 }
 ```
@@ -759,7 +762,7 @@ The sequence {G_t} provides:
 
 ### 6.4 Empirical Validation on Lumen
 
-We report empirical observations from a single deployed agent — Lumen, an embodied AI agent running continuously on a Raspberry Pi 4 with AHT20 (temperature, humidity), BMP280 (pressure), and VEML7700 (light) sensors. Lumen maintains a 4-dimensional state (warmth, clarity, stability, presence) derived from sensor readings and system metrics; the per-dimension feature definitions are in `src/anima_mcp/anima.py:to_dimensions()` of the Anima reference implementation. Over 65 calendar days (January 11 – March 16, 2026), Lumen accumulated approximately 226,029 state observations (count from the May 9, 2026 backup snapshot at `~/backups/lumen/anima_20260509_0700.db`) across 47 days with $\geq 100$ samples each (the remaining days had brief uptime windows or hardware-restart gaps; we report the 47-active-day basis). Earlier draft versions cited 226,093 observations from a slightly earlier snapshot; the difference of ~64 observations does not affect any §6.4 finding.
+We report empirical observations from a single deployed agent — Lumen, an embodied AI agent running on a Raspberry Pi 4 with AHT20 (temperature, humidity), BMP280 (pressure), and VEML7700 (light) sensors. Lumen maintains a 4-dimensional state (warmth, clarity, stability, presence) derived from sensor readings and system metrics; the per-dimension feature definitions are in `src/anima_mcp/anima.py:to_dimensions()` of the Anima reference implementation. Over 65 calendar days (January 11 – March 16, 2026), Lumen accumulated approximately 226,029 state observations (count from the May 9, 2026 backup snapshot at `~/backups/lumen/anima_20260509_0700.db`) across 47 days with $\geq 100$ samples each (the remaining days had brief uptime windows or hardware-restart gaps; we report the 47-active-day basis). Earlier draft versions cited 226,093 observations from a slightly earlier snapshot; the difference of ~64 observations does not affect any §6.4 finding.
 
 **This is a single-agent, deployed-system observation report — not a multi-agent validation of the framework's discrimination claims.** The §3 framework predicts both within-agent stability *and* between-agent discriminability. The data here speak only to the first. Section §7.2 lays out the multi-agent experiments that would address discrimination. Throughout this section we use the language "observed in Lumen" rather than "confirmed" — these are pilot observations, not confirmations of the general claims of the paper.
 
@@ -784,9 +787,9 @@ The analysis script that produced these numbers is `scripts/paper_figures.py` in
 
 #### 6.4.2 Recovery dynamics (Rho)
 
-**Observation**: Recovery time constants are estimable but the sample is small.
+**Observation**: The stored live-system profile contains recovery time-constant estimates for a small sample.
 
-**Method**: We detect perturbation events where $|x(t) - \mu| > 0.15$ in any state dimension and fit exponential recovery curves to estimate $\tau$.
+**Provenance and method.** These are summaries of the live system's recorded recovery profile, read from `trajectory_last.json` by `figure_2_recovery_profile()` in the [Anima figure script](https://github.com/cirwel/anima-mcp/blob/c82a01cac912c8e174dac442d75fc24fcd89e7b2/scripts/paper_figures.py#L105-L120). That function prints stored estimates; it does not detect events or fit recovery curves from the raw `state_history` rows. The table therefore describes 12 episodes retained by the live detector at snapshot time, not an independently recomputed episode count over the 65-day history. A frozen detector specification and episode-level export are needed for independent reproduction.
 
 | Metric | Value |
 |--------|-------|
@@ -796,7 +799,9 @@ The analysis script that produced these numbers is `scripts/paper_figures.py` in
 | Perturbation episodes | 12 |
 | Valid $\tau$ estimates | 12 (100%) |
 
-**Caveats.** With 12 episodes the estimate is noisy; we report median and mean to flag the right-skewed distribution but make no claim about the underlying distribution shape. A previous draft asserted "bimodal structure" without a histogram or mixture fit; we retract that claim. The 12-episode sample over 65 days reflects how rare large perturbations are in Lumen's normal operating environment, not a property of the recovery dynamics; perturbing the system more aggressively (the §7.2 Experiment 4 design) would produce better-supported estimates.
+**Caveats.** With 12 episodes the estimate is noisy; we report median and mean to flag the right-skewed distribution but make no claim about the underlying distribution shape. A previous draft asserted "bimodal structure" without a histogram or mixture fit; we retract that claim. Because the published summary does not establish complete event coverage over the 65-day state-history window, it does not support an episode rate or an inference that large perturbations were rare. Controlled perturbations with a frozen detector and exported event records (§7.2 Experiment 4) would provide better-supported estimates.
+
+**Reanalysis limitation.** The archived `scripts/analysis_v0.11.1_results.json` reports zero valid recovery estimates from an alternative offline routine. This is not a negative empirical result: `recovery_tau_histogram()` in that script slices each episode before its first return below a deviation of 0.15, then searches within that slice for a deviation below 0.05. The sought samples are excluded by construction. Its zero output cannot establish detector sensitivity or contradict the snapshot table; the script and its historical memo are annotated accordingly. No recovery values are recomputed here.
 
 #### 6.4.3 Self-belief convergence (Beta)
 
@@ -849,7 +854,7 @@ The implementation reaches its full identity-confidence weight at 50 observation
 | Hypothesis from §3 | Status in Lumen | Evidence |
 |---------------------|-----------------|----------|
 | State-distribution stability over 65 days | **Observed (small absolute drift)** | Var(mu) < 0.015 all dimensions; autocorrelation prevents the within>between framing from holding |
-| Recoverable $\tau$ from perturbation | **Observed (small sample)** | $\tau$ = 90–126s, n = 12 episodes |
+| Recovery profile at snapshot time | **Recorded (small sample)** | median $\tau$ = 89.7s; mean 125.8s; n = 12 retained episodes |
 | Belief convergence with substantial evidence | **Observed for 5 of 13 beliefs** | confidence > 0.88 on 4 beliefs, 0.0 on 1 refuted belief |
 | Operational continuity from genesis | **Observed for 2 of 5 components** | sim(Beta) = 0.933, sim(Alpha) = 0.805 over 20 days |
 | Implementation reaches full confidence weight at 50 obs | **Observed** | Stops down-weighting at 50 obs; not the same as "identity established" |
@@ -1189,7 +1194,7 @@ The trajectory signature Sigma is our proposal for how to ask—and answer—tha
 
 ## References
 
-Banerjee, S., & Woodard, D. L. (2019). Biometric authentication and identification using keystroke dynamics: A survey. *Journal of Pattern Recognition Research*, 14(1), 1-22.
+Banerjee, S. P., & Woodard, D. L. (2012). Biometric authentication and identification using keystroke dynamics: A survey. *Journal of Pattern Recognition Research*, 7(1), 116-139. [doi:10.13176/11.427](https://doi.org/10.13176/11.427).
 
 Barandiaran, X. E., & Moreno, A. (2006). On what makes certain dynamical systems cognitive: A minimally cognitive organization program. *Adaptive Behavior*, 14(2), 171-185.
 
@@ -1225,7 +1230,7 @@ Packer, C., et al. (2023). MemGPT: Towards LLMs as operating systems. *arXiv:231
 
 Park, J. S., et al. (2023). Generative agents: Interactive simulacra of human behavior. *Proceedings of UIST*, Article 2.
 
-Park, J. S., et al. (2025). ID-RAG: Identity retrieval-augmented generation for long-horizon persona coherence in generative agents. MIT Media Lab.
+Platnick, D., Bengueddache, M. E., Alirezaie, M., Newman, D. J., Pentland, A., & Rahnama, H. (2025). ID-RAG: Identity retrieval-augmented generation for long-horizon persona coherence in generative agents. [arXiv:2509.25299](https://arxiv.org/abs/2509.25299).
 
 Sabater, J., & Sierra, C. (2001). ReGreT: A reputation model for gregarious societies. *Proceedings of AAMAS*.
 
@@ -1249,7 +1254,7 @@ Wang, Z. M., et al. (2023b). RoleLLM: Benchmarking, eliciting, and enhancing rol
 
 Weber, A., & Varela, F. J. (2002). Life after Kant: Natural purposes and the autopoietic foundations of biological individuality. *Phenomenology and the Cognitive Sciences*, 1, 97-125.
 
-Xu, C., et al. (2024). Instructional fingerprinting of large language models. *arXiv:2401.12255*.
+Xu, J., Wang, F., Ma, M. D., Koh, P. W., Xiao, C., & Chen, M. (2024). Instructional fingerprinting of large language models. [arXiv:2401.12255](https://arxiv.org/abs/2401.12255).
 
 Zhang, S., et al. (2018). Personalizing dialogue agents: I have a dog, do you have pets too? *Proceedings of ACL*, 2204-2213.
 
@@ -1335,6 +1340,8 @@ An open-source implementation of the trajectory-signature data path — componen
 ---
 
 ## Changelog
+
+**v0.18-dev (October 13, 2026; unreleased)** - Corrects recovery provenance: the 12-episode table is a stored live-system summary, not an independent raw-history fit; the offline routine's zero output is invalid as evidence because its search excludes recovery samples. Corrects ID-RAG authorship, the Banerjee-Woodard reference, and Xu et al.'s author list and implanted-fingerprint scope. Refreshes the workshop variant to include the confounded resident pilot, implementation boundary, and these corrections. No reported numerical results changed; no new experiments or archive release.
 
 **v0.17 (October 2, 2026)** — Abstract, conclusion, §1.3 item 1, §7.2 and §8.3 brought in line with §3.6, §4.1 and §6.4–§6.5; no change to the framework or to any empirical result. The abstract had not been updated since v0.10: it cited "mu variance < 0.05" where §6.4 reports below 0.015, called Lumen's record "continuous operation" despite an 18-day gap, and did not mention that the §6.5 discrimination pilot is confounded (v0.15). It now states the within-agent evidence with §6.4's figures and says the discrimination criterion is open. The conclusion gains the same sentence.
 

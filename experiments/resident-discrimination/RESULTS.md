@@ -3,6 +3,8 @@
 **Date:** 2026-06-02 · **Scope:** N=4 resident agents, one operator's fleet,
 governance EISV+phi state. A *within-ecosystem* pilot, not external validation.
 
+> **Current interpretation (v0.15 correction; restated 2026-10-13).** The computed results below stand, but agent labels are confounded with role, harness, and duty cycle. They do not establish individual discrimination. The later production-metric audit used a different instrument and does not directly refute this pilot. See the [long-form §6.5 limitation](../../TRAJECTORY_IDENTITY_PAPER.md#65-multi-agent-discrimination-a-first-pilot) for the two experiments needed to separate these explanations. The June narrative below records the original interpretation and must be read with this correction.
+
 ## Question
 The trajectory-identity framework (Wang 2026b) claims trajectory signatures can
 **discriminate distinct agents**. v0.13 §6.4/§7.2/§8.3 flag this as untested
