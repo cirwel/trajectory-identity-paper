@@ -1,10 +1,12 @@
 # Reader-surface guard — the public tree carries the paper and its
 # reproducibility material, not the process that produced it.
 #
-# Two checks, same class as the unitares repo-scope guard:
+# Two reader-surface checks, same class as the unitares repo-scope guard:
 #   1. filename classes that are always internal (handoffs, AI-review records,
 #      cover letters, endorsement strategy, working notes)
 #   2. content markers of the AI-review process in tracked files
+# Also checks mechanical release metadata agreement and offline publication
+# controls; these do not verify scientific claims or PDF freshness.
 #
 # Exemptions: _internal/ (gitignored anyway — belt and braces), .github/,
 # AI-use disclosures (their PURPOSE is describing AI involvement), and the
@@ -41,3 +43,7 @@ jobs:
             bad=1
           fi
           exit $bad
+      - name: release metadata agrees mechanically
+        run: python3 scripts/check_release_metadata.py
+      - name: offline publication and metadata negative controls
+        run: PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s scripts/tests -v

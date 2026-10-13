@@ -11,19 +11,18 @@
 #   https://zenodo.org/account/settings/github/repository/cirwel/trajectory-identity-paper
 #
 # Usage (from repo root):
-#   ZENODO_TOKEN=xxx ./scripts/publish-to-zenodo.sh paper-v6.8.2 unitares-v6.pdf [source.zip]
+#   ZENODO_TOKEN=xxx ./scripts/publish-to-zenodo.sh paper-v0.18 TRAJECTORY_IDENTITY_PAPER.pdf [source.zip]
 #
 # The source-zip argument is optional. Omit it to publish a PDF-only record
 # (cleaner for readers; avoids shipping .github/FUNDING.yml and other repo
 # bric-a-brac inside the archive).
 #
 # Optional env:
-#   ZENODO_CONCEPT_RECID  Concept record ID (default: 19647159 — the v6 concept DOI)
-#   ZENODO_API_BASE       API base (default: https://zenodo.org; sandbox.zenodo.org for testing)
+#   ZENODO_CONCEPT_RECID  Must be 20098168 if set (this paper's concept record)
+#   ZENODO_API_BASE       API base (default: https://zenodo.org); concept binding still applies
 #   DRY_RUN               If "1", print actions without calling write endpoints
 #
-# Run locally for one-off backfills (e.g. add the PDF to an already-published version
-# by minting v6.8.2 with no other content changes).
+# Metadata is always read from this script's repository, not the caller's cwd.
 
 set -euo pipefail
 
@@ -36,9 +35,18 @@ TAG="$1"
 PDF_PATH="$2"
 ZIP_PATH="${3:-}"
 # Keep the full tag as the Zenodo version string for consistency with prior
-# releases (e.g. "paper-v6.8.1"). Existing concept history uses this form.
+# releases (e.g. "paper-v0.18"). Existing concept history uses this form.
 VERSION="$TAG"
-: "${ZENODO_CONCEPT_RECID:=19647159}"
+readonly EXPECTED_CONCEPT_RECID="20098168"
+# Unset selects this repository's target; explicit empty or conflicting values
+# are configuration errors. Reject them before even making a read request.
+ZENODO_CONCEPT_RECID="${ZENODO_CONCEPT_RECID-$EXPECTED_CONCEPT_RECID}"
+if [[ "$ZENODO_CONCEPT_RECID" != "$EXPECTED_CONCEPT_RECID" ]]; then
+  echo "error: this publisher requires ZENODO_CONCEPT_RECID=${EXPECTED_CONCEPT_RECID}" >&2
+  exit 64
+fi
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+METADATA_PATH="${SCRIPT_DIR}/../.zenodo.json"
 : "${ZENODO_API_BASE:=https://zenodo.org}"
 : "${DRY_RUN:=0}"
 
@@ -47,7 +55,7 @@ if [[ -z "${ZENODO_TOKEN:-}" ]]; then
   exit 64
 fi
 
-required_files=("$PDF_PATH" .zenodo.json)
+required_files=("$PDF_PATH" "$METADATA_PATH")
 [[ -n "$ZIP_PATH" ]] && required_files+=("$ZIP_PATH")
 for f in "${required_files[@]}"; do
   [[ -f "$f" ]] || { echo "error: missing file: $f" >&2; exit 66; }
@@ -55,6 +63,8 @@ done
 
 command -v jq >/dev/null || { echo "error: jq required" >&2; exit 69; }
 command -v curl >/dev/null || { echo "error: curl required" >&2; exit 69; }
+command -v python3 >/dev/null || { echo "error: python3 required" >&2; exit 69; }
+python3 "${SCRIPT_DIR}/check_release_metadata.py" --tag "$TAG"
 
 API_AUTH=(-H "Authorization: Bearer ${ZENODO_TOKEN}")
 API_JSON=(-H "Content-Type: application/json")
@@ -78,10 +88,10 @@ echo "==> Resolving latest record under concept ${ZENODO_CONCEPT_RECID}"
 latest_resp="$(curl -sSL "${API_AUTH[@]}" \
   "${ZENODO_API_BASE}/api/records/${ZENODO_CONCEPT_RECID}/versions/latest")"
 latest_recid="$(printf '%s' "$latest_resp" | jq -r '.id')"
+latest_concept="$(printf '%s' "$latest_resp" | jq -r '.conceptrecid // empty')"
 latest_version="$(printf '%s' "$latest_resp" | jq -r '.metadata.version // "(none)"')"
-[[ "$latest_recid" != "null" && -n "$latest_recid" ]] || {
-  echo "error: could not resolve latest record id" >&2
-  echo "$latest_resp" | head -c 500 >&2
+[[ "$latest_recid" =~ ^[1-9][0-9]*$ && "$latest_concept" == "$EXPECTED_CONCEPT_RECID" ]] || {
+  echo "error: latest record has missing/invalid id or wrong/missing conceptrecid; refusing mutation" >&2
   exit 70
 }
 echo "    latest record id=${latest_recid} version=${latest_version}"
@@ -157,10 +167,9 @@ if [[ -n "$ZIP_PATH" ]]; then
 fi
 
 echo "==> Updating metadata"
-metadata="$(jq --arg v "$VERSION" \
-              --arg d "$(date -u +%Y-%m-%d)" \
-              '{metadata: (. + {version: $v, publication_date: $d})}' \
-              .zenodo.json)"
+# The preflight verified the version/date. Do not silently replace the reviewed
+# publication date with the execution date when a release is published later.
+metadata="$(jq '{metadata: .}' "$METADATA_PATH")"
 
 meta_out="$(api PUT "/api/deposit/depositions/${draft_id}" -d "$metadata")"
 meta_status="$(printf '%s' "$meta_out" | tail -n1)"
