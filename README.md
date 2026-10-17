@@ -33,6 +33,12 @@ The paper proposes an alternative grounded in enactive cognition and dynamical s
 
 **Implementation boundary.** The Appendix A correction below applies to `anima-mcp`. The separate [UNITARES implementation at the October 11 source snapshot](https://github.com/cirwel/unitares/blob/5c871945f3596770722d4e144c193729527fd7de/src/trajectory_identity.py#L308-L374) still includes homeostatic similarity (Eta) with a nominal weight of 0.15 when both signatures provide it. Missing components are skipped and the available weights are renormalized. That implementation therefore differs from the paper’s five-component weighted similarity; the Anima correction did not change it.
 
+**Claim status (added October 16, 2026; the paper text is unchanged).** Several sentences in the archived text read more strongly than the evidence supports. Read them at these levels:
+
+- **Philosophical thesis, not a deployed property.** "Quasi-invariant characteristics that define an agent's identity" (abstract) and "An agent IS its trajectory, not its UUID" (§8.1) state the paper's position. In UNITARES, identity is the server's UUID record and authorization is credential-based; a trajectory signature is a continuity characterization beside them.
+- **Intended uses, not demonstrated ones.** Drift detection, lineage tracking and self-monitoring (*Purpose and Scope*) are design goals. UNITARES's [audit of its trajectory-identity instrument](https://github.com/CIRWEL/unitares/blob/master/docs/ontology/eisv-proprioception-contract.md#trajectory-identity--same-discipline-different-instrument) found the deployed similarity collapsing to a near-constant across agents, so it is not evidence of discrimination.
+- **Research interpretation.** The free-energy and autopoiesis anchors in the §2.4 component table (for example, Rho as "prediction-error correction dynamics") are theoretical framing. The deployed signature does not compute prediction error or free energy.
+
 Three proposed structural moves:
 
 1. **Identity as process, not property.** Drawing on autopoiesis (Varela, Thompson, Rosch) and the free-energy principle (Friston), the framework models identity through patterns of self-maintenance. This is a modeling commitment, as discussed in §2.1.
