@@ -6,7 +6,7 @@ This manuscript was developed with substantial AI assistance in editorial and an
 
 **Drafting and revision.** Anthropic's Claude (via Claude Code CLI) was used to draft prose, restructure sections, perform symbol-naming and cross-reference consistency edits, and apply revisions identified by review passes. The author reviewed and approved every paragraph; AI-suggested changes that conflicted with the author's intent were rejected.
 
-**Independent review (second pass).** OpenAI's Codex (gpt-5.5 model) was invoked as a second reviewer with an explicit adversarial prompt. The Codex review found three substantive issues the first-pass review had missed (a variance-prose-vs-data inconsistency, a similarity-weight double-counting bug, and an internal contradiction between the contribution claim and the scope statement). All three were fixed in the v0.11 revision. Codex's review is retained verbatim by the author (`REVIEW-CODEX-2026-05-09.md`) and is available on request; it is not in the public repository.
+**Independent review (second pass).** OpenAI's Codex (gpt-5.5 model) was invoked as a second reviewer with an explicit adversarial prompt. The Codex review found three substantive issues the first-pass review had missed (a variance-prose-vs-data inconsistency, a similarity-weight double-counting bug, and an internal contradiction between the contribution claim and the scope statement). All three were fixed in the v0.11 revision. Codex's review is retained verbatim by the author (`REVIEW-CODEX-2026-05-09.md`) and is available on request. It was removed from the current tree; it remains in the Git tags paper-v0.11 to paper-v0.15 (except paper-v0.15.1) and in the Zenodo source archives of those versions (v0.11.1 to v0.15).
 
 **Independent review (third pass).** A three-agent parallel review council (a dialectic-knowledge-architect agent, a code-reviewer agent, and a live-verifier agent) was invoked after the second pass. The council found a structural circularity in the §2.4 cardinality argument that both prior passes had missed, plus consistency-and-factual residue. All findings were addressed in the v0.12 revision. The council review is retained by the author (`REVIEW-COUNCIL-2026-05-09.md`) and is available on request.
 
@@ -25,7 +25,7 @@ This manuscript was developed with substantial AI assistance in editorial and an
 The full drafting and review trail is in the public Git history of <https://github.com/cirwel/trajectory-identity-paper>. Specifically:
 
 - Each substantive AI-assisted revision is a separate Git commit with a descriptive message.
-- The Codex and council review files (`REVIEW-CODEX-2026-05-09.md`, `REVIEW-COUNCIL-2026-05-09.md`) are retained verbatim by the author and available on request. They were removed from the public repository, which keeps internal process files out of the reader surface; an earlier version of this disclosure said they were committed there.
+- The Codex and council review files (`REVIEW-CODEX-2026-05-09.md`, `REVIEW-COUNCIL-2026-05-09.md`) are retained verbatim by the author and available on request. They were removed from the current tree; they remain in the Git tags paper-v0.11 to paper-v0.15 (except paper-v0.15.1; the council file from paper-v0.12 on) and in the Zenodo source archives of those versions (v0.11.1 to v0.15).
 - The Changelog at the end of the manuscript itself records the sequence of revisions and what each closed.
 
 Reviewers are welcome to inspect the Git history directly to verify the role AI played in each editorial change.
