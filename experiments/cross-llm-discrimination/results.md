@@ -2,7 +2,7 @@
 
 **Date:** 2026-05-09
 **Subjects:** gpt-5.5 at three reasoning-effort levels (low, medium, xhigh), treated as distinct "agents" for the discrimination test.
-**Note on scope:** the original design called for cross-model discrimination across gpt-5.5, claude-sonnet-4-6, and claude-haiku-4-5. The Anthropic API key had $0 credit at run time, so the experiment was scoped down to a within-Codex effort-level discrimination test. Results below should be read with that caveat — this is *not* a direct test of cross-model trajectory-identity discrimination.
+**Note on scope:** the original design called for cross-model discrimination across gpt-5.5, claude-sonnet-4-6, and claude-haiku-4-5. The run was scoped down to a within-Codex effort-level discrimination test. Results below should be read with that caveat: this is *not* a direct test of cross-model trajectory-identity discrimination.
 
 ## Method
 
@@ -63,7 +63,7 @@ Only two features (list-item count, first-person pronoun count) carry meaningful
 
 ## What this tells us about the framework's claims
 
-1. **Trajectory identity for LLM agents is not free.** The §3 framework was developed and validated for an embodied agent (Lumen) with continuous, slowly-drifting state and clear perturbation/recovery dynamics. Applied naively to LLM agents — with stochastic discrete outputs and no homeostatic state — the discrimination signal is weak relative to within-cell stochastic noise.
+1. **Trajectory identity for LLM agents is not free.** The §3 framework was developed and piloted on an embodied agent (Lumen) with continuous, slowly-drifting state and clear perturbation/recovery dynamics. Applied naively to LLM agents, with stochastic discrete outputs and no homeostatic state, the discrimination signal is weak relative to within-cell stochastic noise.
 
 2. **Per-prompt feature means likely need more samples per cell.** With $N = 2$ runs per (effort, prompt) cell, the standard error on the cell's mean is $\sigma / \sqrt{2}$. To shrink within-cell distance from $\approx 2.0$ to $\approx 0.5$ z-units (where between-low-vs-xhigh would clearly dominate), we'd need $N \approx 16$ runs per cell — 8× the data. That's feasible but expensive.
 
@@ -106,7 +106,7 @@ Outputs cached at `experiments/cross-llm-discrimination/outputs/`. Re-running sk
 
 ## Open follow-ups
 
-- **Run the full 3-model cross-LLM test** once the Anthropic API key has credit. Reuses all the infrastructure; just change `--models`.
+- **Run the full 3-model cross-LLM test.** Reuses all the infrastructure; just change `--models`.
 - **Increase $N$ per cell** to 16+ to drive down within-cell variance and see whether between-effort discrimination clears within-noise.
 - **Add token-level features** (requires logprob-aware backends; Anthropic API supports `logprobs` in newer model versions).
 - **Run a sensitivity analysis** on which prompts contribute most to discrimination — different prompt categories may load differently.
